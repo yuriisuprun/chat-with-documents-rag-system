@@ -1,35 +1,132 @@
-# Operating system files
+# ============================================================================
+# .gitignore - WhatsApp Auto-Assistant (Python/React Full-Stack)
+# ============================================================================
+
+# ============================================================================
+# OPERATING SYSTEM FILES
+# ============================================================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 Desktop.ini
+$RECYCLE.BIN/
 
-# Editor and IDE metadata
+# ============================================================================
+# EDITOR AND IDE METADATA
+# ============================================================================
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+.settings/
+.classpath
+*.code-workspace
+.emacs.desktop
 
-# Environment and secrets
+# ============================================================================
+# ENVIRONMENT VARIABLES & SECRETS
+# ============================================================================
 .env
-.env.*
+.env.local
+.env.*.local
 !.env.example
 !.env.sample
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Private keys and certificates
 *.pem
 *.key
+*.crt
+*.cert
+*.pfx
+*.p12
+secrets/
+private/
+credentials.json
+service-account.json
+google-credentials.json
 
-# Logs and runtime data
+# ============================================================================
+# LOGS AND RUNTIME DATA
+# ============================================================================
 logs/
 *.log
+*.log.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
+.npm
+.eslintcache
+.yarn/cache/
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# Dependencies
+# ============================================================================
+# PYTHON - VIRTUAL ENVIRONMENTS & DEPENDENCIES
+# ============================================================================
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.ruff_cache/
+
+# Python build and distribution
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============================================================================
+# NODE.JS - DEPENDENCIES & BUILD OUTPUT
+# ============================================================================
 node_modules/
-
-# Build and cache output
+npm-debug.log
+yarn-error.log
+.npm/
+.eslintcache
 dist/
 build/
 out/
@@ -37,23 +134,306 @@ out/
 .parcel-cache/
 .next/
 .nuxt/
-.vite/
-coverage/
+.cache
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.yarn/cache/
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
 
-# Python artifacts
-__pycache__/
-*.py[cod]
-*$py.class
+# ============================================================================
+# TESTING & COVERAGE
+# ============================================================================
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.venv/
-venv/
-env/
+.coverage
+.coverage.*
+coverage/
+htmlcov/
+.tox/
+.hypothesis/
+.nyc_output/
+dist/coverage/
+*.lcov
+.nyc_output
+coverage.xml
+*.cover
+.hypothesis/
 
-# Local databases and generated data
+# ============================================================================
+# IDE - PROJECT SPECIFIC
+# ============================================================================
+.idea/
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+!.vscode/extensions.json
+.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+.ionide/
+
+# ============================================================================
+# DATABASES & LOCAL DATA
+# ============================================================================
 *.sqlite
 *.sqlite3
 *.db
+*.db-journal
+*.dbproj
+*.mdf
+*.ldf
+/postgres_data/
+/db_data/
+database/
+data/
+
+# ============================================================================
+# TEMPORARY & GENERATED FILES
+# ============================================================================
 tmp/
 temp/
+*.tmp
+*.bak
+*.swp
+*~
+.~*
+*.orig
+*.rej
+
+# ============================================================================
+# OS TEMPORARY FILES
+# ============================================================================
+.AppleDouble
+.LSOverride
+._*
+.com.apple.timemachine.supported
+.fseventsd
+.gvfs-fuse-daemon
+.nfs*
+System Volume Information
+NTFS System
+Thumbs.db
+ehthumbs.db
+Icon?
+$RECYCLE.BIN/
+pagefile.sys
+hiberfil.sys
+
+# ============================================================================
+# DOCKER & CONTAINER RELATED
+# ============================================================================
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# ============================================================================
+# PACKAGE MANAGER LOCK FILES (Optional - depends on team preference)
+# Uncomment if you want to exclude lock files
+# ============================================================================
+# package-lock.json
+# yarn.lock
+# poetry.lock
+# pipenv.lock
+
+# ============================================================================
+# BUILD OUTPUT & DISTRIBUTION
+# ============================================================================
+dist/
+build/
+.next/
+.nuxt/
+*.min.js
+*.min.css
+*.bundle.js
+sourcemaps/
+
+# ============================================================================
+# FRONTEND SPECIFIC
+# ============================================================================
+# React
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Parcel
+.cache/
+.parcel-cache/
+
+# Next.js
+.next/
+out/
+
+# Nuxt.js
+.nuxt/
+.cache
+nuxt-dist/
+
+# Vite
+.vite/
+dist/
+
+# VS Code extension recommendations
+extensions.json
+
+# ============================================================================
+# BACKEND SPECIFIC
+# ============================================================================
+# Celery
+celerybeat-schedule
+dump.rdb
+
+# SageMath parsed files
+*.sage.py
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Environment
+.env
+
+# Migrations (if auto-generated)
+# migrations/versions/*.py
+
+# ============================================================================
+# DEPENDENCY SPECIFIC
+# ============================================================================
+# OpenAI
+openai_api_keys/
+
+# AWS
+.aws/
+aws_access_key_id
+aws_secret_access_key
+
+# Google Cloud
+google-cloud-credentials/
+.gcloud/
+
+# Azure
+.azure/
+
+# ============================================================================
+# BACKUP & ARCHIVE FILES
+# ============================================================================
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.tar.bz2
+*.backup
+*.bak
+*.old
+
+# ============================================================================
+# OS & CLOUD SYNC FILES
+# ============================================================================
+# Dropbox
+.dropbox
+.dropbox.attr
+
+# OneDrive
+OneDriveTemp/
+
+# Google Drive
+.cache/
+.gvfs-fuse-daemon
+
+# iCloud
+*.icloud
+
+# Synology
+.syno*
+.synolgy*
+
+# ============================================================================
+# LOCAL OVERRIDES & TEST FILES
+# ============================================================================
+.local/
+local/
+test_results/
+test-results.xml
+pytest-results.json
+
+# ============================================================================
+# DOCUMENTATION BUILD OUTPUT
+# ============================================================================
+site/
+docs/_build/
+docs/.doctrees/
+*.epub
+
+# ============================================================================
+# MISC
+# ============================================================================
+.DS_Store
+.env*.local
+.cache
+*.bak
+*.tmp
+*~
+.#*
+#*#
+*.orig
+*.rej
+.project
+.settings
+.springBeans
+*.log
+.python-version
+.ruby-version
+.tool-versions
+.dirlocal
+
+# ============================================================================
+# WHATSAPP AUTO-ASSISTANT SPECIFIC
+# ============================================================================
+# Uploads
+uploads/
+media/
+documents/
+temp/
+cache/
+
+# API Keys and tokens (never commit!)
+whatsapp_token.txt
+openai_key.txt
+*_credentials.*
+*_secrets.*
+
+# Local database dumps
+*.sql
+*.sql.gz
+db_backup/
+
+# Celery worker files
+celerybeat.pid
+*.pid
+
+# Generated migrations (if applicable)
+# backend/migrations/versions/*.py
+# !backend/migrations/versions/__init__.py
+
+# ============================================================================
+# SENSITIVE DIRECTORIES
+# ============================================================================
+/secrets/
+/private/
+/.ssh/
+/credentials/
+/keys/
+
+# ============================================================================
+# END OF .gitignore
+# ============================================================================
