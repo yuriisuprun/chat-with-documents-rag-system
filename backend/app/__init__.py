@@ -1,0 +1,1 @@
+"""WhatsApp Assistant application package."""
