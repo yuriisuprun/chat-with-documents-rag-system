@@ -60,23 +60,47 @@ class Settings(BaseSettings):
     # Auto-Reply Configuration
     TENANT_AUTO_REPLY_DELAY_MINUTES: int = 30
     
-    # Booking & Info
-    TENANT_BOOKING_URL: Optional[str] = None  # e.g., https://calendly.com/john
-    TENANT_OFFICE_HOURS: Optional[str] = None  # e.g., "Mon-Fri 9AM-5PM EST"
-    
-    # Legal Compliance
-    TENANT_DISCLAIMER: str = "This is an automated assistant. This message is not professional advice."
-    
     # ============ APPOINTMENT AUTOMATION FEATURE ============
     # Feature flag for automatic appointment scheduling
     TENANT_ENABLE_AUTO_APPOINTMENT: bool = False
     
-    # Calendar Integration (optional - when auto-appointment enabled)
-    TENANT_APPOINTMENT_API_TYPE: Optional[str] = None  # "calendly", "google_calendar", "custom"
-    TENANT_APPOINTMENT_API_KEY: Optional[str] = None   # API key for calendar service
-    TENANT_APPOINTMENT_API_URL: Optional[str] = None   # Custom API endpoint
+    # Calendar Integration (required when auto-appointment enabled)
+    # Options: "google_calendar", "custom"
+    # Default: "google_calendar" (Recommended)
+    TENANT_APPOINTMENT_API_TYPE: Optional[str] = "google_calendar"
+    
+    # Google Calendar Configuration (REQUIRED for google_calendar type)
+    # Service account JSON credentials from Google Cloud Console
+    # Example format:
+    # {
+    #   "type": "service_account",
+    #   "project_id": "...",
+    #   "private_key_id": "...",
+    #   "private_key": "...",
+    #   "client_email": "...",
+    #   "client_id": "...",
+    #   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    #   "token_uri": "https://oauth2.googleapis.com/token",
+    #   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    #   "client_x509_cert_url": "..."
+    # }
+    TENANT_APPOINTMENT_API_KEY: Optional[str] = None
+    
+    # Custom API endpoint (only for custom type)
+    TENANT_APPOINTMENT_API_URL: Optional[str] = None
+    
+    # Appointment Settings
     TENANT_APPOINTMENT_DEFAULT_DURATION: int = 30      # Minutes
+    TENANT_APPOINTMENT_WORKING_HOURS_START: int = 9    # Hour (24-format)
+    TENANT_APPOINTMENT_WORKING_HOURS_END: int = 17     # Hour (24-format)
     TENANT_APPOINTMENT_CONFIRMATION_MESSAGE: Optional[str] = None  # Custom confirmation message
+    
+    # Booking URL (fallback/legacy - not used for direct appointment creation)
+    TENANT_BOOKING_URL: Optional[str] = None  # e.g., https://example.com/booking
+    TENANT_OFFICE_HOURS: Optional[str] = None  # e.g., "Mon-Fri 9:00-17:00 CET"
+    
+    # Legal Compliance
+    TENANT_DISCLAIMER: str = "This is an automated assistant. This message is not professional advice."
     
     # ============ MULTI-LANGUAGE SUPPORT ============
     # Supported languages for the assistant (ISO 639-1 codes)
@@ -88,8 +112,8 @@ class Settings(BaseSettings):
     TENANT_DISCLAIMER_IT: str = "Questo è un assistente automatico. Questo messaggio non è una consulenza professionale."
     
     # Language-specific office hours formats
-    TENANT_OFFICE_HOURS_EN: Optional[str] = None  # e.g., "Mon-Fri 9AM-5PM EST"
-    TENANT_OFFICE_HOURS_RU: Optional[str] = None  # e.g., "Пн-Пт 9:00-17:00 МСК"
+    TENANT_OFFICE_HOURS_EN: Optional[str] = None  # e.g., "Mon-Fri 9:00-17:00 CET"
+    TENANT_OFFICE_HOURS_RU: Optional[str] = None  # e.g., "Пн-Пт 9:00-17:00 CET"
     TENANT_OFFICE_HOURS_IT: Optional[str] = None  # e.g., "Lun-Ven 9:00-17:00 CET"
     
     # Default language for the tenant

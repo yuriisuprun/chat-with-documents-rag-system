@@ -49,16 +49,22 @@ class AppointmentService:
             logger.warning("Appointment API type not configured")
             return False
 
-        # Calendly requires API key but uses their hosted interface
-        if self.api_type == "calendly":
+        # Google Calendar requires API key (credentials JSON)
+        if self.api_type == "google_calendar":
+            if not self.api_key:
+                logger.warning("Google Calendar API key (service account credentials) not configured")
+                return False
             return True
 
-        # Other types require API URL and key
-        if not self.api_url or not self.api_key:
-            logger.warning("Appointment API URL or key not configured")
-            return False
+        # Custom API requires both URL and key
+        if self.api_type == "custom":
+            if not self.api_url or not self.api_key:
+                logger.warning("Custom API URL or key not configured")
+                return False
+            return True
 
-        return True
+        logger.warning(f"Unknown appointment API type: {self.api_type}")
+        return False
 
     def create_appointment(
         self,
@@ -100,11 +106,7 @@ class AppointmentService:
             }
 
         try:
-            if self.api_type == "calendly":
-                return self._create_calendly_appointment(
-                    client_phone, client_name, notes
-                )
-            elif self.api_type == "google_calendar":
+            if self.api_type == "google_calendar":
                 return self._create_google_calendar_appointment(
                     client_phone, client_name, preferred_date, preferred_time, notes
                 )
@@ -113,7 +115,7 @@ class AppointmentService:
                     client_phone, client_name, preferred_date, preferred_time, notes
                 )
             else:
-                raise ValueError(f"Unknown appointment API type: {self.api_type}")
+                raise ValueError(f"Unsupported appointment API type: {self.api_type}. Supported types: google_calendar, custom")
 
         except Exception as e:
             logger.error(f"Error creating appointment: {str(e)}", exc_info=True)
@@ -126,34 +128,6 @@ class AppointmentService:
                 "message": f"Failed to create appointment: {str(e)}"
             }
 
-    def _create_calendly_appointment(
-        self,
-        client_phone: str,
-        client_name: Optional[str] = None,
-        notes: Optional[str] = None,
-    ) -> Dict[str, Any]:
-        """
-        Create appointment using Calendly (generates booking link).
-        
-        For Calendly, we don't actually create appointments directly,
-        but return the Calendly link for the client to book.
-        """
-        logger.info(f"Creating Calendly appointment for {client_phone}")
-
-        booking_url = settings.TENANT_BOOKING_URL
-
-        return {
-            "appointment_id": f"calendly_{client_phone}_{int(datetime.utcnow().timestamp())}",
-            "client_phone": client_phone,
-            "scheduled_at": None,
-            "confirmation_url": booking_url,
-            "status": "pending",
-            "message": (
-                self.confirmation_message or
-                f"I've prepared your booking link. Please visit {booking_url} to schedule your appointment at a time that works for you."
-            )
-        }
-
     def _create_google_calendar_appointment(
         self,
         client_phone: str,
@@ -165,67 +139,50 @@ class AppointmentService:
         """
         Create appointment using Google Calendar API.
         
-        Requires TENANT_APPOINTMENT_API_KEY with Google Calendar credentials.
+        Requires TENANT_APPOINTMENT_API_KEY with Google Calendar service account credentials (JSON format).
         """
         logger.info(f"Creating Google Calendar appointment for {client_phone}")
 
         try:
-            from google.oauth2.service_account import Credentials
-            from googleapiclient.discovery import build
+            from app.services.google_calendar_service import GoogleCalendarService
 
-            # Parse credentials from API key (should be JSON)
-            if isinstance(self.api_key, str):
-                creds_dict = json.loads(self.api_key)
-            else:
-                creds_dict = self.api_key
+            # Initialize Google Calendar service with credentials
+            cal_service = GoogleCalendarService(self.api_key)
 
-            # Create credentials
-            credentials = Credentials.from_service_account_info(
-                creds_dict,
-                scopes=['https://www.googleapis.com/auth/calendar']
-            )
+            # Prepare event details
+            description = f"Client Phone: {client_phone}\n"
+            if notes:
+                description += f"Notes: {notes}\n"
+            description += f"Business: {settings.TENANT_BUSINESS_NAME or 'N/A'}\n"
+            description += f"Professional: {settings.TENANT_PROFESSIONAL_NAME or 'N/A'}"
 
-            # Build service
-            service = build('calendar', 'v3', credentials=credentials)
-
-            # Create event
-            event = {
-                "summary": f"Consultation - {client_name or client_phone}",
-                "description": f"Client Phone: {client_phone}\nNotes: {notes or 'N/A'}",
-                "attendees": [
-                    {"email": client_phone.replace("+", ""), "displayName": client_name or "Client"}
-                ],
-            }
-
-            # Set time if provided
+            # Prepare start time
+            start_time = None
             if preferred_date and preferred_time:
                 try:
-                    start_dt = datetime.fromisoformat(f"{preferred_date}T{preferred_time}")
-                    end_dt = start_dt + timedelta(minutes=self.default_duration)
-
-                    event["start"] = {
-                        "dateTime": start_dt.isoformat(),
-                        "timeZone": "UTC"
-                    }
-                    event["end"] = {
-                        "dateTime": end_dt.isoformat(),
-                        "timeZone": "UTC"
-                    }
+                    start_time = datetime.fromisoformat(f"{preferred_date}T{preferred_time}")
                 except ValueError:
                     logger.warning(f"Invalid date/time format: {preferred_date} {preferred_time}")
 
-            # Insert event
-            result = service.events().insert(calendarId='primary', body=event).execute()
+            # Create event through Google Calendar
+            event_result = cal_service.create_event(
+                summary=f"Consultation - {client_name or client_phone}",
+                description=description,
+                start_time=start_time,
+                duration_minutes=self.default_duration,
+                attendee_email=None,  # Phone numbers can't be attendees, but we store in description
+                attendee_name=client_name
+            )
 
             return {
-                "appointment_id": result.get("id"),
+                "appointment_id": event_result.get("id"),
                 "client_phone": client_phone,
-                "scheduled_at": result.get("start", {}).get("dateTime"),
-                "confirmation_url": result.get("htmlLink"),
+                "scheduled_at": event_result.get("start"),
+                "confirmation_url": event_result.get("html_link"),
                 "status": "confirmed",
                 "message": (
                     self.confirmation_message or
-                    f"Your appointment has been scheduled! You'll receive a confirmation at {client_phone}."
+                    f"Your appointment has been scheduled! A Google Calendar invitation has been created."
                 )
             }
 

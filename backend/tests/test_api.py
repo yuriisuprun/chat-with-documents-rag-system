@@ -34,7 +34,7 @@ class TestTenants:
             "professional_name": "John Doe",
             "whatsapp_number": "+1234567890",
             "auto_reply_delay_minutes": 30,
-            "booking_url": "https://calendly.com/john",
+            "booking_url": "https://example.com/booking",
             "disclaimer": "This is not legal advice."
         }
         response = client.post("/api/v1/tenants", json=payload)
