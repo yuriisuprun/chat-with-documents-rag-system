@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '../api/client';
 import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
+import { FiMessageSquare, FiPhone, FiClock } from 'react-icons/fi';
 
 interface Message {
   id: string;
@@ -71,40 +72,79 @@ const Conversations = () => {
     }
   };
 
-  return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8">Conversations</h1>
+  const getSenderLabel = (sender: string) => {
+    switch (sender) {
+      case 'client':
+        return 'Client';
+      case 'professional':
+        return 'You';
+      case 'ai':
+        return 'AI Assistant';
+      default:
+        return sender;
+    }
+  };
 
-      <div className="grid grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+  return (
+    <div className="page-container">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="section-heading">Conversations</h1>
+        <p className="text-gray-600">Monitor and manage client conversations.</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
         {/* Conversation List */}
-        <div className="bg-white rounded-lg shadow overflow-hidden flex flex-col">
-          <div className="p-4 border-b">
-            <h2 className="font-bold">Chats</h2>
+        <div className="card overflow-hidden flex flex-col">
+          <div className="p-4 border-b border-gray-200 bg-gray-50">
+            <h2 className="font-semibold text-gray-900">Chats</h2>
+            {conversations.length > 0 && (
+              <p className="text-xs text-gray-500 mt-1">{conversations.length} conversation(s)</p>
+            )}
           </div>
+
           <div className="flex-1 overflow-auto">
             {loading ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-gray-500">Loading...</p>
+              <div className="loading h-full">
+                <div>
+                  <span className="loading-spinner mr-3"></span>
+                  <span className="text-gray-600">Loading chats...</span>
+                </div>
               </div>
             ) : conversations.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <p className="text-gray-500">No conversations</p>
+              <div className="empty-state">
+                <div className="empty-state-icon">
+                  <FiMessageSquare />
+                </div>
+                <p className="empty-state-text">No conversations yet</p>
               </div>
             ) : (
               conversations.map((conv) => (
                 <button
                   key={conv.id}
                   onClick={() => handleSelectConversation(conv)}
-                  className={`w-full text-left p-4 border-b hover:bg-gray-50 transition ${
-                    selectedConversation?.id === conv.id ? 'bg-blue-50' : ''
+                  className={`list-item w-full text-left ${
+                    selectedConversation?.id === conv.id ? 'active' : ''
                   }`}
                 >
-                  <p className="font-semibold">{conv.client_phone}</p>
-                  <p className="text-sm text-gray-500">
-                    {formatDistanceToNow(new Date(conv.created_at), {
-                      addSuffix: true,
-                    })}
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900">{conv.client_phone}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        <FiClock className="inline mr-1" />
+                        {formatDistanceToNow(new Date(conv.created_at), {
+                          addSuffix: true,
+                        })}
+                      </p>
+                    </div>
+                    <span
+                      className={`badge badge-${
+                        conv.status === 'active' ? 'success' : 'gray'
+                      } text-xs ml-2 flex-shrink-0`}
+                    >
+                      {conv.status}
+                    </span>
+                  </div>
                 </button>
               ))
             )}
@@ -112,24 +152,39 @@ const Conversations = () => {
         </div>
 
         {/* Message View */}
-        <div className="col-span-2 bg-white rounded-lg shadow overflow-hidden flex flex-col">
+        <div className="lg:col-span-2 card overflow-hidden flex flex-col">
           {selectedConversation ? (
             <>
-              <div className="p-4 border-b bg-gray-50">
-                <h2 className="font-bold">{selectedConversation.client_phone}</h2>
-                <p className="text-sm text-gray-500">
-                  Status: {selectedConversation.status}
-                </p>
+              {/* Conversation Header */}
+              <div className="p-4 border-b border-gray-200 bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-semibold text-gray-900 flex items-center">
+                      <FiPhone className="mr-2 text-blue-600" />
+                      {selectedConversation.client_phone}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Status: <span className="font-medium capitalize">{selectedConversation.status}</span>
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex-1 overflow-auto p-4 space-y-4">
+              {/* Messages Container */}
+              <div className="flex-1 overflow-auto p-6 space-y-4 bg-white">
                 {messageLoading ? (
-                  <div className="flex items-center justify-center h-full">
-                    <p className="text-gray-500">Loading messages...</p>
+                  <div className="loading h-full">
+                    <div>
+                      <span className="loading-spinner mr-3"></span>
+                      <span className="text-gray-600">Loading messages...</span>
+                    </div>
                   </div>
                 ) : messages.length === 0 ? (
-                  <div className="flex items-center justify-center h-full">
-                    <p className="text-gray-500">No messages</p>
+                  <div className="empty-state">
+                    <div className="empty-state-icon">
+                      <FiMessageSquare />
+                    </div>
+                    <p className="empty-state-text">No messages</p>
                   </div>
                 ) : (
                   messages.map((msg) => (
@@ -140,26 +195,44 @@ const Conversations = () => {
                       }`}
                     >
                       <div
-                        className={`max-w-xs px-4 py-2 rounded-lg ${
+                        className={`max-w-xs px-4 py-3 rounded-lg ${
                           msg.sender === 'professional'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-blue-600 text-white rounded-br-none'
                             : msg.sender === 'ai'
-                            ? 'bg-purple-100 text-gray-900'
-                            : 'bg-gray-100 text-gray-900'
+                            ? 'bg-purple-100 text-gray-900 rounded-bl-none'
+                            : 'bg-gray-100 text-gray-900 rounded-bl-none'
                         }`}
                       >
-                        <p className="text-sm">{msg.content}</p>
+                        {/* Sender Badge */}
+                        <div className="flex items-center mb-1">
+                          <span
+                            className={`text-xs font-semibold px-2 py-0.5 rounded ${getSenderBadgeColor(
+                              msg.sender
+                            )}`}
+                          >
+                            {getSenderLabel(msg.sender)}
+                          </span>
+                        </div>
+
+                        {/* Message Content */}
+                        <p className="text-sm break-words">{msg.content}</p>
+
+                        {/* Transcript */}
                         {msg.transcript && (
-                          <p className="text-xs mt-2 opacity-75">
+                          <p className="text-xs mt-2 opacity-75 italic">
                             Voice: {msg.transcript}
                           </p>
                         )}
+
+                        {/* Auto-reply Badge */}
                         {msg.is_auto_reply && (
-                          <span className="text-xs mt-1 inline-block">
-                            Auto-reply
+                          <span className="text-xs mt-2 inline-block opacity-75">
+                            🤖 Auto-reply
                           </span>
                         )}
-                        <p className="text-xs mt-1 opacity-75">
+
+                        {/* Timestamp */}
+                        <p className="text-xs mt-2 opacity-75">
                           {formatDistanceToNow(new Date(msg.created_at), {
                             addSuffix: true,
                           })}
@@ -171,7 +244,7 @@ const Conversations = () => {
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-center h-full">
+            <div className="loading h-full">
               <p className="text-gray-500">Select a conversation to view messages</p>
             </div>
           )}

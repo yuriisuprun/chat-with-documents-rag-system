@@ -14,36 +14,41 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="w-64 bg-gray-900 text-white shadow-lg">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold">WhatsApp AI</h1>
-        <p className="text-gray-400 text-sm">Assistant</p>
+    <nav className="w-64 bg-gray-900 text-white shadow-lg flex flex-col h-screen">
+      {/* Logo Section */}
+      <div className="p-6 border-b border-gray-800">
+        <h1 className="text-2xl font-bold tracking-tight">WhatsApp AI</h1>
+        <p className="text-gray-400 text-sm mt-1">Assistant</p>
       </div>
 
-      <div className="space-y-2 px-4">
+      {/* Navigation Links */}
+      <div className="flex-1 space-y-2 px-4 py-6">
         {links.map(({ path, icon: Icon, label }) => (
           <Link
             key={path}
             to={path}
-            className={`flex items-center px-4 py-3 rounded-lg transition ${
+            className={`nav-item group ${
               location.pathname === path
-                ? 'bg-blue-600'
-                : 'hover:bg-gray-800'
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-300 hover:text-white hover:bg-gray-800'
             }`}
+            aria-current={location.pathname === path ? 'page' : undefined}
           >
-            <Icon className="mr-3" />
-            <span>{label}</span>
+            <Icon className="mr-3 text-lg group-hover:scale-110 transition-transform" />
+            <span className="font-medium">{label}</span>
           </Link>
         ))}
       </div>
 
-      <div className="absolute bottom-0 w-64 p-4 border-t border-gray-800">
+      {/* Logout Button */}
+      <div className="p-4 border-t border-gray-800">
         <button
           onClick={logout}
-          className="flex items-center w-full px-4 py-3 rounded-lg hover:bg-gray-800 transition"
+          className="nav-item w-full text-gray-300 hover:text-white hover:bg-gray-800 justify-start"
+          aria-label="Logout"
         >
-          <FiLogOut className="mr-3" />
-          <span>Logout</span>
+          <FiLogOut className="mr-3 text-lg" />
+          <span className="font-medium">Logout</span>
         </button>
       </div>
     </nav>

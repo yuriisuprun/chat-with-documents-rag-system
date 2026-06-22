@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiPlus, FiTrash2, FiUpload } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiUpload, FiFile } from 'react-icons/fi';
 import apiClient from '../api/client';
 import toast from 'react-hot-toast';
 
@@ -50,6 +50,13 @@ const Documents = () => {
       return;
     }
 
+    // Validate file size (10MB limit)
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error('File size exceeds 10MB limit');
+      return;
+    }
+
     setUploading(true);
     try {
       const formData = new FormData();
@@ -69,8 +76,8 @@ const Documents = () => {
     }
   };
 
-  const handleDelete = async (docId: string) => {
-    if (!window.confirm('Delete this document?')) return;
+  const handleDelete = async (docId: string, filename: string) => {
+    if (!window.confirm(`Delete "${filename}"?`)) return;
 
     try {
       await apiClient.delete(`/documents/${docId}`);
@@ -89,98 +96,109 @@ const Documents = () => {
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-8">Knowledge Base</h1>
-
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <div className="flex justify-end">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Upload Document</label>
-            <label className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-              <Icon icon={FiUpload} className="mr-2" />
-              {uploading ? 'Uploading...' : 'Choose File'}
-              <input
-                type="file"
-                accept=".pdf,.docx,.txt"
-                onChange={handleFileUpload}
-                disabled={uploading}
-                className="hidden"
-              />
-            </label>
-          </div>
-        </div>
-
-        <p className="text-sm text-gray-500 mt-4">
-          Supported formats: PDF, DOCX, TXT (Max 10MB)
-        </p>
+    <div className="page-container">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="section-heading">Knowledge Base</h1>
+        <p className="text-gray-600">Manage documents to train your AI assistant.</p>
       </div>
 
+      {/* Upload Section */}
+      <div className="card card-standard mb-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-1">Upload Document</h3>
+            <p className="text-sm text-gray-600">
+              Supported formats: PDF, DOCX, TXT (Max 10MB)
+            </p>
+          </div>
+          <label className="btn btn-primary flex items-center">
+            <Icon icon={FiUpload} className="mr-2" />
+            {uploading ? 'Uploading...' : 'Choose File'}
+            <input
+              type="file"
+              accept=".pdf,.docx,.txt"
+              onChange={handleFileUpload}
+              disabled={uploading}
+              className="hidden"
+              aria-label="Upload document"
+            />
+          </label>
+        </div>
+      </div>
+
+      {/* Documents List */}
       {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <p className="text-gray-500">Loading documents...</p>
+        <div className="loading h-64">
+          <div>
+            <span className="loading-spinner mr-3"></span>
+            <span className="text-gray-600">Loading documents...</span>
+          </div>
+        </div>
+      ) : documents.length === 0 ? (
+        <div className="empty-state card card-standard">
+          <div className="empty-state-icon">
+            <Icon icon={FiFile} />
+          </div>
+          <p className="empty-state-text">No documents uploaded yet</p>
+          <p className="text-sm text-gray-500 mt-2">Start by uploading a document to train your assistant.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          {documents.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
-              No documents uploaded yet
-            </div>
-          ) : (
-            <table className="w-full">
-              <thead className="bg-gray-50">
+        <div className="card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
-                    Filename
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
-                    Type
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
-                    Size
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
-                    Section
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-right text-sm font-semibold">
-                    Actions
-                  </th>
+                  <th>Filename</th>
+                  <th>Type</th>
+                  <th>Size</th>
+                  <th>Section</th>
+                  <th>Status</th>
+                  <th>Uploaded</th>
+                  <th className="text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {documents.map((doc) => (
-                  <tr
-                    key={doc.id}
-                    className="border-t hover:bg-gray-50 transition"
-                  >
-                    <td className="px-6 py-3">{doc.filename}</td>
-                    <td className="px-6 py-3 font-mono text-sm">
-                      {doc.file_type.toUpperCase()}
+                  <tr key={doc.id}>
+                    <td>
+                      <div className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
+                        <span className="font-medium text-gray-900 truncate">{doc.filename}</span>
+                      </div>
                     </td>
-                    <td className="px-6 py-3 text-sm">
-                      {formatFileSize(doc.file_size_bytes)}
+                    <td>
+                      <span className="inline-block px-2 py-1 bg-gray-100 rounded text-xs font-medium text-gray-700">
+                        {doc.file_type.toUpperCase()}
+                      </span>
                     </td>
-                    <td className="px-6 py-3 text-sm">
-                      {doc.section_title || '-'}
-                    </td>
-                    <td className="px-6 py-3">
+                    <td>{formatFileSize(doc.file_size_bytes)}</td>
+                    <td>{doc.section_title || <span className="text-gray-400">-</span>}</td>
+                    <td>
                       <span
-                        className={`px-3 py-1 rounded-full text-sm ${
-                          doc.is_active
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
+                        className={`badge ${
+                          doc.is_active ? 'badge-success' : 'badge-gray'
                         }`}
                       >
                         {doc.is_active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
-                    <td className="px-6 py-3 text-right">
+                    <td className="text-sm text-gray-600">{formatDate(doc.created_at)}</td>
+                    <td className="text-right">
                       <button
-                        onClick={() => handleDelete(doc.id)}
-                        className="text-red-600 hover:text-red-800 transition"
+                        onClick={() => handleDelete(doc.id, doc.filename)}
+                        className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+                        aria-label={`Delete ${doc.filename}`}
+                        title="Delete document"
                       >
                         <Icon icon={FiTrash2} />
                       </button>
@@ -189,7 +207,18 @@ const Documents = () => {
                 ))}
               </tbody>
             </table>
-          )}
+          </div>
+        </div>
+      )}
+
+      {/* Info Section */}
+      {documents.length > 0 && (
+        <div className="mt-8 card card-standard bg-blue-50 border-l-4 border-blue-600">
+          <h3 className="font-semibold text-gray-900 mb-2">💡 Tip</h3>
+          <p className="text-sm text-gray-700">
+            Documents are used by your AI assistant to provide more accurate and context-aware responses. 
+            Make sure to upload relevant documentation for your business.
+          </p>
         </div>
       )}
     </div>
