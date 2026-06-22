@@ -52,20 +52,24 @@ const Dashboard = () => {
     label,
     value,
   }: {
-    icon: React.ReactNode;
+    icon: any;
     label: string;
     value: number;
-  }) => (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-600 text-sm">{label}</p>
-          <p className="text-3xl font-bold mt-2">{value}</p>
+  }) => {
+    return (
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-600 text-sm">{label}</p>
+            <p className="text-3xl font-bold mt-2">{value}</p>
+          </div>
+          <div className="text-blue-600 text-3xl">
+            <Icon />
+          </div>
         </div>
-        <div className="text-blue-600 text-3xl">{Icon}</div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="p-8">
@@ -78,22 +82,22 @@ const Dashboard = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
-            icon={<FiUsers />}
+            icon={FiUsers}
             label="Active Tenants"
             value={stats.totalTenants}
           />
           <StatCard
-            icon={<FiMessageSquare />}
+            icon={FiMessageSquare}
             label="Total Conversations"
             value={stats.totalConversations}
           />
           <StatCard
-            icon={<FiTrendingUp />}
+            icon={FiTrendingUp}
             label="Active Conversations"
             value={stats.activeConversations}
           />
           <StatCard
-            icon={<FiFileText />}
+            icon={FiFileText}
             label="Knowledge Documents"
             value={stats.totalDocuments}
           />

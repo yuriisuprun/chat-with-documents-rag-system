@@ -3,6 +3,11 @@ import { FiPlus, FiTrash2, FiUpload } from 'react-icons/fi';
 import apiClient from '../api/client';
 import toast from 'react-hot-toast';
 
+// Icon wrapper to bypass TypeScript JSX checking issues with react-icons
+const Icon = ({ icon: IconComponent, className }: { icon: any; className?: string }) => (
+  <IconComponent className={className} />
+);
+
 interface Document {
   id: string;
   filename: string;
@@ -137,7 +142,7 @@ const Documents = () => {
           <div>
             <label className="block text-sm font-semibold mb-2">Upload Document</label>
             <label className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-              <FiUpload className="mr-2" />
+              <Icon icon={FiUpload} className="mr-2" />
               {uploading ? 'Uploading...' : 'Choose File'}
               <input
                 type="file"
@@ -221,7 +226,7 @@ const Documents = () => {
                         onClick={() => handleDelete(doc.id)}
                         className="text-red-600 hover:text-red-800 transition"
                       >
-                        <FiTrash2 />
+                        <Icon icon={FiTrash2} />
                       </button>
                     </td>
                   </tr>

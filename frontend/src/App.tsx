@@ -9,7 +9,7 @@ import Documents from './pages/Documents';
 import Login from './pages/Login';
 import { useAuthStore } from './store/auth';
 
-function App() {
+function AppContent() {
   const { isAuthenticated, token } = useAuthStore();
 
   if (!isAuthenticated) {
@@ -17,19 +17,25 @@ function App() {
   }
 
   return (
+    <div className="flex h-screen bg-gray-100">
+      <Navigation />
+      <main className="flex-1 overflow-auto">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tenants" element={<Tenants />} />
+          <Route path="/conversations" element={<Conversations />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
+function App() {
+  return (
     <Router>
-      <div className="flex h-screen bg-gray-100">
-        <Navigation />
-        <main className="flex-1 overflow-auto">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/tenants" element={<Tenants />} />
-            <Route path="/conversations" element={<Conversations />} />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </main>
-      </div>
+      <AppContent />
       <Toaster position="top-right" />
     </Router>
   );
