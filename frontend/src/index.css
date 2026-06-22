@@ -871,11 +871,11 @@ tbody td {
 }
 
 .skeleton-text {
-  @apply skeleton rounded height-4 mb-2;
+  @apply skeleton rounded h-4 mb-2;
 }
 
 .skeleton-title {
-  @apply skeleton rounded height-6 mb-4 w-1/2;
+  @apply skeleton rounded h-6 mb-4 w-1/2;
 }
 
 .empty-state {
