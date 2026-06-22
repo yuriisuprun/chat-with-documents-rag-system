@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiUsers, FiMessageSquare, FiFileText, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiMessageSquare, FiFileText, FiLogOut } from 'react-icons/fi';
 import { useAuthStore } from '../store/auth';
 
 const Navigation = () => {
@@ -9,7 +9,6 @@ const Navigation = () => {
 
   const links = [
     { path: '/', icon: FiHome, label: 'Dashboard' },
-    { path: '/tenants', icon: FiUsers, label: 'Tenants' },
     { path: '/conversations', icon: FiMessageSquare, label: 'Conversations' },
     { path: '/documents', icon: FiFileText, label: 'Documents' },
   ];

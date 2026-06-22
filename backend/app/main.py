@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.config import settings
-from app.api import info, auth, conversations, webhooks, documents, tenants
+from app.api import info, auth, conversations, webhooks, documents
 from app.database import Base, engine
 from contextlib import asynccontextmanager
 
@@ -54,7 +54,6 @@ def create_app() -> FastAPI:
     app.include_router(info.router)
     app.include_router(auth.router, prefix="/api/v1")
     app.include_router(conversations.router, prefix="/api/v1")
-    app.include_router(tenants.router, prefix="/api/v1")
     app.include_router(webhooks.router, prefix="/api/v1")
     app.include_router(documents.router, prefix="/api/v1")
     

@@ -78,7 +78,6 @@ async def upload_document(
         # Create document record
         document = KnowledgeDocument(
             id=doc_id,
-            tenant_id=tenant_id,
             filename=file.filename,
             content=content,
             file_type=file_ext,
@@ -90,7 +89,7 @@ async def upload_document(
         db.commit()
         db.refresh(document)
         
-        logger.info(f"Created document {doc_id} for tenant {tenant_id}")
+        logger.info(f"Created document {doc_id}")
         
         # Schedule embedding generation
         generate_embeddings_for_document.delay(doc_id)

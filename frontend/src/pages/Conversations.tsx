@@ -26,30 +26,15 @@ const Conversations = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [messageLoading, setMessageLoading] = useState(false);
-  const [tenantId, setTenantId] = useState('');
 
   useEffect(() => {
-    fetchTenants();
+    fetchConversations();
   }, []);
 
-  const fetchTenants = async () => {
-    try {
-      const response = await apiClient.get('/tenants');
-      if (response.data.length > 0) {
-        setTenantId(response.data[0].id);
-        fetchConversations(response.data[0].id);
-      }
-    } catch (error) {
-      toast.error('Failed to load tenants');
-    }
-  };
-
-  const fetchConversations = async (tenant: string) => {
+  const fetchConversations = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get(
-        `/conversations?tenant_id=${tenant}&skip=0&limit=100`
-      );
+      const response = await apiClient.get('/conversations?skip=0&limit=100');
       setConversations(response.data);
       setSelectedConversation(null);
       setMessages([]);

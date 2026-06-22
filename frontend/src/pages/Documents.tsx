@@ -18,50 +18,25 @@ interface Document {
   created_at: string;
 }
 
-interface Tenant {
-  id: string;
-  business_name: string;
-}
-
 const Documents = () => {
-  const [tenants, setTenants] = useState<Tenant[]>([]);
-  const [selectedTenant, setSelectedTenant] = useState('');
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    fetchTenants();
+    fetchDocuments();
   }, []);
 
-  const fetchTenants = async () => {
-    try {
-      const response = await apiClient.get('/tenants');
-      setTenants(response.data);
-      if (response.data.length > 0) {
-        setSelectedTenant(response.data[0].id);
-        fetchDocuments(response.data[0].id);
-      }
-    } catch (error) {
-      toast.error('Failed to load tenants');
-    }
-  };
-
-  const fetchDocuments = async (tenantId: string) => {
+  const fetchDocuments = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get(`/documents/tenants/${tenantId}`);
+      const response = await apiClient.get('/documents?skip=0&limit=1000');
       setDocuments(response.data);
     } catch (error) {
       toast.error('Failed to load documents');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleTenantChange = (tenantId: string) => {
-    setSelectedTenant(tenantId);
-    fetchDocuments(tenantId);
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,16 +55,12 @@ const Documents = () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      await apiClient.post(
-        `/documents/tenants/${selectedTenant}`,
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      );
+      await apiClient.post('/documents', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       toast.success('Document uploaded successfully');
-      fetchDocuments(selectedTenant);
+      fetchDocuments();
       e.target.value = '';
     } catch (error: any) {
       toast.error(error.response?.data?.detail || 'Failed to upload document');
@@ -104,7 +75,7 @@ const Documents = () => {
     try {
       await apiClient.delete(`/documents/${docId}`);
       toast.success('Document deleted');
-      fetchDocuments(selectedTenant);
+      fetchDocuments();
     } catch (error) {
       toast.error('Failed to delete document');
     }
@@ -123,22 +94,7 @@ const Documents = () => {
       <h1 className="text-3xl font-bold mb-8">Knowledge Base</h1>
 
       <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Select Tenant</label>
-            <select
-              value={selectedTenant}
-              onChange={(e) => handleTenantChange(e.target.value)}
-              className="border rounded-lg px-4 py-2 focus:outline-none focus:border-blue-600"
-            >
-              {tenants.map((tenant) => (
-                <option key={tenant.id} value={tenant.id}>
-                  {tenant.business_name}
-                </option>
-              ))}
-            </select>
-          </div>
-
+        <div className="flex justify-end">
           <div>
             <label className="block text-sm font-semibold mb-2">Upload Document</label>
             <label className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
@@ -155,7 +111,7 @@ const Documents = () => {
           </div>
         </div>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 mt-4">
           Supported formats: PDF, DOCX, TXT (Max 10MB)
         </p>
       </div>

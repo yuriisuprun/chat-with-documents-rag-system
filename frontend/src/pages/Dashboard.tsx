@@ -23,14 +23,13 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        const [tenantsRes, conversationsRes, docsRes] = await Promise.all([
-          apiClient.get('/tenants'),
+        const [conversationsRes, docsRes] = await Promise.all([
           apiClient.get('/conversations?skip=0&limit=1000'),
           apiClient.get('/documents?skip=0&limit=1000').catch(() => ({ data: [] })),
         ]);
 
         setStats({
-          totalTenants: tenantsRes.data.length,
+          totalTenants: 1, // Single tenant app
           totalConversations: conversationsRes.data.length,
           totalDocuments: docsRes.data.length,
           activeConversations: conversationsRes.data.filter(
