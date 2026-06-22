@@ -53,15 +53,17 @@ class Settings(BaseSettings):
     # Configure your professional/business details here
     
     # Tenant Identity
-    TENANT_BUSINESS_NAME: str = "My Professional Services"
-    TENANT_PROFESSIONAL_NAME: str = "John Doe"
+    TENANT_BUSINESS_NAME: str = "Legal Services"
+    TENANT_PROFESSIONAL_NAME: str = "Your Name"
     TENANT_WHATSAPP_NUMBER: str = "+1234567890"
     
     # Auto-Reply Configuration
     TENANT_AUTO_REPLY_DELAY_MINUTES: int = 30
     
     # ============ APPOINTMENT AUTOMATION FEATURE ============
-    # Feature flag for automatic appointment scheduling
+    # Feature flag for automatic appointment scheduling via Google Calendar
+    # Set to True to enable automatic appointment creation when clients request via WhatsApp
+    # Requires: Google Cloud service account credentials (TENANT_APPOINTMENT_API_KEY)
     TENANT_ENABLE_AUTO_APPOINTMENT: bool = False
     
     # Calendar Integration (required when auto-appointment enabled)
@@ -90,14 +92,17 @@ class Settings(BaseSettings):
     TENANT_APPOINTMENT_API_URL: Optional[str] = None
     
     # Appointment Settings
-    TENANT_APPOINTMENT_DEFAULT_DURATION: int = 30      # Minutes
-    TENANT_APPOINTMENT_WORKING_HOURS_START: int = 9    # Hour (24-format)
-    TENANT_APPOINTMENT_WORKING_HOURS_END: int = 17     # Hour (24-format)
+    # Default duration for consultations (60 minutes for legal consultations)
+    TENANT_APPOINTMENT_DEFAULT_DURATION: int = 60      # Minutes
+    # Working hours define when appointments can be automatically scheduled
+    TENANT_APPOINTMENT_WORKING_HOURS_START: int = 9    # 9 AM (24-hour format)
+    TENANT_APPOINTMENT_WORKING_HOURS_END: int = 17     # 5 PM (24-hour format)
     TENANT_APPOINTMENT_CONFIRMATION_MESSAGE: Optional[str] = None  # Custom confirmation message
     
-    # Booking URL (fallback/legacy - not used for direct appointment creation)
-    TENANT_BOOKING_URL: Optional[str] = None  # e.g., https://example.com/booking
-    TENANT_OFFICE_HOURS: Optional[str] = None  # e.g., "Mon-Fri 9:00-17:00 CET"
+    # Booking URL (shown as fallback if appointment fails, can be Google Calendar link)
+    TENANT_BOOKING_URL: Optional[str] = None  # e.g., https://calendar.google.com
+    # Office hours display (shown to clients in WhatsApp responses)
+    TENANT_OFFICE_HOURS: Optional[str] = None  # e.g., "Mon-Fri 9:00-17:00, Sat 10:00-14:00"
     
     # Legal Compliance
     TENANT_DISCLAIMER: str = "This is an automated assistant. This message is not professional advice."
