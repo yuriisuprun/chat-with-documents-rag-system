@@ -42,6 +42,9 @@ services:
     container_name: whatsapp_backend
     environment:
       DATABASE_URL: postgresql://${DB_USER:-assistant_user}:${DB_PASSWORD:-assistant_password}@db:5432/${DB_NAME:-whatsapp_assistant}
+      POSTGRES_USER: ${DB_USER:-assistant_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-assistant_password}
+      POSTGRES_DB: ${DB_NAME:-whatsapp_assistant}
       REDIS_URL: redis://redis:6379/0
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       WHATSAPP_ACCESS_TOKEN: ${WHATSAPP_ACCESS_TOKEN}

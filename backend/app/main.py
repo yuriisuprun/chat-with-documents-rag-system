@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from app.config import settings
-from app.api import info, auth, conversations, webhooks, documents
+from app.api import info, auth, conversations, webhooks, documents, tenants
 from app.database import Base, engine
 from contextlib import asynccontextmanager
 
@@ -40,19 +40,21 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
     
-    # CORS middleware
+    # CORS middleware - place this FIRST before other middleware
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.ALLOWED_HOSTS,
+        allow_origins=["*"],  # Allow all origins for development
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        max_age=3600,
     )
     
     # Include routers
     app.include_router(info.router)
     app.include_router(auth.router, prefix="/api/v1")
     app.include_router(conversations.router, prefix="/api/v1")
+    app.include_router(tenants.router, prefix="/api/v1")
     app.include_router(webhooks.router, prefix="/api/v1")
     app.include_router(documents.router, prefix="/api/v1")
     

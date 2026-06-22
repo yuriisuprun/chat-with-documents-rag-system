@@ -26,7 +26,7 @@ const Dashboard = () => {
         const [tenantsRes, conversationsRes, docsRes] = await Promise.all([
           apiClient.get('/tenants'),
           apiClient.get('/conversations?skip=0&limit=1000'),
-          apiClient.get('/documents/tenants/all?skip=0&limit=1000').catch(() => ({ data: [] })),
+          apiClient.get('/documents?skip=0&limit=1000').catch(() => ({ data: [] })),
         ]);
 
         setStats({
@@ -37,7 +37,8 @@ const Dashboard = () => {
             (c: any) => c.status === 'active'
           ).length,
         });
-      } catch (error: any) {
+      catch (error: any) {
+        console.error('Error loading dashboard stats:', error);
         toast.error('Failed to load dashboard stats');
       } finally {
         setLoading(false);

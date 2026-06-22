@@ -1,11 +1,13 @@
 """Authentication endpoints."""
 
+import logging
 from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, status
 from jose import JWTError, jwt
 from app.config import settings
 from app.schemas import AdminLoginRequest, TokenResponse
 
+logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
@@ -29,20 +31,25 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
 @router.post("/login", response_model=TokenResponse)
 def login(request: AdminLoginRequest) -> TokenResponse:
     """Admin login endpoint."""
+    logger.info(f"Login attempt with username: {request.username}")
+    
     # Verify credentials
     if request.username != settings.ADMIN_USERNAME:
+        logger.warning(f"Failed login: invalid username '{request.username}'")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials"
         )
     
     if request.password != settings.ADMIN_PASSWORD:
+        logger.warning(f"Failed login: invalid password for user '{request.username}'")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials"
         )
     
     # Create token
+    logger.info(f"Successful login for user: {request.username}")
     access_token = create_access_token(
         data={"sub": settings.ADMIN_USERNAME}
     )
