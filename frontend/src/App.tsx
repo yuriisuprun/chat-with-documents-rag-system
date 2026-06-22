@@ -10,6 +10,7 @@ import { useAuthStore } from './store/auth';
 
 function AppContent() {
   const { isAuthenticated, token } = useAuthStore();
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   if (!isAuthenticated) {
     return <Login />;
@@ -17,8 +18,11 @@ function AppContent() {
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
-      <Navigation />
-      <main className="flex-1 overflow-auto">
+      {/* Navigation - Mobile friendly */}
+      <Navigation mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+      
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto flex flex-col w-full min-w-0">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/conversations" element={<Conversations />} />
@@ -26,6 +30,15 @@ function AppContent() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
+      
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+          role="presentation"
+        />
+      )}
     </div>
   );
 }

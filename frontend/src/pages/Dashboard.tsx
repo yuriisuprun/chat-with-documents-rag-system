@@ -66,14 +66,14 @@ const Dashboard = () => {
     };
 
     const content = (
-      <div className={`card card-standard border-l-4 border-${color}-600 group`}>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">{label}</p>
-            <p className="text-4xl font-bold mt-3 text-gray-900">{value}</p>
+      <div className={`card card-standard border-l-4 border-${color}-600 group transition-all duration-200`}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <p className="text-gray-600 text-xs sm:text-sm font-medium">{label}</p>
+            <p className="text-3xl sm:text-4xl font-bold mt-2 sm:mt-3 text-gray-900">{value}</p>
           </div>
-          <div className={`p-4 rounded-lg ${colorClasses[color]} group-hover:scale-110 transition-transform`}>
-            <Icon className="text-2xl" />
+          <div className={`p-3 sm:p-4 rounded-lg ${colorClasses[color]} group-hover:scale-110 transition-transform flex-shrink-0`}>
+            <Icon className="text-xl sm:text-2xl" />
           </div>
         </div>
       </div>
@@ -101,38 +101,39 @@ const Dashboard = () => {
   }) => (
     <Link
       to={link}
-      className="card card-standard group hover:shadow-md transition-all flex items-start space-x-4"
+      className="card card-standard group hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4"
     >
-      <div className="p-3 bg-blue-100 rounded-lg text-blue-600 group-hover:scale-110 transition-transform flex-shrink-0">
-        <Icon className="text-2xl" />
+      <div className="p-2 sm:p-3 bg-blue-100 rounded-lg text-blue-600 group-hover:scale-110 transition-transform flex-shrink-0 self-start">
+        <Icon className="text-xl sm:text-2xl" />
       </div>
-      <div className="flex-1">
-        <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-        <p className="text-sm text-gray-600">{description}</p>
+      <div className="flex-1 min-w-0">
+        <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{title}</h3>
+        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{description}</p>
       </div>
-      <FiArrowRight className="text-gray-400 group-hover:text-blue-600 transition-colors flex-shrink-0 mt-1" />
+      <FiArrowRight className="text-gray-400 group-hover:text-blue-600 transition-colors flex-shrink-0 mt-2 sm:mt-1 self-start sm:self-center" />
     </Link>
   );
 
   return (
-    <div className="page-container">
+    <div className="page-container pt-20 lg:pt-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="section-heading">Dashboard</h1>
-        <p className="text-gray-600">Welcome back! Here's an overview of your WhatsApp AI Assistant.</p>
+      <div className="mb-6 sm:mb-8">
+        <h1 className="section-heading text-2xl sm:text-3xl lg:text-4xl">Dashboard</h1>
+        <p className="text-gray-600 text-sm sm:text-base mt-1 sm:mt-2">Welcome back! Here's an overview of your WhatsApp AI Assistant.</p>
       </div>
 
       {/* Stats Section */}
       {loading ? (
-        <div className="loading h-64">
+        <div className="loading h-48 sm:h-64">
           <div>
             <span className="loading-spinner mr-3"></span>
-            <span className="text-gray-600">Loading statistics...</span>
+            <span className="text-gray-600 text-sm sm:text-base">Loading statistics...</span>
           </div>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {/* Stats Grid - Mobile first: 1 col, tablet: 2 cols, desktop: 3 cols */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
             <StatCard
               icon={FiMessageSquare}
               label="Total Conversations"
@@ -157,53 +158,45 @@ const Dashboard = () => {
           </div>
 
           {/* Quick Start Section */}
-          <div className="grid grid-cols-1 gap-6 mb-8">
-            <div>
-              <h2 className="section-subheading">Quick Start Guide</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <QuickStartItem
-                  icon={FiFileText}
-                  title="Upload Documents"
-                  description="Add knowledge documents to train your AI assistant for better responses."
-                  link="/documents"
-                />
-                <QuickStartItem
-                  icon={FiMessageSquare}
-                  title="Review Conversations"
-                  description="Monitor client interactions and AI responses in real-time."
-                  link="/conversations"
-                />
-              </div>
+          <div className="mb-6 sm:mb-8">
+            <h2 className="section-subheading text-lg sm:text-xl mb-3 sm:mb-4">Quick Start Guide</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <QuickStartItem
+                icon={FiFileText}
+                title="Upload Documents"
+                description="Add knowledge documents to train your AI assistant for better responses."
+                link="/documents"
+              />
+              <QuickStartItem
+                icon={FiMessageSquare}
+                title="Review Conversations"
+                description="Monitor client interactions and AI responses in real-time."
+                link="/conversations"
+              />
             </div>
           </div>
 
-          {/* Info Cards */}
-          <div className="grid grid-cols-1 gap-6">
-            <div className="card card-standard bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-600">
-              <div className="flex items-start">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-2">Getting Started</h3>
-                  <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                      Upload knowledge documents for context-aware responses
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                      Configure auto-reply delays and disclaimers
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                      Monitor conversations and AI responses in real-time
-                    </li>
-                    <li className="flex items-center">
-                      <span className="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>
-                      Review and respond to client messages
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          {/* Info Card */}
+          <div className="card card-standard bg-gradient-to-r from-blue-50 to-blue-100 border-l-4 border-blue-600">
+            <h3 className="font-semibold text-gray-900 mb-3 text-base sm:text-lg">Getting Started</h3>
+            <ul className="space-y-2 text-xs sm:text-sm text-gray-700">
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 flex-shrink-0"></span>
+                <span>Upload knowledge documents for context-aware responses</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 flex-shrink-0"></span>
+                <span>Configure auto-reply delays and disclaimers</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 flex-shrink-0"></span>
+                <span>Monitor conversations and AI responses in real-time</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-2 h-2 bg-blue-600 rounded-full mt-1.5 flex-shrink-0"></span>
+                <span>Review and respond to client messages</span>
+              </li>
+            </ul>
           </div>
         </>
       )}

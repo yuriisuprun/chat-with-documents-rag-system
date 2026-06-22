@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '../api/client';
 import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
-import { FiMessageSquare, FiPhone, FiClock } from 'react-icons/fi';
+import { FiMessageSquare, FiPhone, FiClock, FiChevronLeft } from 'react-icons/fi';
 
 interface Message {
   id: string;
@@ -86,29 +86,34 @@ const Conversations = () => {
   };
 
   return (
-    <div className="page-container">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="section-heading">Conversations</h1>
-        <p className="text-gray-600">Monitor and manage client conversations.</p>
-      </div>
+    <div className="page-container pt-20 lg:pt-8 flex flex-col h-[calc(100vh-5rem)] lg:h-auto">
+      {/* Header - Hidden on mobile when viewing conversation */}
+      {!selectedConversation && (
+        <div className="mb-4 sm:mb-6">
+          <h1 className="section-heading text-2xl sm:text-3xl lg:text-4xl">Conversations</h1>
+          <p className="text-gray-600 text-sm sm:text-base mt-1">Monitor and manage client conversations.</p>
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-250px)]">
+      {/* Mobile-first: Single column, tablet+: 3 column grid */}
+      <div className={`flex-1 overflow-hidden lg:overflow-auto grid gap-3 sm:gap-4 lg:gap-6 ${
+        selectedConversation ? 'hidden lg:grid' : 'grid-cols-1'
+      } lg:grid-cols-3`}>
         {/* Conversation List */}
         <div className="card overflow-hidden flex flex-col">
-          <div className="p-4 border-b border-gray-200 bg-gray-50">
-            <h2 className="font-semibold text-gray-900">Chats</h2>
+          <div className="p-3 sm:p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+            <h2 className="font-semibold text-gray-900 text-base sm:text-lg">Chats</h2>
             {conversations.length > 0 && (
               <p className="text-xs text-gray-500 mt-1">{conversations.length} conversation(s)</p>
             )}
           </div>
 
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <div className="loading h-full">
+              <div className="loading h-48">
                 <div>
                   <span className="loading-spinner mr-3"></span>
-                  <span className="text-gray-600">Loading chats...</span>
+                  <span className="text-gray-600 text-sm">Loading chats...</span>
                 </div>
               </div>
             ) : conversations.length === 0 ? (
@@ -123,24 +128,26 @@ const Conversations = () => {
                 <button
                   key={conv.id}
                   onClick={() => handleSelectConversation(conv)}
-                  className={`list-item w-full text-left ${
-                    selectedConversation?.id === conv.id ? 'active' : ''
+                  className={`list-item w-full text-left px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-100 last:border-0 transition-colors ${
+                    selectedConversation?.id === conv.id ? 'active bg-blue-50' : 'hover:bg-gray-50'
                   }`}
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900">{conv.client_phone}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        <FiClock className="inline mr-1" />
-                        {formatDistanceToNow(new Date(conv.created_at), {
-                          addSuffix: true,
-                        })}
+                      <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{conv.client_phone}</p>
+                      <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                        <FiClock className="flex-shrink-0" size={12} />
+                        <span className="truncate">
+                          {formatDistanceToNow(new Date(conv.created_at), {
+                            addSuffix: true,
+                          })}
+                        </span>
                       </p>
                     </div>
                     <span
                       className={`badge badge-${
                         conv.status === 'active' ? 'success' : 'gray'
-                      } text-xs ml-2 flex-shrink-0`}
+                      } text-xs flex-shrink-0`}
                     >
                       {conv.status}
                     </span>
@@ -151,32 +158,42 @@ const Conversations = () => {
           </div>
         </div>
 
-        {/* Message View */}
-        <div className="lg:col-span-2 card overflow-hidden flex flex-col">
-          {selectedConversation ? (
+        {/* Message View - Hidden on mobile unless conversation selected */}
+        {selectedConversation && (
+          <div className="lg:col-span-2 card overflow-hidden flex flex-col">
             <>
               {/* Conversation Header */}
-              <div className="p-4 border-b border-gray-200 bg-gray-50">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="font-semibold text-gray-900 flex items-center">
-                      <FiPhone className="mr-2 text-blue-600" />
-                      {selectedConversation.client_phone}
+              <div className="p-3 sm:p-4 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-semibold text-gray-900 flex items-center gap-2 text-base sm:text-lg">
+                      <FiPhone className="text-blue-600 flex-shrink-0" size={18} />
+                      <span className="truncate">{selectedConversation.client_phone}</span>
                     </h2>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-xs sm:text-sm text-gray-600 mt-1">
                       Status: <span className="font-medium capitalize">{selectedConversation.status}</span>
                     </p>
                   </div>
+                  <button
+                    onClick={() => {
+                      setSelectedConversation(null);
+                      setMessages([]);
+                    }}
+                    className="lg:hidden p-2 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0"
+                    aria-label="Back to conversations"
+                  >
+                    <FiChevronLeft size={20} />
+                  </button>
                 </div>
               </div>
 
               {/* Messages Container */}
-              <div className="flex-1 overflow-auto p-6 space-y-4 bg-white">
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 bg-white">
                 {messageLoading ? (
                   <div className="loading h-full">
                     <div>
                       <span className="loading-spinner mr-3"></span>
-                      <span className="text-gray-600">Loading messages...</span>
+                      <span className="text-gray-600 text-sm">Loading messages...</span>
                     </div>
                   </div>
                 ) : messages.length === 0 ? (
@@ -195,7 +212,7 @@ const Conversations = () => {
                       }`}
                     >
                       <div
-                        className={`max-w-xs px-4 py-3 rounded-lg ${
+                        className={`max-w-xs sm:max-w-md px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm break-words ${
                           msg.sender === 'professional'
                             ? 'bg-blue-600 text-white rounded-br-none'
                             : msg.sender === 'ai'
@@ -215,7 +232,7 @@ const Conversations = () => {
                         </div>
 
                         {/* Message Content */}
-                        <p className="text-sm break-words">{msg.content}</p>
+                        <p className="text-xs sm:text-sm">{msg.content}</p>
 
                         {/* Transcript */}
                         {msg.transcript && (
@@ -243,12 +260,18 @@ const Conversations = () => {
                 )}
               </div>
             </>
-          ) : (
-            <div className="loading h-full">
+          </div>
+        )}
+
+        {/* Desktop placeholder when no conversation selected */}
+        {!selectedConversation && (
+          <div className="hidden lg:flex lg:col-span-2 card items-center justify-center">
+            <div className="text-center">
+              <FiMessageSquare className="mx-auto mb-3 text-gray-400" size={48} />
               <p className="text-gray-500">Select a conversation to view messages</p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -39,24 +39,24 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-800 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-blue-800 p-4 sm:p-6">
       <div className="w-full max-w-md">
         {/* Card */}
         <div className="card card-lg">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-              <span className="text-3xl font-bold text-blue-600">W</span>
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full mb-3 sm:mb-4">
+              <span className="text-2xl sm:text-3xl font-bold text-blue-600">W</span>
             </div>
-            <h1 className="text-3xl font-bold text-center">WhatsApp AI</h1>
-            <p className="text-gray-500 text-center mt-2">Admin Dashboard</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-center">WhatsApp AI</h1>
+            <p className="text-gray-500 text-center mt-1 sm:mt-2 text-sm sm:text-base">Admin Dashboard</p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-5">
             {/* Username Field */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                 <FiMail className="inline mr-2" />
                 Username
               </label>
@@ -69,12 +69,13 @@ const Login = () => {
                 required
                 autoComplete="username"
                 aria-label="Username"
+                className="text-sm sm:text-base"
               />
             </div>
 
             {/* Password Field */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
                 <FiLock className="inline mr-2" />
                 Password
               </label>
@@ -87,6 +88,7 @@ const Login = () => {
                 required
                 autoComplete="current-password"
                 aria-label="Password"
+                className="text-sm sm:text-base"
               />
             </div>
 
@@ -94,13 +96,13 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary w-full py-3 font-semibold text-lg"
+              className="btn btn-primary w-full py-3 font-semibold text-base sm:text-lg mt-6"
               aria-busy={loading}
             >
               {loading ? (
-                <span className="flex items-center justify-center">
-                  <span className="loading-spinner mr-2"></span>
-                  Signing in...
+                <span className="flex items-center justify-center gap-2">
+                  <span className="loading-spinner"></span>
+                  <span>Signing in...</span>
                 </span>
               ) : (
                 'Sign In'

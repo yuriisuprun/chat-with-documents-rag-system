@@ -42,6 +42,7 @@ code {
 
 /* ===========================
    FORM ELEMENTS & INPUTS
+   Touch-friendly sizes for mobile (min 44px tap target)
    =========================== */
 
 input[type='text'],
@@ -51,11 +52,20 @@ input[type='number'],
 textarea,
 select {
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: all 0.2s ease;
+  min-height: 2.75rem;
+}
+
+/* Prevent iOS zoom on input focus */
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'] {
+  font-size: 16px;
 }
 
 input[type='text']:focus,
@@ -84,6 +94,7 @@ textarea::placeholder {
 
 /* ===========================
    BUTTONS
+   Touch-friendly sizes for mobile (min 44px tap target)
    =========================== */
 
 button {
@@ -92,12 +103,27 @@ button {
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1.5rem;
   border-radius: 0.5rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+  .btn {
+    font-size: 1rem;
+  }
 }
 
 .btn-primary {
@@ -111,6 +137,11 @@ button {
 
 .btn-primary:active {
   transform: scale(0.95);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -161,45 +192,78 @@ button {
 }
 
 .card-compact {
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .card-standard {
-  padding: 1.5rem;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .card-standard {
+    padding: 1.5rem;
+  }
 }
 
 .card-lg {
-  padding: 2rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .card-lg {
+    padding: 2rem;
+  }
 }
 
 /* ===========================
    TYPOGRAPHY
+   Mobile-first sizing
    =========================== */
 
 h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
-}
-
-h2 {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
 }
 
-h3 {
+@media (min-width: 640px) {
+  h1 {
+    font-size: 1.875rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 2.25rem;
+  }
+}
+
+h2 {
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  h3 {
+    font-size: 1.25rem;
+  }
 }
 
 h4, h5, h6 {
   font-weight: 700;
-  margin-bottom: 0.25rem;
 }
 
 .text-muted {
@@ -207,8 +271,13 @@ h4, h5, h6 {
 }
 
 .text-small {
-  font-size: 0.875rem;
-  color: #4b5563;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .text-small {
+    font-size: 0.875rem;
+  }
 }
 
 /* ===========================
@@ -217,10 +286,17 @@ h4, h5, h6 {
 
 .badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0.625rem;
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  .badge {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+  }
 }
 
 .badge-success {
@@ -250,6 +326,7 @@ h4, h5, h6 {
 
 /* ===========================
    TABLES
+   Responsive with overflow handling
    =========================== */
 
 table {
@@ -263,11 +340,18 @@ thead {
 }
 
 thead th {
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 0.75rem;
   text-align: left;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #374151;
+}
+
+@media (min-width: 640px) {
+  thead th {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
 }
 
 tbody tr {
@@ -280,8 +364,15 @@ tbody tr:hover {
 }
 
 tbody td {
-  padding: 1rem 1.5rem;
-  font-size: 0.875rem;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  tbody td {
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
 }
 
 /* ===========================
@@ -289,10 +380,19 @@ tbody td {
    =========================== */
 
 .list-item {
-  padding: 0.75rem 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid #f3f4f6;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .list-item {
+    padding: 1rem;
+  }
 }
 
 .list-item:hover {
@@ -345,6 +445,8 @@ tbody td {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .loading-spinner {
@@ -371,18 +473,36 @@ tbody td {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .empty-state {
+    padding: 3rem 1rem;
+  }
 }
 
 .empty-state-icon {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #d1d5db;
   margin-bottom: 1rem;
 }
 
+@media (min-width: 640px) {
+  .empty-state-icon {
+    font-size: 3rem;
+  }
+}
+
 .empty-state-text {
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #6b7280;
+}
+
+@media (min-width: 640px) {
+  .empty-state-text {
+    font-size: 1.125rem;
+  }
 }
 
 /* ===========================
@@ -392,9 +512,16 @@ tbody td {
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem;
   border-radius: 0.5rem;
   transition: all 0.2s ease;
+  min-height: 2.75rem;
+}
+
+@media (min-width: 640px) {
+  .nav-item {
+    padding: 0.75rem 1rem;
+  }
 }
 
 .nav-item:hover {
@@ -407,22 +534,56 @@ tbody td {
 
 /* ===========================
    SPACING & LAYOUT
+   Mobile-first padding
    =========================== */
 
 .page-container {
-  padding: 2rem;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .page-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-container {
+    padding: 2rem;
+  }
 }
 
 .section-heading {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .section-heading {
+    font-size: 1.875rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-heading {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
 }
 
 .section-subheading {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .section-subheading {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
 }
 
 /* ===========================
@@ -473,23 +634,19 @@ tbody td {
 }
 
 /* ===========================
-   RESPONSIVE UTILITIES
+   UTILITY CLASSES
    =========================== */
 
-@media (max-width: 768px) {
-  .page-container {
-    padding: 1rem;
-  }
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-  .card-standard {
-    padding: 1rem;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-  }
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
