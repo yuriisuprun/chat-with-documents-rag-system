@@ -1,7 +1,7 @@
 services:
-  # PostgreSQL Database
+  # PostgreSQL Database with pgvector
   db:
-    image: postgres:16-alpine
+    image: ankane/pgvector:v0.5.1
     container_name: whatsapp_db
     environment:
       POSTGRES_USER: ${DB_USER:-assistant_user}

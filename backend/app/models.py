@@ -41,7 +41,7 @@ class Conversation(Base):
     last_client_message_at = Column(DateTime, nullable=True)
     last_professional_message_at = Column(DateTime, nullable=True)
     last_ai_message_at = Column(DateTime, nullable=True)
-    metadata = Column(JSONB, nullable=True)  # Store custom data
+    custom_data = Column(JSONB, nullable=True)  # Store custom data
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -68,7 +68,7 @@ class Message(Base):
     transcript = Column(Text, nullable=True)  # For audio messages
     detected_intent = Column(SQLEnum(Intent), nullable=True)
     is_auto_reply = Column(Boolean, default=False, index=True)
-    metadata = Column(JSONB, nullable=True)
+    custom_data = Column(JSONB, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
 
     # Relationships

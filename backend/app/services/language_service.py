@@ -3,7 +3,7 @@
 import logging
 from typing import Optional, Tuple, Dict
 from langdetect import detect, detect_langs, LangDetectException
-from langcodes import standardize_language_tag
+import langcodes
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -152,8 +152,9 @@ Genera una risposta che sia:
             
             # Standardize language code (handle variants like zh-cn -> zh)
             try:
-                lang_code = standardize_language_tag(lang_code).language
-            except Exception:
+                standardized = langcodes.standardize_language_tag(lang_code)
+                lang_code = standardized.language
+            except (AttributeError, ValueError):
                 lang_code = lang_code.split("-")[0]  # Fallback: take first part
             
             # Check if language is supported

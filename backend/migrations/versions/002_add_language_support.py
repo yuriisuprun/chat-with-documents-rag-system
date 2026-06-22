@@ -1,7 +1,7 @@
 """Add multi-language support to conversations and messages.
 
 Revision ID: 002
-Revises: 001_initial_schema
+Revises: 001
 Create Date: 2026-06-20 00:00:00.000000
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '002'
-down_revision = '001_initial_schema'
+down_revision = '001'
 branch_labels = None
 depends_on = None
 

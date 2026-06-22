@@ -2,25 +2,11 @@
 
 from datetime import datetime, timedelta
 from fastapi import APIRouter, HTTPException, status
-from passlib.context import CryptContext
 from jose import JWTError, jwt
 from app.config import settings
 from app.schemas import AdminLoginRequest, TokenResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-def hash_password(password: str) -> str:
-    """Hash password."""
-    return pwd_context.hash(password)
-
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify password."""
-    return pwd_context.verify(plain_password, hashed_password)
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
@@ -50,7 +36,7 @@ def login(request: AdminLoginRequest) -> TokenResponse:
             detail="Invalid credentials"
         )
     
-    if not verify_password(request.password, hash_password(settings.ADMIN_PASSWORD)):
+    if request.password != settings.ADMIN_PASSWORD:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials"
