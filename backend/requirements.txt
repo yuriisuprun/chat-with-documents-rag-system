@@ -33,7 +33,7 @@ google-auth-httplib2==0.2.0
 google-api-python-client==2.104.0
 
 # File Processing
-python-magic-bin==0.4.14
+python-magic==0.4.27
 pypdf==4.0.1
 python-docx==0.8.11
 
