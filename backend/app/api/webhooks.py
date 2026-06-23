@@ -43,14 +43,22 @@ async def verify_webhook(
 @router.post("/whatsapp")
 async def receive_whatsapp_message(request: Request) -> dict:
     """
+    ✅ PRIMARY ENTRY POINT FOR CONVERSATIONS
+    
     Receive WhatsApp messages via Meta WhatsApp Business API.
+    
+    This webhook is the ONLY legitimate source for creating conversations.
+    Conversations are automatically created here when the first message arrives.
     
     This webhook:
     1. Parses incoming message from WhatsApp Cloud API
-    2. Creates/updates conversation in database
-    3. Stores message with metadata
+    2. Auto-creates conversation in database (if first message)
+    3. Stores message with metadata (language, intent, etc.)
     4. Schedules auto-reply task
     5. Transcribes audio if needed
+    
+    Message Flow:
+    Client sends message → WhatsApp API → This webhook → Database → Dashboard auto-updates
     
     Webhook format from WhatsApp Business API v18.0:
     https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples

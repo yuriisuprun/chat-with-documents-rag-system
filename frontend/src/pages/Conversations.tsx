@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '../api/client';
 import toast from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
-import { FiMessageSquare, FiPhone, FiClock, FiChevronLeft } from 'react-icons/fi';
+import { FiMessageSquare, FiPhone, FiClock, FiChevronLeft, FiInfo } from 'react-icons/fi';
 
 interface Message {
   id: string;
@@ -95,6 +95,20 @@ const Conversations = () => {
         </div>
       )}
 
+      {/* Info Banner - WhatsApp Only Flow */}
+      {conversations.length === 0 && !selectedConversation && !loading && (
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg flex gap-3">
+          <FiInfo className="text-blue-600 flex-shrink-0 mt-0.5" size={18} />
+          <div className="flex-1 text-sm text-blue-900">
+            <p className="font-semibold">💡 Conversations Start from WhatsApp</p>
+            <p className="text-xs sm:text-sm mt-1 opacity-90">
+              Send a message to your WhatsApp Business number to start a conversation.
+              It will appear here automatically within seconds.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Mobile-first: Single column, tablet+: 3 column grid */}
       <div className={`flex-1 overflow-hidden lg:overflow-auto grid gap-3 sm:gap-4 lg:gap-6 ${
         selectedConversation ? 'hidden lg:grid' : 'grid-cols-1'
@@ -122,6 +136,9 @@ const Conversations = () => {
                   <FiMessageSquare />
                 </div>
                 <p className="empty-state-text">No conversations yet</p>
+                <p className="text-xs text-gray-500 mt-2 px-2">
+                  Conversations appear automatically when clients message your WhatsApp Business number
+                </p>
               </div>
             ) : (
               conversations.map((conv) => (

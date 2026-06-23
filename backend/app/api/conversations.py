@@ -59,7 +59,21 @@ def create_conversation(
     db: Session = Depends(get_db),
     request: Request = None,
 ) -> ConversationResponse:
-    """Create or get conversation."""
+    """
+    ⚠️ TESTING ONLY: Create or get conversation by phone number.
+    
+    IMPORTANT: In production, conversations are automatically created when
+    the first WhatsApp message arrives via the webhook at /api/v1/webhooks/whatsapp.
+    
+    This endpoint exists for development and testing purposes only.
+    Manual conversation creation breaks the audit trail and creates
+    inconsistent state between the dashboard and actual WhatsApp messages.
+    
+    For production testing, use the WhatsApp Business API simulator instead:
+    https://developers.facebook.com/
+    
+    See ARCHITECTURE_REFACTORING_GUIDE.md for details.
+    """
     request_id = getattr(request.state, "request_id", "unknown") if request else "unknown"
     
     logger.info(
