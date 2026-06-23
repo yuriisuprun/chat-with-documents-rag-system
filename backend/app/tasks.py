@@ -1,16 +1,20 @@
 """Celery task definitions."""
 
 import logging
+import time
 from datetime import datetime, timedelta
+
+import structlog
 from celery import Celery
 from sqlalchemy.orm import Session
+
 from app.database import SessionLocal
 from app.config import settings
 from app.models import Conversation, Message, MessageSender, Intent
 from app.services.ai_service import AIService
 from app.services.whatsapp_service import WhatsAppService
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 # Initialize Celery
 celery_app = Celery(
@@ -48,8 +52,15 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         Task result dict
     """
     db = SessionLocal()
+    start_time = time.time()
+    
     try:
-        logger.info(f"Processing auto-reply for conversation: {conversation_id}")
+        logger.info(
+            "auto_reply_task_started",
+            conversation_id=conversation_id,
+            task_id=self.request.id,
+            attempt=self.request.retries + 1,
+        )
         
         # Get conversation
         conversation = db.query(Conversation).filter(
@@ -57,7 +68,10 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         ).first()
         
         if not conversation:
-            logger.warning(f"Conversation not found: {conversation_id}")
+            logger.warning(
+                "auto_reply_conversation_not_found",
+                conversation_id=conversation_id,
+            )
             return {"status": "failed", "reason": "conversation_not_found"}
         
         # Check if professional has already replied
@@ -67,11 +81,17 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         
         if last_message:
             if last_message.sender == MessageSender.PROFESSIONAL:
-                logger.info(f"Professional already replied to {conversation_id}")
+                logger.info(
+                    "auto_reply_skipped_professional_replied",
+                    conversation_id=conversation_id,
+                )
                 return {"status": "skipped", "reason": "professional_replied"}
             
             if last_message.sender == MessageSender.AI:
-                logger.info(f"AI already replied to {conversation_id}")
+                logger.info(
+                    "auto_reply_skipped_already_replied",
+                    conversation_id=conversation_id,
+                )
                 return {"status": "skipped", "reason": "ai_already_replied"}
         
         # Get latest client message
@@ -81,11 +101,21 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         ).order_by(Message.created_at.desc()).first()
         
         if not client_messages:
-            logger.warning(f"No client messages found for {conversation_id}")
+            logger.warning(
+                "auto_reply_no_client_messages",
+                conversation_id=conversation_id,
+            )
             return {"status": "failed", "reason": "no_client_messages"}
         
         # Get conversation language
         conversation_language = conversation.detected_language or settings.TENANT_DEFAULT_LANGUAGE
+        
+        logger.info(
+            "auto_reply_processing",
+            conversation_id=conversation_id,
+            language=conversation_language,
+            detected_intent=client_messages.detected_intent.value if client_messages.detected_intent else "unknown",
+        )
         
         # Generate AI response (language-aware)
         ai_service = AIService()
@@ -98,8 +128,17 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         )
         
         if not response_content:
-            logger.error(f"Failed to generate response for {conversation_id}")
+            logger.error(
+                "auto_reply_generation_failed",
+                conversation_id=conversation_id,
+            )
             return {"status": "failed", "reason": "generation_failed"}
+        
+        logger.debug(
+            "auto_reply_response_generated",
+            conversation_id=conversation_id,
+            response_length=len(response_content),
+        )
         
         # Send via WhatsApp
         whatsapp_service = WhatsAppService()
@@ -127,14 +166,32 @@ def send_auto_reply(self, conversation_id: str) -> dict:
             conversation.updated_at = datetime.utcnow()
             db.commit()
             
-            logger.info(f"Auto-reply sent successfully for {conversation_id} in {conversation_language}")
+            duration = time.time() - start_time
+            logger.info(
+                "auto_reply_sent_successfully",
+                conversation_id=conversation_id,
+                message_id=ai_message.id,
+                language=conversation_language,
+                duration_ms=round(duration * 1000, 2),
+            )
             return {"status": "success", "message_id": ai_message.id}
         else:
-            logger.error(f"Failed to send WhatsApp message for {conversation_id}")
+            logger.error(
+                "auto_reply_whatsapp_send_failed",
+                conversation_id=conversation_id,
+                phone_number=conversation.client_phone,
+            )
             return {"status": "failed", "reason": "whatsapp_send_failed"}
             
     except Exception as e:
-        logger.error(f"Error in send_auto_reply: {str(e)}", exc_info=True)
+        duration = time.time() - start_time
+        logger.error(
+            "auto_reply_task_error",
+            conversation_id=conversation_id,
+            error=str(e),
+            duration_ms=round(duration * 1000, 2),
+            exc_info=True,
+        )
         raise
     finally:
         db.close()
@@ -153,17 +210,36 @@ def process_audio_transcription(message_id: str, language: str = None) -> dict:
         Task result dict
     """
     db = SessionLocal()
+    start_time = time.time()
+    
     try:
-        logger.info(f"Transcribing audio for message: {message_id} (language hint: {language})")
+        logger.info(
+            "audio_transcription_task_started",
+            message_id=message_id,
+            language_hint=language,
+        )
         
         message = db.query(Message).filter(Message.id == message_id).first()
         if not message:
-            logger.warning(f"Message not found: {message_id}")
+            logger.warning(
+                "audio_transcription_message_not_found",
+                message_id=message_id,
+            )
             return {"status": "failed", "reason": "message_not_found"}
         
         if not message.media_url or message.media_type != "audio":
-            logger.warning(f"Message {message_id} is not an audio message")
+            logger.warning(
+                "audio_transcription_not_audio",
+                message_id=message_id,
+                media_type=message.media_type,
+            )
             return {"status": "skipped", "reason": "not_audio"}
+        
+        logger.debug(
+            "audio_transcription_downloading",
+            message_id=message_id,
+            media_url=message.media_url[:50] + "..." if len(message.media_url) > 50 else message.media_url,
+        )
         
         # Transcribe with language hint
         ai_service = AIService()
@@ -180,14 +256,35 @@ def process_audio_transcription(message_id: str, language: str = None) -> dict:
             message.detected_intent = ai_service.detect_intent(transcript, detected_language)
             db.commit()
             
-            logger.info(f"Audio transcribed for message: {message_id}, language: {detected_language}")
-            return {"status": "success", "transcript": transcript, "language": detected_language}
+            duration = time.time() - start_time
+            logger.info(
+                "audio_transcription_completed",
+                message_id=message_id,
+                detected_language=detected_language,
+                transcript_length=len(transcript),
+                duration_ms=round(duration * 1000, 2),
+            )
+            return {
+                "status": "success",
+                "transcript": transcript,
+                "language": detected_language
+            }
         else:
-            logger.error(f"Failed to transcribe audio for {message_id}")
+            logger.error(
+                "audio_transcription_failed",
+                message_id=message_id,
+            )
             return {"status": "failed", "reason": "transcription_failed"}
             
     except Exception as e:
-        logger.error(f"Error in process_audio_transcription: {str(e)}", exc_info=True)
+        duration = time.time() - start_time
+        logger.error(
+            "audio_transcription_error",
+            message_id=message_id,
+            error=str(e),
+            duration_ms=round(duration * 1000, 2),
+            exc_info=True,
+        )
         return {"status": "failed", "reason": str(e)}
     finally:
         db.close()
@@ -205,8 +302,13 @@ def generate_embeddings_for_document(document_id: str) -> dict:
         Task result dict
     """
     db = SessionLocal()
+    start_time = time.time()
+    
     try:
-        logger.info(f"Generating embeddings for document: {document_id}")
+        logger.info(
+            "embedding_generation_task_started",
+            document_id=document_id,
+        )
         
         from app.models import KnowledgeDocument, DocumentChunk
         from app.services.rag_service import RAGService
@@ -216,8 +318,17 @@ def generate_embeddings_for_document(document_id: str) -> dict:
         ).first()
         
         if not document:
-            logger.warning(f"Document not found: {document_id}")
+            logger.warning(
+                "embedding_generation_document_not_found",
+                document_id=document_id,
+            )
             return {"status": "failed", "reason": "document_not_found"}
+        
+        logger.debug(
+            "embedding_generation_chunking",
+            document_id=document_id,
+            content_length=len(document.content),
+        )
         
         # Generate embeddings (with language detection)
         rag_service = RAGService()
@@ -225,27 +336,66 @@ def generate_embeddings_for_document(document_id: str) -> dict:
         
         chunk_count = 0
         languages_found = set()
+        failed_chunks = 0
+        
         for idx, chunk_obj in enumerate(chunks):
-            embedding = rag_service.generate_embedding(chunk_obj["content"])
-            if embedding:
-                doc_chunk = DocumentChunk(
-                    id=f"chunk_{document_id}_{idx}",
+            try:
+                embedding = rag_service.generate_embedding(chunk_obj["content"])
+                if embedding:
+                    doc_chunk = DocumentChunk(
+                        id=f"chunk_{document_id}_{idx}",
+                        document_id=document_id,
+                        chunk_index=idx,
+                        content=chunk_obj["content"],
+                        detected_language=chunk_obj["language"],
+                        embedding=embedding,
+                    )
+                    db.add(doc_chunk)
+                    chunk_count += 1
+                    languages_found.add(chunk_obj["language"])
+                else:
+                    failed_chunks += 1
+                    logger.warning(
+                        "embedding_generation_chunk_embedding_failed",
+                        document_id=document_id,
+                        chunk_index=idx,
+                    )
+            except Exception as chunk_error:
+                failed_chunks += 1
+                logger.error(
+                    "embedding_generation_chunk_error",
                     document_id=document_id,
                     chunk_index=idx,
-                    content=chunk_obj["content"],
-                    detected_language=chunk_obj["language"],
-                    embedding=embedding,
+                    error=str(chunk_error),
                 )
-                db.add(doc_chunk)
-                chunk_count += 1
-                languages_found.add(chunk_obj["language"])
         
         db.commit()
-        logger.info(f"Generated {chunk_count} chunks for document {document_id} in languages: {languages_found}")
-        return {"status": "success", "chunk_count": chunk_count, "languages": list(languages_found)}
+        
+        duration = time.time() - start_time
+        logger.info(
+            "embedding_generation_completed",
+            document_id=document_id,
+            chunk_count=chunk_count,
+            failed_chunks=failed_chunks,
+            languages=sorted(list(languages_found)),
+            duration_ms=round(duration * 1000, 2),
+        )
+        
+        return {
+            "status": "success",
+            "chunk_count": chunk_count,
+            "languages": sorted(list(languages_found))
+        }
         
     except Exception as e:
-        logger.error(f"Error in generate_embeddings_for_document: {str(e)}", exc_info=True)
+        duration = time.time() - start_time
+        logger.error(
+            "embedding_generation_error",
+            document_id=document_id,
+            error=str(e),
+            duration_ms=round(duration * 1000, 2),
+            exc_info=True,
+        )
         return {"status": "failed", "reason": str(e)}
     finally:
         db.close()
@@ -255,17 +405,39 @@ def generate_embeddings_for_document(document_id: str) -> dict:
 def cleanup_old_conversations() -> dict:
     """Clean up old conversations (older than 90 days)."""
     db = SessionLocal()
+    start_time = time.time()
+    
     try:
         cutoff_date = datetime.utcnow() - timedelta(days=90)
+        
+        logger.info(
+            "cleanup_conversations_started",
+            cutoff_date=cutoff_date.isoformat(),
+        )
+        
         deleted_count = db.query(Conversation).filter(
             Conversation.updated_at < cutoff_date,
             Conversation.status == "closed"
         ).delete()
         db.commit()
-        logger.info(f"Cleaned up {deleted_count} old conversations")
+        
+        duration = time.time() - start_time
+        logger.info(
+            "cleanup_conversations_completed",
+            deleted_count=deleted_count,
+            cutoff_date=cutoff_date.isoformat(),
+            duration_ms=round(duration * 1000, 2),
+        )
+        
         return {"status": "success", "deleted_count": deleted_count}
     except Exception as e:
-        logger.error(f"Error in cleanup_old_conversations: {str(e)}", exc_info=True)
+        duration = time.time() - start_time
+        logger.error(
+            "cleanup_conversations_error",
+            error=str(e),
+            duration_ms=round(duration * 1000, 2),
+            exc_info=True,
+        )
         return {"status": "failed", "reason": str(e)}
     finally:
         db.close()

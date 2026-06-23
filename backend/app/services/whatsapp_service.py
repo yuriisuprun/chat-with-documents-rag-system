@@ -1,12 +1,14 @@
 """WhatsApp API integration service."""
 
-import logging
 import json
+import logging
 from typing import Optional, Dict, Any
+
 import requests
+import structlog
 from app.config import settings
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 
 class WhatsAppService:
@@ -30,7 +32,7 @@ class WhatsAppService:
         phone_number: str,
         message_content: str,
         conversation_id: str,
-        tenant_id: str,
+        tenant_id: str = None,
     ) -> bool:
         """
         Send text message via WhatsApp Business Cloud API.
@@ -47,7 +49,10 @@ class WhatsAppService:
             True if message sent successfully, False otherwise
         """
         if not self.access_token or not self.phone_number_id:
-            logger.warning("WhatsApp credentials not configured")
+            logger.warning(
+                "whatsapp_credentials_missing",
+                operation="send_message"
+            )
             return False
 
         try:
@@ -71,7 +76,13 @@ class WhatsAppService:
                 },
             }
 
-            logger.info(f"Sending message to WhatsApp API: {url}")
+            logger.debug(
+                "whatsapp_send_message_started",
+                conversation_id=conversation_id,
+                recipient_phone=phone_number,
+                message_length=len(message_content),
+            )
+            
             response = requests.post(url, json=payload, headers=headers, timeout=10)
             
             if response.status_code == 200:
@@ -80,22 +91,45 @@ class WhatsAppService:
                 messages = result.get("messages", [])
                 if messages:
                     message_id = messages[0].get("id")
-                    logger.info(f"Message sent successfully via WhatsApp API: {message_id}")
+                    logger.info(
+                        "whatsapp_message_sent_successfully",
+                        conversation_id=conversation_id,
+                        whatsapp_message_id=message_id,
+                        recipient_phone=phone_number,
+                    )
                     return True
                 else:
-                    logger.error(f"No message ID in WhatsApp response: {result}")
+                    logger.error(
+                        "whatsapp_send_no_message_id",
+                        conversation_id=conversation_id,
+                        response=result,
+                    )
                     return False
             else:
                 logger.error(
-                    f"WhatsApp API send failed: {response.status_code} - {response.text}"
+                    "whatsapp_send_api_error",
+                    conversation_id=conversation_id,
+                    status_code=response.status_code,
+                    response_text=response.text,
+                    recipient_phone=phone_number,
                 )
                 return False
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request error sending WhatsApp message: {str(e)}")
+            logger.error(
+                "whatsapp_send_request_error",
+                conversation_id=conversation_id,
+                error=str(e),
+                exc_info=True,
+            )
             return False
         except Exception as e:
-            logger.error(f"Unexpected error in send_message: {str(e)}")
+            logger.error(
+                "whatsapp_send_unexpected_error",
+                conversation_id=conversation_id,
+                error=str(e),
+                exc_info=True,
+            )
             return False
 
     def verify_webhook_token(self, token: str) -> bool:
@@ -117,23 +151,6 @@ class WhatsAppService:
         Expected webhook payload structure from Meta:
         https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples
         
-        Example payload:
-        {
-          "entry": [{
-            "changes": [{
-              "value": {
-                "messages": [{
-                  "id": "wamid.xxx",
-                  "from": "1234567890",
-                  "timestamp": "1516374605",
-                  "type": "text",
-                  "text": { "body": "Hello" }
-                }]
-              }
-            }]
-          }]
-        }
-        
         Args:
             data: Webhook payload from WhatsApp Business API
             
@@ -144,13 +161,13 @@ class WhatsAppService:
             # Navigate WhatsApp webhook structure
             entries = data.get("entry", [])
             if not entries:
-                logger.debug("No entries in webhook data")
+                logger.debug("webhook_no_entries")
                 return None
             
             entry = entries[0]
             changes = entry.get("changes", [])
             if not changes:
-                logger.debug("No changes in webhook entry")
+                logger.debug("webhook_no_changes")
                 return None
             
             change = changes[0]
@@ -159,7 +176,7 @@ class WhatsAppService:
             # Check for messages in the value
             messages = value.get("messages", [])
             if not messages:
-                logger.debug("No messages in webhook value - possibly a status update or other event")
+                logger.debug("webhook_no_messages_possible_status_update")
                 return None
 
             message = messages[0]
@@ -168,7 +185,12 @@ class WhatsAppService:
             timestamp = message.get("timestamp")
             message_type = message.get("type")  # text, audio, image, document, location, etc.
             
-            logger.info(f"Parsed WhatsApp message: type={message_type}, from={sender_phone}")
+            logger.info(
+                "whatsapp_webhook_message_parsed",
+                message_type=message_type,
+                sender_phone=sender_phone,
+                message_id=message_id,
+            )
             
             # Build normalized message dict
             parsed_msg = {
@@ -198,10 +220,18 @@ class WhatsAppService:
             return parsed_msg
 
         except (KeyError, IndexError, TypeError) as e:
-            logger.error(f"Error parsing WhatsApp webhook message: {str(e)}")
+            logger.error(
+                "whatsapp_webhook_parse_error",
+                error=str(e),
+                exc_info=True,
+            )
             return None
         except Exception as e:
-            logger.error(f"Unexpected error parsing webhook: {str(e)}")
+            logger.error(
+                "whatsapp_webhook_unexpected_error",
+                error=str(e),
+                exc_info=True,
+            )
             return None
 
     def get_media_url(self, media_id: str) -> Optional[str]:

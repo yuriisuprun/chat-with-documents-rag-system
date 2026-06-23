@@ -1,15 +1,17 @@
 """AI service for message generation and intent detection."""
 
-import logging
 import json
+import logging
 from typing import Optional, List, Tuple
+
 import requests
+import structlog
 from app.config import settings
 from app.models import Intent, MessageSender, Message
 from app.services.language_service import LanguageService
 from sqlalchemy.orm import Session
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 
 class AIService:
@@ -35,28 +37,55 @@ class AIService:
             Tuple of (language_code, detected_intent, language_confidence)
         """
         if not message:
-            logger.warning("Empty message for language/intent detection")
+            logger.warning(
+                "empty_message_received",
+                operation="language_intent_detection"
+            )
             return settings.TENANT_DEFAULT_LANGUAGE, Intent.OTHER, 0.0
         
         try:
+            logger.debug(
+                "language_intent_detection_started",
+                message_length=len(message)
+            )
+            
             # Step 1: Detect language
             detected_lang, lang_confidence = self.language_service.detect_language(message)
             
             # If language not detected or not supported, use default
             if not detected_lang or not self.language_service.is_language_supported(detected_lang):
-                logger.info(f"Language detection inconclusive or unsupported: {detected_lang}")
+                logger.info(
+                    "language_detection_inconclusive",
+                    detected_lang=detected_lang,
+                    using_default=settings.TENANT_DEFAULT_LANGUAGE
+                )
                 detected_lang = settings.TENANT_DEFAULT_LANGUAGE
                 lang_confidence = 0.0
             
-            logger.info(f"Detected language: {detected_lang} (confidence: {lang_confidence:.2f})")
+            logger.info(
+                "language_detected",
+                language=detected_lang,
+                confidence=round(lang_confidence, 3)
+            )
             
             # Step 2: Detect intent using language-aware prompt
             intent = self.detect_intent(message, detected_lang)
             
+            logger.info(
+                "language_intent_detection_completed",
+                language=detected_lang,
+                intent=intent.value,
+                confidence=round(lang_confidence, 3)
+            )
+            
             return detected_lang, intent, lang_confidence
             
         except Exception as e:
-            logger.error(f"Error in language/intent detection: {str(e)}", exc_info=True)
+            logger.error(
+                "language_intent_detection_error",
+                error=str(e),
+                exc_info=True
+            )
             return settings.TENANT_DEFAULT_LANGUAGE, Intent.OTHER, 0.0
 
     def detect_intent(self, message: str, language: str = "en") -> Intent:
@@ -71,10 +100,19 @@ class AIService:
             Detected intent
         """
         if not self.api_key:
-            logger.warning("OpenAI API key not configured, defaulting to OTHER intent")
+            logger.warning(
+                "openai_api_key_not_configured",
+                operation="intent_detection"
+            )
             return Intent.OTHER
 
         try:
+            logger.debug(
+                "intent_detection_started",
+                language=language,
+                message_length=len(message)
+            )
+            
             from openai import OpenAI
             client = OpenAI(api_key=self.api_key)
             
@@ -103,11 +141,23 @@ class AIService:
             }
             
             detected_intent = intent_map.get(intent_str, Intent.OTHER)
-            logger.debug(f"Intent detected: {detected_intent.value} for language: {language}")
+            
+            logger.info(
+                "intent_detected",
+                intent=detected_intent.value,
+                language=language,
+                raw_response=intent_str
+            )
+            
             return detected_intent
 
         except Exception as e:
-            logger.error(f"Error detecting intent: {str(e)}")
+            logger.error(
+                "intent_detection_error",
+                language=language,
+                error=str(e),
+                exc_info=True
+            )
             return Intent.OTHER
 
     def generate_response(
