@@ -24,9 +24,17 @@ Before testing, ensure:
 - ✅ Backend is healthy: `curl http://localhost:8000/health`
 - ✅ Dashboard accessible: http://localhost:3000
 - ✅ Can login with `admin` / `change_me_in_production`
-- ✅ OpenAI API key is valid (check in `.env`)
+- ✅ AI provider configured in `.env`:
+  - **Ollama** (default, local/offline): No API key needed
+  - **OpenAI** (if using): Valid API key in `.env`
+  - **Gemini** (if using): Valid API key in `.env`
 
-**If any of the above fail, see [SIMPLE_SETUP_GUIDE.md](./SIMPLE_SETUP_GUIDE.md) troubleshooting section first.**
+**If any of the above fail, check setup or restart services:**
+```bash
+docker-compose down
+docker-compose up -d
+docker-compose ps
+```
 
 ### Publishing Note
 
@@ -37,6 +45,55 @@ Before testing, ensure:
 - Perfect for development and testing
 
 See [WHATSAPP_APP_PUBLISHING_GUIDE.md](./WHATSAPP_APP_PUBLISHING_GUIDE.md) if you plan to deploy to production.
+
+---
+
+## AI Provider Selection Guide
+
+This system supports three AI providers. Choose one based on your needs:
+
+### Ollama (Recommended for Development)
+- **Setup**: Local machine or Docker container
+- **Cost**: Free
+- **Speed**: Fast (local)
+- **Internet**: Not required
+- **Configuration**: 
+  ```env
+  AI_PROVIDER=ollama
+  OLLAMA_BASE_URL=http://localhost:11434
+  OLLAMA_MODEL=mistral
+  OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+  ```
+- **Best for**: Development, testing, offline use, no API costs
+
+### OpenAI (Recommended for Production)
+- **Setup**: Requires OpenAI API account
+- **Cost**: Paid (usage-based)
+- **Speed**: Fast
+- **Internet**: Required
+- **Configuration**:
+  ```env
+  AI_PROVIDER=openai
+  OPENAI_API_KEY=sk-your_key_here
+  OPENAI_MODEL=gpt-4
+  OPENAI_EMBEDDING_MODEL=text-embedding-3-small
+  ```
+- **Best for**: Production, high quality responses, professional use
+
+### Google Gemini (Alternative Cloud Option)
+- **Setup**: Requires Google Cloud API account
+- **Cost**: Free tier available
+- **Speed**: Fast
+- **Internet**: Required
+- **Configuration**:
+  ```env
+  AI_PROVIDER=gemini
+  GOOGLE_API_KEY=your_key_here
+  GEMINI_MODEL=gemini-pro
+  ```
+- **Best for**: Budget-conscious production use, Google integration preference
+
+**To change providers**: Update `.env` and restart backend (`docker-compose restart backend`)
 
 ---
 
@@ -492,9 +549,21 @@ Expected: AI should confirm and offer assistance
 
 **Prerequisites:** Multi-language configured in `.env`
 ```env
+# Supported languages (ISO 639-1 codes)
 SUPPORTED_LANGUAGES=en,ru,it
-TENANT_OFFICE_HOURS_RU=Пн-Пт: 9:00-17:00 CET
-TENANT_OFFICE_HOURS_IT=Lun-Ven: 9:00-17:00 CET
+
+# Language-specific office hours
+TENANT_OFFICE_HOURS_EN=Mon-Fri 9:00-17:00 CET
+TENANT_OFFICE_HOURS_RU=Пн-Пт 9:00-17:00 CET
+TENANT_OFFICE_HOURS_IT=Lun-Ven 9:00-17:00 CET
+
+# Language-specific disclaimers
+TENANT_DISCLAIMER_EN=This is an automated assistant. This message is not professional advice.
+TENANT_DISCLAIMER_RU=Это автоматический помощник. Это сообщение не является профессиональной консультацией.
+TENANT_DISCLAIMER_IT=Questo è un assistente automatico. Questo messaggio non è una consulenza professionale.
+
+# Default language
+TENANT_DEFAULT_LANGUAGE=en
 ```
 
 ### Test 6.1: English Message
@@ -506,7 +575,8 @@ TENANT_OFFICE_HOURS_IT=Lun-Ven: 9:00-17:00 CET
 
 **Pass Criteria:**
 - ✅ Response generated in English
-- ✅ Uses English office hours if configured
+- ✅ Uses `TENANT_OFFICE_HOURS_EN` if configured
+- ✅ Includes `TENANT_DISCLAIMER_EN`
 
 ### Test 6.2: Russian Message
 
@@ -518,7 +588,8 @@ TENANT_OFFICE_HOURS_IT=Lun-Ven: 9:00-17:00 CET
 **Pass Criteria:**
 - ✅ Language detected as Russian
 - ✅ Response generated in Russian
-- ✅ Uses Russian office hours if configured
+- ✅ Uses `TENANT_OFFICE_HOURS_RU` if configured
+- ✅ Includes `TENANT_DISCLAIMER_RU`
 
 ### Test 6.3: Italian Message
 
@@ -530,11 +601,158 @@ TENANT_OFFICE_HOURS_IT=Lun-Ven: 9:00-17:00 CET
 **Pass Criteria:**
 - ✅ Language detected as Italian
 - ✅ Response generated in Italian
-- ✅ Uses Italian office hours if configured
+- ✅ Uses `TENANT_OFFICE_HOURS_IT` if configured
+- ✅ Includes `TENANT_DISCLAIMER_IT`
+
+### Test 6.4: Unsupported Language Fallback
+
+**Setup:**
+```env
+SUPPORTED_LANGUAGES=en,ru,it
+TENANT_DEFAULT_LANGUAGE=en
+```
+
+**Steps:**
+1. Send message in unsupported language (e.g., French): `"Quelles sont vos heures de travail?"`
+2. Wait for response
+3. Observe fallback behavior
+
+**Pass Criteria:**
+- ✅ Response generated in default language (`TENANT_DEFAULT_LANGUAGE`)
+- ✅ System falls back gracefully to English
+- ✅ No error thrown
 
 ---
 
-## Test Suite 7: Error Handling
+## Test Suite 7: Appointment Automation (Optional Feature)
+
+**Prerequisites:** Feature is enabled in `.env`
+```env
+TENANT_ENABLE_AUTO_APPOINTMENT=true
+TENANT_APPOINTMENT_API_TYPE=google_calendar
+
+# For Google Calendar:
+TENANT_APPOINTMENT_API_KEY=<your_service_account_json>
+
+# For Custom API:
+# TENANT_APPOINTMENT_API_TYPE=custom
+# TENANT_APPOINTMENT_API_URL=https://api.example.com/appointments
+
+# Appointment settings
+TENANT_APPOINTMENT_DEFAULT_DURATION=60
+TENANT_APPOINTMENT_WORKING_HOURS_START=9      # 9 AM
+TENANT_APPOINTMENT_WORKING_HOURS_END=17       # 5 PM
+TENANT_BOOKING_URL=https://calendar.google.com
+```
+
+### Test 7.1: Appointment Request Detection
+
+**Objective:** Test system detects appointment requests
+
+**Setup:**
+- Upload document mentioning booking link (Test 3.1)
+- Enable appointment automation in `.env`
+- Restart backend
+
+**Steps:**
+1. Send message: `"I'd like to schedule an appointment for tomorrow at 2pm"`
+2. Wait for response (2 minutes default)
+
+**Pass Criteria:**
+- ✅ System detects appointment request (intent detection)
+- ✅ Extracts date/time information if possible
+- ✅ Generates appropriate response
+- ✅ Includes booking link or confirmation if appointment created
+
+### Test 7.2: Automatic Appointment Creation (Google Calendar)
+
+**Objective:** Test automatic appointment creation with Google Calendar
+
+**Setup:**
+```env
+TENANT_ENABLE_AUTO_APPOINTMENT=true
+TENANT_APPOINTMENT_API_TYPE=google_calendar
+TENANT_APPOINTMENT_API_KEY=<service_account_json>
+```
+
+**Steps:**
+1. Send clear appointment request: `"Can I book a 1-hour consultation next Monday at 10am?"`
+2. Wait for auto-reply (2 minutes default)
+3. Check Google Calendar for new event
+
+**Pass Criteria:**
+- ✅ Appointment created in Google Calendar
+- ✅ Event title shows client and purpose
+- ✅ Correct date and time in calendar
+- ✅ Duration matches `TENANT_APPOINTMENT_DEFAULT_DURATION`
+- ✅ Response sent to client via WhatsApp
+- ✅ Response includes appointment confirmation details
+
+### Test 7.3: Appointment Fallback to Booking Link
+
+**Objective:** Test fallback to booking link when auto-creation fails
+
+**Setup:**
+```env
+TENANT_ENABLE_AUTO_APPOINTMENT=true
+TENANT_BOOKING_URL=https://calendar.google.com/calendar/u/0/r
+```
+
+**Steps:**
+1. Send ambiguous appointment request: `"Can you fit me in sometime soon?"`
+2. Wait for response
+3. Observe fallback behavior
+
+**Pass Criteria:**
+- ✅ System cannot auto-create (insufficient detail)
+- ✅ Response includes booking link from `TENANT_BOOKING_URL`
+- ✅ Client gets helpful response with self-service option
+- ✅ No errors in logs
+
+### Test 7.4: Appointment Outside Working Hours
+
+**Objective:** Test handling of after-hours appointment requests
+
+**Setup:**
+```env
+TENANT_APPOINTMENT_WORKING_HOURS_START=9
+TENANT_APPOINTMENT_WORKING_HOURS_END=17
+```
+
+**Steps:**
+1. Note current time (simulate off-hours for test)
+2. Send appointment request for 8 PM: `"Can I book at 8 PM today?"`
+3. Wait for response
+
+**Pass Criteria:**
+- ✅ System recognizes time is outside working hours
+- ✅ Response redirects to booking link or next available time
+- ✅ No appointment created for that time slot
+- ✅ Graceful message to client
+
+### Test 7.5: Appointment Confirmation Message Customization
+
+**Objective:** Test custom confirmation message
+
+**Setup:**
+```env
+TENANT_APPOINTMENT_CONFIRMATION_MESSAGE=Thank you! Your appointment is confirmed. We'll see you then. Reply with any questions.
+```
+
+**Steps:**
+1. Create appointment via WhatsApp
+2. Observe confirmation message sent to client
+
+**Pass Criteria:**
+- ✅ Custom message used instead of default
+- ✅ Message is sent via WhatsApp
+- ✅ No errors in logs
+
+**If not set:** Uses default confirmation message automatically
+
+---
+
+## Test Suite 8: Error Handling
 
 ### Test 7.1: Invalid Phone Number
 
@@ -549,22 +767,37 @@ TENANT_OFFICE_HOURS_IT=Lun-Ven: 9:00-17:00 CET
 - ✅ Doesn't crash
 - ✅ Allows user to correct and retry
 
-### Test 7.2: Missing OpenAI Key
+### Test 7.2: Missing AI Provider Configuration
 
-**Objective:** Test system handles missing API key
+**Objective:** Test system handles missing AI provider setup gracefully
+
+**Setup - if using OpenAI:**
+```
+AI_PROVIDER=openai
+OPENAI_API_KEY=  # Empty or missing
+```
+
+**Setup - if using Ollama:**
+```
+AI_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434  # Must be running
+OLLAMA_MODEL=mistral
+```
 
 **Steps:**
-1. Remove `OPENAI_API_KEY` from `.env`
-2. Restart backend: `docker-compose restart backend`
-3. Try to send message
-4. Observe error handling
+1. Ensure AI provider is misconfigured (or service unavailable)
+2. Try to send message
+3. Observe error handling
 
 **Pass Criteria:**
 - ✅ Shows meaningful error in logs
 - ✅ Dashboard still works
-- ✅ Graceful degradation
+- ✅ Graceful degradation (returns escalation message)
 
-**To restore:** Add key back and restart backend
+**To restore:** 
+- For Ollama: Ensure ollama service is running
+- For OpenAI: Add valid API key and restart backend
+- For Gemini: Add valid API key and restart backend
 
 ### Test 7.3: Large Document Upload
 
@@ -595,7 +828,7 @@ TENANT_OFFICE_HOURS_IT=Lun-Ven: 9:00-17:00 CET
 
 ---
 
-## Test Suite 8: API Testing
+## Test Suite 9: API Testing
 
 ### Test 8.1: Get All Conversations
 
@@ -690,7 +923,7 @@ curl http://localhost:8000/api/v1/info/tenant
 
 ---
 
-## Test Suite 9: Performance & Load
+## Test Suite 10: Performance & Load
 
 ### Test 9.1: Dashboard Load Time
 
@@ -853,10 +1086,13 @@ To automate testing, see [CONTRIBUTING.md](./CONTRIBUTING.md) for CI/CD setup.
 - [ ] `docker-compose ps` shows all services up
 - [ ] `curl http://localhost:8000/health` returns ok
 - [ ] Login to http://localhost:3000 successful
+- [ ] AI provider configured correctly (`AI_PROVIDER` set and validated)
 - [ ] Can upload a document
-- [ ] Can create a conversation
+- [ ] Can create a conversation via WhatsApp webhook
 - [ ] Can add a message
-- [ ] Response appears after 2 minutes
+- [ ] Response appears after configured delay (default 2 minutes)
+- [ ] Multi-language responses work (if configured)
+- [ ] Appointment automation enabled and test booking works (if feature enabled)
 
 If all checks pass ✅, your setup is working!
 
@@ -869,12 +1105,17 @@ If all checks pass ✅, your setup is working!
 | Services not starting | Docker issue | Restart Docker, check `docker-compose logs` |
 | Can't login | Auth issue | Check admin credentials in `.env` |
 | API returns 500 | Backend error | Check backend logs: `docker-compose logs backend` |
-| No AI response | OpenAI issue | Check API key validity and billing |
+| No AI response | AI provider issue | Check AI provider config and API key validity |
+| Ollama not responding | Service unavailable | Ensure Ollama running: `ollama pull mistral` then `ollama serve` |
 | Document upload fails | File format | Use .txt, .pdf, or .docx files |
 | Slow responses | System resources | Check `docker stats` |
 | Database errors | DB not ready | Wait 60 seconds, then restart |
+| Multi-language detection fails | Language not supported | Check `SUPPORTED_LANGUAGES` in `.env` |
+| Appointment not created | API credentials | Verify `TENANT_APPOINTMENT_API_KEY` and permissions |
+| Appointment outside hours | Time zone issue | Check `TENANT_APPOINTMENT_WORKING_HOURS_*` settings
 
 ---
 
-**Last Updated:** June 2024  
-**Version:** 1.0
+**Last Updated:** June 2026  
+**Version:** 2.0  
+**Changes:** Updated for Ollama as primary AI provider, added multi-language support details, added Appointment Automation test suite
