@@ -13,10 +13,27 @@ class Settings(BaseSettings):
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
     
-    # OpenAI
+    # AI Provider Configuration
+    # Supported providers: "openai", "gemini", "ollama"
+    AI_PROVIDER: str = "ollama"
+    
+    # OpenAI Configuration
     OPENAI_API_KEY: Optional[str] = None
-    MODEL_NAME: str = "gpt-4"
-    EMBEDDING_MODEL: str = "text-embedding-3-small"
+    OPENAI_MODEL: str = "gpt-4"
+    OPENAI_EMBEDDING_MODEL: str = "text-embedding-3-small"
+    
+    # Gemini Configuration
+    GOOGLE_API_KEY: Optional[str] = None
+    GEMINI_MODEL: str = "gemini-pro"
+    
+    # Ollama Configuration
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "mistral"
+    OLLAMA_EMBEDDING_MODEL: str = "nomic-embed-text"
+    
+    # Common AI Settings
+    MODEL_NAME: str = "mistral"  # Default to Ollama
+    EMBEDDING_MODEL: str = "nomic-embed-text"
     MAX_CONTEXT_LENGTH: int = 2000
     
     # WhatsApp
