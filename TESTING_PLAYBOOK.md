@@ -28,6 +28,16 @@ Before testing, ensure:
 
 **If any of the above fail, see [SIMPLE_SETUP_GUIDE.md](./SIMPLE_SETUP_GUIDE.md) troubleshooting section first.**
 
+### Publishing Note
+
+**For testing purposes, you do NOT need to publish your app to Meta.** 
+- Use test phone numbers provided by Meta (free)
+- Full API access without app review
+- Unlimited messages to test numbers
+- Perfect for development and testing
+
+See [WHATSAPP_APP_PUBLISHING_GUIDE.md](./WHATSAPP_APP_PUBLISHING_GUIDE.md) if you plan to deploy to production.
+
 ---
 
 ## Test Suite 1: Environment Verification
