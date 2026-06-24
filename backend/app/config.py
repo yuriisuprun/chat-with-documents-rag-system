@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     MAX_CONTEXT_LENGTH: int = 2000
     
     # WhatsApp
+    # Meta Cloud API (Official)
     WHATSAPP_ACCESS_TOKEN: Optional[str] = None
     WHATSAPP_PHONE_NUMBER_ID: Optional[str] = None
     WHATSAPP_WEBHOOK_VERIFY_TOKEN: str = "webhook_verify_token"
