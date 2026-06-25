@@ -225,6 +225,125 @@ def get_messages(
         raise
 
 
+@router.post("/{conversation_id}/messages", response_model=MessageResponse, status_code=status.HTTP_201_CREATED)
+def send_message(
+    conversation_id: str,
+    content: str = Query(..., description="Message content to send"),
+    db: Session = Depends(get_db),
+    request: Request = None,
+) -> MessageResponse:
+    """
+    Send a message from dashboard/professional to WhatsApp client.
+    
+    This endpoint:
+    1. Creates a professional message record in the database
+    2. Sends the message to WhatsApp via the Business API
+    3. Returns the message record
+    
+    Args:
+        conversation_id: ID of the conversation
+        content: Message text to send
+        
+    Returns:
+        MessageResponse with the created message
+    """
+    request_id = getattr(request.state, "request_id", "unknown") if request else "unknown"
+    
+    logger.info(
+        "send_message_started",
+        request_id=request_id,
+        conversation_id=conversation_id,
+        message_length=len(content),
+    )
+    
+    try:
+        # Find conversation
+        conversation = db.query(Conversation).filter(
+            Conversation.id == conversation_id
+        ).first()
+        
+        if not conversation:
+            logger.warning(
+                "send_message_conversation_not_found",
+                request_id=request_id,
+                conversation_id=conversation_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Conversation not found"
+            )
+        
+        # Validate message content
+        if not content or not content.strip():
+            logger.warning(
+                "send_message_empty_content",
+                request_id=request_id,
+                conversation_id=conversation_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Message content cannot be empty"
+            )
+        
+        # Send to WhatsApp
+        from app.services.whatsapp_service import WhatsAppService
+        whatsapp_service = WhatsAppService()
+        
+        success = whatsapp_service.send_message(
+            phone_number=conversation.client_phone,
+            message_content=content,
+            conversation_id=conversation_id,
+        )
+        
+        if not success:
+            logger.error(
+                "send_message_whatsapp_failed",
+                request_id=request_id,
+                conversation_id=conversation_id,
+            )
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to send message to WhatsApp"
+            )
+        
+        # Create message record in database
+        message = Message(
+            id=f"msg_{uuid.uuid4().hex[:12]}",
+            conversation_id=conversation_id,
+            sender=MessageSender.PROFESSIONAL,
+            content=content,
+        )
+        db.add(message)
+        
+        # Update conversation timestamp
+        conversation.last_professional_message_at = datetime.utcnow()
+        conversation.updated_at = datetime.utcnow()
+        
+        db.commit()
+        db.refresh(message)
+        
+        logger.info(
+            "send_message_success",
+            request_id=request_id,
+            conversation_id=conversation_id,
+            message_id=message.id,
+            client_phone=conversation.client_phone,
+        )
+        
+        return MessageResponse.from_orm(message)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(
+            "send_message_error",
+            request_id=request_id,
+            conversation_id=conversation_id,
+            error=str(e),
+            exc_info=True,
+        )
+        raise
+
+
 @router.put("/{conversation_id}", response_model=ConversationResponse)
 def update_conversation(
     conversation_id: str,

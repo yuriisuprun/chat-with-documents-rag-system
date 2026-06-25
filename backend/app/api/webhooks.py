@@ -158,6 +158,7 @@ async def receive_whatsapp_message(request: Request) -> dict:
             media_type=message_type,
             media_url=media_url,
             detected_intent="other" if not detected_intent else detected_intent.value,
+            created_at=datetime.utcnow(),  # Explicitly set to current time
         )
         
         db.add(message)
@@ -327,6 +328,7 @@ async def test_whatsapp_message(
             detected_language=detected_language,
             language_confidence=lang_confidence,
             detected_intent="other" if not detected_intent else detected_intent.value,
+            created_at=datetime.utcnow(),  # Explicitly set to current time
         )
         
         db.add(message)

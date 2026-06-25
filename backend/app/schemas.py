@@ -1,7 +1,7 @@
 """Pydantic request/response schemas."""
 
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from app.models import Intent, MessageSender
 
@@ -29,6 +29,18 @@ class MessageResponse(BaseModel):
 
     class Config:
         from_attributes = True
+    
+    @field_validator('created_at', mode='before')
+    @classmethod
+    def ensure_utc_timestamp(cls, v):
+        """Ensure created_at is always a timezone-aware UTC datetime."""
+        if isinstance(v, datetime):
+            # If naive datetime, assume it's UTC and make it aware
+            if v.tzinfo is None:
+                return v.replace(tzinfo=timezone.utc)
+            # If it has tzinfo, convert to UTC
+            return v.astimezone(timezone.utc)
+        return v
 
 
 class ConversationResponse(BaseModel):
@@ -44,6 +56,20 @@ class ConversationResponse(BaseModel):
 
     class Config:
         from_attributes = True
+    
+    @field_validator('created_at', 'updated_at', 'last_client_message_at', 'last_professional_message_at', 'last_ai_message_at', mode='before')
+    @classmethod
+    def ensure_utc_timestamp(cls, v):
+        """Ensure all timestamps are timezone-aware UTC datetimes."""
+        if v is None:
+            return v
+        if isinstance(v, datetime):
+            # If naive datetime, assume it's UTC and make it aware
+            if v.tzinfo is None:
+                return v.replace(tzinfo=timezone.utc)
+            # If it has tzinfo, convert to UTC
+            return v.astimezone(timezone.utc)
+        return v
 
 
 class ConversationDetailResponse(ConversationResponse):

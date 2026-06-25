@@ -158,6 +158,7 @@ def send_auto_reply(self, conversation_id: str) -> dict:
                 detected_language=conversation_language,
                 is_auto_reply=True,
                 detected_intent=Intent.OTHER,
+                created_at=datetime.utcnow(),  # Explicitly set to current time
             )
             db.add(ai_message)
             
