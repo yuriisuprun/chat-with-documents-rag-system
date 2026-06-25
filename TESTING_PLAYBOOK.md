@@ -1287,13 +1287,13 @@ If all checks pass ✅, your setup is working!
 **Windows CMD:**
 ```cmd
 REM Message 1
-curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%%2B393513082792&message_text=Hello" -X POST
+curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%2B393513082792&message_text=Hello" -X POST
 
 REM Message 2
-curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%%2B393513082792&message_text=I%%20need%%20help" -X POST
+curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%2B393513082792&message_text=I%20need%20help" -X POST
 
 REM Message 3
-curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%%2B393513082792&message_text=Can%%20you%%20schedule%%20an%%20appointment%%3F" -X POST
+curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%2B393513082792&message_text=Can%20you%20schedule%20an%20appointment%3F" -X POST
 ```
 
 **Windows PowerShell:**
