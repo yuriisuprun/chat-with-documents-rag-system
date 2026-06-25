@@ -236,9 +236,10 @@ def send_message(
     Send a message from dashboard/professional to WhatsApp client.
     
     This endpoint:
-    1. Creates a professional message record in the database
+    1. Cancels any pending auto-reply tasks (prevents duplicates)
     2. Sends the message to WhatsApp via the Business API
-    3. Returns the message record
+    3. Creates a professional message record in the database
+    4. Returns the message record
     
     Args:
         conversation_id: ID of the conversation
@@ -283,6 +284,25 @@ def send_message(
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Message content cannot be empty"
+            )
+        
+        # Cancel any pending auto-reply tasks to prevent duplicate responses
+        from app.tasks import celery_app
+        task_id = f"auto_reply_{conversation_id}"
+        try:
+            celery_app.control.revoke(task_id, terminate=True)
+            logger.debug(
+                "send_message_cancelled_pending_autoreply",
+                request_id=request_id,
+                conversation_id=conversation_id,
+                task_id=task_id,
+            )
+        except Exception as e:
+            logger.warning(
+                "send_message_cancel_autoreply_failed",
+                request_id=request_id,
+                conversation_id=conversation_id,
+                error=str(e),
             )
         
         # Send to WhatsApp

@@ -2,6 +2,7 @@
 
 import logging
 import time
+import uuid
 from datetime import datetime, timedelta
 
 import structlog
@@ -151,7 +152,7 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         if success:
             # Create AI message record
             ai_message = Message(
-                id=f"msg_{datetime.utcnow().timestamp()}",
+                id=f"msg_{uuid.uuid4().hex[:12]}",  # Use UUID for consistency with other messages
                 conversation_id=conversation_id,
                 sender=MessageSender.AI,
                 content=response_content,
