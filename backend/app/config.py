@@ -56,7 +56,7 @@ class Settings(BaseSettings):
     ALLOWED_HOSTS: list = ["localhost", "127.0.0.1", "0.0.0.0"]
     
     # Auto-reply settings
-    AUTO_REPLY_DELAY_MINUTES: int = 30
+    AUTO_REPLY_DELAY_MINUTES: int = 1
     MAX_AUTO_REPLY_DELAY_MINUTES: int = 120
     
     # File upload
@@ -76,7 +76,7 @@ class Settings(BaseSettings):
     TENANT_WHATSAPP_NUMBER: str = "+1234567890"
     
     # Auto-Reply Configuration
-    TENANT_AUTO_REPLY_DELAY_MINUTES: int = 30
+    TENANT_AUTO_REPLY_DELAY_MINUTES: int = 1
     
     # ============ APPOINTMENT AUTOMATION FEATURE ============
     # Feature flag for automatic appointment scheduling via Google Calendar
