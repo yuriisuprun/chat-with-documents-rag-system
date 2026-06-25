@@ -59,14 +59,14 @@ class Message(Base):
 
     id = Column(String, primary_key=True, index=True)
     conversation_id = Column(String, ForeignKey("conversations.id"), nullable=False, index=True)
-    sender = Column(SQLEnum(MessageSender), nullable=False, index=True)
+    sender = Column(String(50), nullable=False, index=True)  # 'client', 'professional', 'ai'
     content = Column(Text, nullable=False)
     detected_language = Column(String(10), nullable=True)  # ISO 639-1 code (en, ru, it)
     language_confidence = Column(Float, nullable=True)  # 0-1 confidence in detection
     media_type = Column(String(50), nullable=True)  # audio, image, document, etc.
     media_url = Column(String(500), nullable=True)
     transcript = Column(Text, nullable=True)  # For audio messages
-    detected_intent = Column(SQLEnum(Intent), nullable=True)
+    detected_intent = Column(String(50), nullable=True)  # 'appointment_request', 'office_hours', etc.
     is_auto_reply = Column(Boolean, default=False, index=True)
     custom_data = Column(JSONB, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, index=True)

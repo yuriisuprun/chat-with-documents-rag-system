@@ -147,18 +147,17 @@ async def receive_whatsapp_message(request: Request) -> dict:
             conversation.detected_language = detected_language
             conversation.language_confidence = lang_confidence
         
-        # Store message in database with language info
+        # Store message in database with language info  
         message = Message(
             id=f"msg_{uuid.uuid4().hex[:12]}",
             conversation_id=conversation.id,
-            sender=MessageSender.CLIENT,
+            sender="client",
             content=message_content,
             detected_language=detected_language,
             language_confidence=lang_confidence,
             media_type=message_type,
             media_url=media_url,
-            detected_intent=detected_intent,
-            timestamp=datetime.utcfromtimestamp(int(parsed.get("timestamp", 0))) if parsed.get("timestamp") else datetime.utcnow(),
+            detected_intent="other" if not detected_intent else detected_intent.value,
         )
         
         db.add(message)
@@ -208,3 +207,161 @@ async def whatsapp_status_update(request: Request) -> dict:
     except Exception as e:
         logger.error(f"Error processing status update: {str(e)}")
         return {"status": "error"}
+
+
+@router.post("/whatsapp/test-message")
+async def test_whatsapp_message(
+    phone_number: str = Query(...),
+    message_text: str = Query(...)
+) -> dict:
+    """
+    🧪 TEST ENDPOINT ONLY - Simulate WhatsApp message for testing
+    
+    This endpoint allows you to test the WhatsApp message flow without sending 
+    an actual WhatsApp message. It simulates what happens when WhatsApp sends 
+    a webhook notification.
+    
+    Use this to test:
+    - Message reception and parsing
+    - Conversation creation
+    - AI response generation
+    - Language detection
+    - Document context usage
+    
+    IMPORTANT: This is for development/testing only. In production, messages 
+    come from actual WhatsApp users via the WhatsApp Business API webhook.
+    
+    Args:
+        phone_number: Phone number in format "+1234567890" or "1234567890"
+        message_text: The message text to send
+        
+    Example:
+        curl "http://localhost:8000/api/v1/webhooks/whatsapp/test-message?phone_number=%2B15551234567&message_text=Hello"
+        
+    Returns:
+        Status and created conversation/message IDs
+    """
+    # Normalize phone number (ensure it has + prefix)
+    if not phone_number.startswith("+"):
+        phone_number = f"+{phone_number}"
+    
+    # Remove + for WhatsApp API format (it doesn't include +)
+    phone_without_plus = phone_number.lstrip("+")
+    
+    # Build webhook payload that matches WhatsApp Business API format
+    # Reference: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples
+    test_webhook_payload = {
+        "entry": [
+            {
+                "id": "123456789",
+                "changes": [
+                    {
+                        "value": {
+                            "messaging_product": "whatsapp",
+                            "metadata": {
+                                "display_phone_number": settings.WHATSAPP_PHONE_NUMBER_ID,
+                                "phone_number_id": settings.WHATSAPP_PHONE_NUMBER_ID,
+            },
+                            "messages": [
+                                {
+                                    "from": phone_without_plus,
+                                    "id": f"wamid.{uuid.uuid4().hex[:20]}",
+                                    "timestamp": str(int(datetime.utcnow().timestamp())),
+                                    "type": "text",
+                                    "text": {
+                                        "body": message_text
+                                    }
+                                }
+                            ]
+                        },
+                        "field": "messages"
+                    }
+                ],
+                "time": int(datetime.utcnow().timestamp())
+            }
+        ]
+    }
+    
+    db = SessionLocal()
+    try:
+        # Process the test webhook like a real one
+        whatsapp_service = WhatsAppService()
+        parsed = whatsapp_service.parse_webhook_message(test_webhook_payload)
+        
+        if not parsed or not parsed.get("from"):
+            logger.warning(f"Failed to parse test webhook payload")
+            return {"status": "error", "message": "Failed to parse message"}
+        
+        client_phone = f"+{parsed['from']}"
+        message_content = parsed.get("text", "")
+        
+        # Find or create conversation
+        conversation = db.query(Conversation).filter(
+            Conversation.client_phone == client_phone
+        ).first()
+        
+        if not conversation:
+            conversation = Conversation(
+                id=f"conv_{uuid.uuid4().hex[:12]}",
+                client_phone=client_phone,
+                status="active",
+            )
+            db.add(conversation)
+            logger.info(f"[TEST] Created new conversation for {client_phone}")
+        
+        # Detect language and intent
+        ai_service = AIService()
+        detected_language, detected_intent, lang_confidence = ai_service.detect_language_and_intent(message_content)
+        
+        # Update conversation language if needed
+        if not conversation.detected_language or conversation.detected_language == settings.TENANT_DEFAULT_LANGUAGE:
+            conversation.detected_language = detected_language
+            conversation.language_confidence = lang_confidence
+        
+        # Create message
+        message = Message(
+            id=f"msg_{uuid.uuid4().hex[:12]}",
+            conversation_id=conversation.id,
+            sender="client",
+            content=message_content,
+            detected_language=detected_language,
+            language_confidence=lang_confidence,
+            detected_intent="other" if not detected_intent else detected_intent.value,
+        )
+        
+        db.add(message)
+        
+        # Update conversation
+        conversation.last_client_message_at = datetime.utcnow()
+        conversation.updated_at = datetime.utcnow()
+        
+        db.commit()
+        
+        logger.info(f"[TEST] Created message {message.id} for conversation {conversation.id}")
+        
+        # Schedule auto-reply like normal
+        delay_seconds = settings.TENANT_AUTO_REPLY_DELAY_MINUTES * 60
+        send_auto_reply.apply_async(
+            args=[conversation.id],
+            countdown=delay_seconds,
+            task_id=f"auto_reply_{conversation.id}"
+        )
+        
+        logger.info(f"[TEST] Scheduled auto-reply for {conversation.id} in {delay_seconds}s")
+        
+        return {
+            "status": "ok",
+            "message": "Test message processed successfully",
+            "conversation_id": conversation.id,
+            "message_id": message.id,
+            "phone_number": client_phone,
+            "detected_language": detected_language,
+            "detected_intent": detected_intent.value,
+            "auto_reply_in_seconds": delay_seconds
+        }
+        
+    except Exception as e:
+        logger.error(f"[TEST] Error processing test webhook: {str(e)}", exc_info=True)
+        return {"status": "error", "message": str(e)}
+    finally:
+        db.close()
