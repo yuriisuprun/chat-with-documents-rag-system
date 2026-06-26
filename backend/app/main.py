@@ -141,6 +141,8 @@ def create_app() -> FastAPI:
     app.include_router(auth.router, prefix="/api/v1")
     app.include_router(conversations.router, prefix="/api/v1")
     app.include_router(webhooks.router, prefix="/api/v1")
+    # Also include webhooks without prefix for backward compatibility
+    app.include_router(webhooks.router)
     app.include_router(documents.router, prefix="/api/v1")
     
     # Exception handlers

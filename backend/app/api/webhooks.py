@@ -18,9 +18,9 @@ router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 @router.get("/whatsapp")
 async def verify_webhook(
-    hub_mode: str = Query(...),
-    hub_challenge: str = Query(...),
-    hub_verify_token: str = Query(...)
+    hub_mode: str = Query(..., alias="hub.mode"),
+    hub_challenge: str = Query(..., alias="hub.challenge"),
+    hub_verify_token: str = Query(..., alias="hub.verify_token")
 ) -> str:
     """Verify WhatsApp webhook."""
     whatsapp_service = WhatsAppService()
