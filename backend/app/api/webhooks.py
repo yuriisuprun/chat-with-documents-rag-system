@@ -4,6 +4,7 @@ import uuid
 import logging
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Request, HTTPException, status, Query
+from fastapi.responses import PlainTextResponse
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.config import settings
@@ -21,8 +22,8 @@ async def verify_webhook(
     hub_mode: str = Query(..., alias="hub.mode"),
     hub_challenge: str = Query(..., alias="hub.challenge"),
     hub_verify_token: str = Query(..., alias="hub.verify_token")
-) -> str:
-    """Verify WhatsApp webhook."""
+) -> PlainTextResponse:
+    """Verify WhatsApp webhook - returns raw text, not JSON."""
     whatsapp_service = WhatsAppService()
     
     if not whatsapp_service.verify_webhook_token(hub_verify_token):
@@ -37,7 +38,8 @@ async def verify_webhook(
             detail="Invalid mode"
         )
     
-    return hub_challenge
+    # Return as plain text, not JSON - Meta expects raw challenge value
+    return PlainTextResponse(content=str(hub_challenge))
 
 
 @router.post("/whatsapp")
