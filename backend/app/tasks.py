@@ -115,7 +115,7 @@ def send_auto_reply(self, conversation_id: str) -> dict:
             "auto_reply_processing",
             conversation_id=conversation_id,
             language=conversation_language,
-            detected_intent=client_messages.detected_intent.value if client_messages.detected_intent else "unknown",
+            detected_intent=client_messages.detected_intent if client_messages.detected_intent else "unknown",
         )
         
         # Generate AI response (language-aware)
@@ -141,6 +141,30 @@ def send_auto_reply(self, conversation_id: str) -> dict:
             response_length=len(response_content),
         )
         
+        # Create AI message record FIRST (before sending to WhatsApp)
+        ai_message = Message(
+            id=f"msg_{uuid.uuid4().hex[:12]}",  # Use UUID for consistency with other messages
+            conversation_id=conversation_id,
+            sender=MessageSender.AI,
+            content=response_content,
+            detected_language=conversation_language,
+            is_auto_reply=True,
+            detected_intent=Intent.OTHER,
+            created_at=datetime.utcnow(),  # Explicitly set to current time
+        )
+        db.add(ai_message)
+        
+        # Update conversation
+        conversation.last_ai_message_at = datetime.utcnow()
+        conversation.updated_at = datetime.utcnow()
+        db.commit()
+        
+        logger.info(
+            "auto_reply_message_stored",
+            conversation_id=conversation_id,
+            message_id=ai_message.id,
+        )
+        
         # Send via WhatsApp
         whatsapp_service = WhatsAppService()
         success = whatsapp_service.send_message(
@@ -150,31 +174,11 @@ def send_auto_reply(self, conversation_id: str) -> dict:
         )
         
         if success:
-            # Create AI message record
-            ai_message = Message(
-                id=f"msg_{uuid.uuid4().hex[:12]}",  # Use UUID for consistency with other messages
-                conversation_id=conversation_id,
-                sender=MessageSender.AI,
-                content=response_content,
-                detected_language=conversation_language,
-                is_auto_reply=True,
-                detected_intent=Intent.OTHER,
-                created_at=datetime.utcnow(),  # Explicitly set to current time
-            )
-            db.add(ai_message)
-            
-            # Update conversation
-            conversation.last_ai_message_at = datetime.utcnow()
-            conversation.updated_at = datetime.utcnow()
-            db.commit()
-            
-            duration = time.time() - start_time
             logger.info(
                 "auto_reply_sent_successfully",
                 conversation_id=conversation_id,
                 message_id=ai_message.id,
                 language=conversation_language,
-                duration_ms=round(duration * 1000, 2),
             )
             return {"status": "success", "message_id": ai_message.id}
         else:
@@ -183,7 +187,8 @@ def send_auto_reply(self, conversation_id: str) -> dict:
                 conversation_id=conversation_id,
                 phone_number=conversation.client_phone,
             )
-            return {"status": "failed", "reason": "whatsapp_send_failed"}
+            # Message is still saved in DB even if WhatsApp send fails
+            return {"status": "partial_success", "reason": "whatsapp_send_failed", "message_id": ai_message.id}
             
     except Exception as e:
         duration = time.time() - start_time

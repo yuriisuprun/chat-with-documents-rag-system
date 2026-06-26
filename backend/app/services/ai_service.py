@@ -345,11 +345,14 @@ class AIService:
                 business_name
             )
 
+            # Handle both enum and string intent types (from database)
+            intent_str = detected_intent.value if hasattr(detected_intent, 'value') else str(detected_intent)
+            
             prompt = f"""{system_prompt}
 
 Client Message: "{message_content}"
 
-Intent: {detected_intent.value}
+Intent: {intent_str}
 
 Instructions: {instructions}
 
