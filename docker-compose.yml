@@ -1,0 +1,99 @@
+# Docker Compose configuration for Chat With Documents
+
+version: '3.8'
+
+services:
+  # Ollama LLM Service
+  ollama:
+    image: ollama/ollama:latest
+    container_name: chat_documents_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_MODELS=/root/.ollama/models
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - chat_documents_network
+    # Note: Models are pulled manually or via entrypoint script
+    # For production, consider pre-building with MODEL_PULLED=true
+
+  # FastAPI Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: chat_documents_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DEBUG=false
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - EMBEDDING_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+      - OLLAMA_MODEL=qwen2.5:3b
+      - DATABASE_URL=sqlite:///./chat_documents.db
+    volumes:
+      - ./uploads:/app/uploads
+      - ./data/chroma:/app/data/chroma
+    depends_on:
+      ollama:
+        condition: service_healthy
+    networks:
+      - chat_documents_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Streamlit Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: chat_documents_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_RUN_ON_SAVE=false
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - chat_documents_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  chat_documents_network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+    driver: local
+
+# Usage:
+#   Start all services: docker-compose up -d
+#   View logs: docker-compose logs -f
+#   Stop services: docker-compose down
+#   Stop and remove volumes: docker-compose down -v
+#
+# After starting:
+#   Pull models: docker exec chat_documents_ollama ollama pull qwen2.5:3b
+#   Frontend: http://localhost:8501
+#   Backend: http://localhost:8000
+#   Backend Docs: http://localhost:8000/docs
