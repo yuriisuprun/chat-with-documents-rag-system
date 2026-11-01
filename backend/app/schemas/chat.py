@@ -65,3 +65,19 @@ class ErrorResponse(BaseModel):
     details: Optional[dict] = Field(
         None, description="Additional error details"
     )
+
+
+class RAGAnswerResponse(BaseModel):
+    """Response from RAG endpoint with answer and sources."""
+
+    query: str = Field(..., description="Original query")
+    answer: str = Field(..., description="Generated answer")
+    sources: list[SourceReference] = Field(
+        ..., description="Source references for answer"
+    )
+    context_sufficient: bool = Field(
+        ..., description="Whether context was sufficient"
+    )
+    retrieval_count: int = Field(
+        ..., description="Number of chunks retrieved"
+    )
