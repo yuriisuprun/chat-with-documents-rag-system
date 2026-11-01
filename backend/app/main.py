@@ -17,7 +17,7 @@ from app.api.routes import chat, documents, health
 from app.core.config import settings
 from app.core.exceptions import ApplicationException
 from app.core.logging import configure_logging, get_logger
-from app.core.rate_limiter import init_rate_limiter, get_rate_limiter
+from app.core.rate_limiter import init_rate_limiter
 from app.core.prompt_defense import init_prompt_defense
 from app.middleware.rate_limiting import RateLimitMiddleware
 from app.middleware.api_key_auth import APIKeyAuthMiddleware
