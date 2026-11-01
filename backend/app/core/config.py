@@ -96,7 +96,24 @@ class Settings(BaseSettings):
     # Security Settings
     # ========================================================================
     cors_origins: str = "http://localhost:3000,http://localhost:8501"
+    
+    # API key authentication (Phase 8)
+    api_key_enabled: bool = False
     api_key: str = ""
+    
+    # Rate limiting (Phase 8)
+    rate_limit_enabled: bool = True
+    rate_limit_global: int = 100  # requests per minute
+    rate_limit_upload: int = 10   # requests per minute
+    rate_limit_chat: int = 30     # requests per minute
+    
+    # Input validation (Phase 8)
+    max_query_length: int = 500
+    max_document_id_length: int = 36
+    
+    # Security headers (Phase 8)
+    enable_security_headers: bool = True
+    enable_hsts: bool = False  # Only true in production
 
     # ========================================================================
     # RAG Settings

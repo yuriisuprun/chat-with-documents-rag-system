@@ -2,6 +2,7 @@
 Document management endpoints.
 
 Handles document upload, listing, retrieval, and deletion.
+Includes input validation and security checks (Phase 8).
 """
 
 import os
@@ -18,8 +19,10 @@ from app.core.exceptions import (
     InvalidFileTypeException,
     InvalidPDFException,
     PDFPageCountException,
+    ValidationException,
 )
 from app.core.logging import get_logger
+from app.core.validators import validate_filename, validate_document_id
 from app.schemas.document import (
     DocumentDeleteResponse,
     DocumentDetailResponse,
@@ -81,12 +84,22 @@ async def upload_document(file: UploadFile = File(...)):
     try:
         logger.info(f"Document upload started: {file.filename}")
 
-        # Validate filename
+        # Validate filename (Phase 8)
         if not file.filename:
             logger.warning("Upload attempted with empty filename")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Filename is required",
+            )
+
+        # Sanitize filename
+        try:
+            safe_filename = validate_filename(file.filename)
+        except ValidationException as e:
+            logger.warning(f"Filename validation failed: {e.message}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e.message),
             )
 
         # Save uploaded file temporarily
@@ -217,9 +230,20 @@ async def get_document(document_id: str):
         DocumentDetailResponse with metadata and sample chunks
 
     Raises:
+        400: Invalid document ID format
         404: Document not found
     """
     try:
+        # Validate document ID format (Phase 8)
+        try:
+            validate_document_id(document_id, max_length=settings.max_document_id_length)
+        except ValidationException as e:
+            logger.warning(f"Invalid document ID: {e.message}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e.message),
+            )
+
         logger.debug(f"Getting document: {document_id}")
 
         # Phase 7 will add database lookup
@@ -255,9 +279,20 @@ async def delete_document(document_id: str):
         DocumentDeleteResponse with deletion confirmation
 
     Raises:
+        400: Invalid document ID format
         404: Document not found
     """
     try:
+        # Validate document ID format (Phase 8)
+        try:
+            validate_document_id(document_id, max_length=settings.max_document_id_length)
+        except ValidationException as e:
+            logger.warning(f"Invalid document ID: {e.message}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e.message),
+            )
+
         logger.info(f"Deleting document: {document_id}")
 
         # Delete from vector store

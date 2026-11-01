@@ -2,12 +2,20 @@
 Chat endpoint for RAG question answering.
 
 Handles question answering using the RAG pipeline with source references.
+Includes input validation and prompt injection defense (Phase 8).
 """
 
 from fastapi import APIRouter, HTTPException, status
 
-from app.core.exceptions import RAGException
+from app.core.config import settings
+from app.core.exceptions import RAGException, ValidationException
 from app.core.logging import get_logger
+from app.core.prompt_defense import get_prompt_defense
+from app.core.validators import (
+    detect_prompt_injection,
+    sanitize_text,
+    validate_query_length,
+)
 from app.schemas.chat import ChatRequest, ChatResponse, SourceReference
 from app.services.rag_service import RAGService
 
@@ -51,20 +59,45 @@ async def chat(request: ChatRequest) -> ChatResponse:
         500: RAG pipeline error
     """
     try:
-        logger.info(f"Chat request: '{request.query[:50]}...'")
+        # ====================================================================
+        # Input Validation (Phase 8)
+        # ====================================================================
+        
+        # Sanitize query
+        query = sanitize_text(request.query)
+        logger.info(f"Chat request: '{query[:50]}...'")
 
-        # Validate query
-        if not request.query or not request.query.strip():
-            logger.warning("Chat attempted with empty query")
+        # Validate query length
+        try:
+            validate_query_length(query, max_length=settings.max_query_length)
+        except ValidationException as e:
+            logger.warning(f"Query validation failed: {e.message}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Query cannot be empty",
+                detail=str(e.message),
             )
 
-        # Run RAG pipeline
+        # ====================================================================
+        # Prompt Injection Defense (Phase 8)
+        # ====================================================================
+        
+        prompt_defense = get_prompt_defense()
+        detection_result = prompt_defense.detect(query)
+
+        if detection_result.is_suspicious:
+            logger.warning(
+                f"Prompt injection detected: {detection_result}"
+            )
+            # Log but don't block (detection-only mode by default)
+            # In production, could set block_on_detection=True to reject
+
+        # ====================================================================
+        # RAG Pipeline
+        # ====================================================================
+        
         try:
             result = get_rag_service().answer_question(
-                question=request.query,
+                question=query,
                 document_ids=request.document_ids,
                 top_k=4,  # Use configured top_k from settings
             )
