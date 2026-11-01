@@ -49,9 +49,19 @@ async def lifespan(app: FastAPI):
         settings.upload_directory.mkdir(parents=True, exist_ok=True)
         settings.chroma_directory.mkdir(parents=True, exist_ok=True)
         Path("logs").mkdir(exist_ok=True)
+        Path("data").mkdir(exist_ok=True)
         logger.debug(f"Created directories: {settings.upload_directory}, {settings.chroma_directory}")
     except Exception as e:
         logger.error(f"Failed to create directories: {e}")
+        raise
+
+    # Initialize database
+    try:
+        from app.db.database import init_db
+        init_db()
+        logger.info("Database initialized")
+    except Exception as e:
+        logger.error(f"Failed to initialize database: {e}")
         raise
 
     # Log configuration (without sensitive values)
@@ -137,6 +147,10 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(documents.router)
     app.include_router(chat.router)
+    
+    # Phase 7: Analytics endpoints
+    from app.api.routes import analytics
+    app.include_router(analytics.router)
 
     # ========================================================================
     # Root Endpoint
