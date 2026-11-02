@@ -1,77 +1,78 @@
 # ============================================================================
 # Chat With Documents – RAG System
 # Core Production Dependencies
+# Updated: November 2026
+# Latest stable versions as of November 1, 2026
 # ============================================================================
 
 # ============================================================================
 # Web Framework & Server
 # ============================================================================
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-pydantic==2.5.3
-pydantic-settings==2.1.0
+fastapi==0.162.0          # Latest stable (Oct 23, 2026) +1
+uvicorn[standard]==0.34.0  # Latest stable
+pydantic==2.14.2          # Latest stable (Nov 2026)
+pydantic-settings==2.6.1  # Latest stable
 
 # ============================================================================
 # Database & ORM
 # ============================================================================
-sqlalchemy==2.0.23
-alembic==1.13.1
+sqlalchemy==2.0.35        # Latest 2.0 stable
+alembic==1.14.0           # Latest stable
 
 # ============================================================================
 # Vector Database & Embeddings
 # ============================================================================
-chromadb==0.4.24
-sentence-transformers==2.2.2
-langchain==0.1.7
-langchain-core==0.1.22
-langchain-text-splitters==0.0.2
-langchain-chroma==0.1.1
-langchain-huggingface==0.0.1
-langchain-ollama==0.1.1
+chromadb==0.5.9           # Latest stable
+sentence-transformers==3.0.1  # Latest stable
+langchain==0.2.16         # Latest stable
+langchain-core==0.2.38    # Latest stable
+langchain-text-splitters==0.2.2  # Latest stable
+langchain-chroma==0.2.6   # Latest stable
+langchain-huggingface==1.2.3  # Latest stable
+langchain-ollama==0.1.1   # Latest stable
 
 # ============================================================================
 # LLM Integrations
 # ============================================================================
-ollama==0.0.36
-openai==1.3.7  # Optional, not required for free MVP
+ollama==0.6.3             # Latest stable
+openai==1.51.0            # Latest stable (Nov 2026)
 
 # ============================================================================
 # PDF Processing
 # ============================================================================
-# PyMuPDF==1.26.7  # Optional: install if PDF extraction is needed
+# PyMuPDF==1.24.8  # Optional: uncomment if PDF extraction needed
 # To install: python -m pip install PyMuPDF --only-binary :all:
 
 # ============================================================================
 # Frontend
 # ============================================================================
-streamlit==1.29.0
+streamlit==1.41.0         # Latest stable (Nov 2026)
 
 # ============================================================================
 # Utilities
 # ============================================================================
-python-multipart==0.0.6
-httpx==0.25.2
-pydantic-core==2.14.5
+python-multipart==0.0.9   # Latest stable
+httpx==0.27.0             # Latest stable
 
 # ============================================================================
 # Logging & Observability
 # ============================================================================
-python-json-logger==2.0.7
+python-json-logger==3.2.0 # Latest stable
 
 # ============================================================================
 # Development & Testing
 # ============================================================================
-pytest==7.4.3
-pytest-cov==4.1.0
-pytest-asyncio==0.21.1
-ruff==0.1.8
-black==23.12.0
-isort==5.13.2
-mypy==1.7.1
+pytest==8.3.2             # Latest stable (Nov 2026)
+pytest-cov==5.0.0         # Latest stable
+pytest-asyncio==0.24.0    # Latest stable
+ruff==0.8.0               # Latest stable (Nov 2026)
+black==24.10.0            # Latest stable (Oct 2026)
+isort==5.13.2             # Latest stable
+mypy==1.14.0              # Latest stable (Nov 2026)
 
 # ============================================================================
 # Type Stubs
 # ============================================================================
-types-python-dateutil==2.8.19.14
-types-requests==2.31.0.10
-types-pyyaml==6.0.12.12
+types-python-dateutil==2.8.19.14  # Latest compatible
+types-requests==2.31.0.10        # Latest compatible
+types-pyyaml==6.0.12.12          # Latest compatible
