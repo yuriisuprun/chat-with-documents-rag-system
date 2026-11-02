@@ -100,7 +100,7 @@ with tab1:
             
             ✅ Ollama Connected
             
-            Model: qwen2.5:3b
+            Model: qwen3:8b
             """
         )
 

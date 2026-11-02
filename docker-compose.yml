@@ -38,7 +38,7 @@ services:
       - DEBUG=false
       - OLLAMA_BASE_URL=http://ollama:11434
       - EMBEDDING_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-      - OLLAMA_MODEL=qwen2.5:3b
+      - OLLAMA_MODEL=qwen3:8b
       - DATABASE_URL=sqlite:///./chat_documents.db
     volumes:
       - ./uploads:/app/uploads
@@ -93,7 +93,7 @@ volumes:
 #   Stop and remove volumes: docker-compose down -v
 #
 # After starting:
-#   Pull models: docker exec chat_documents_ollama ollama pull qwen2.5:3b
+#   Pull models: docker exec chat_documents_ollama ollama pull qwen3:8b
 #   Frontend: http://localhost:8501
 #   Backend: http://localhost:8000
 #   Backend Docs: http://localhost:8000/docs

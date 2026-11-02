@@ -71,7 +71,7 @@ class Settings(BaseSettings):
 
     # Ollama settings
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "qwen2.5:3b"
+    ollama_model: str = "qwen3:8b"
     ollama_temperature: float = 0.3
     ollama_top_p: float = 0.9
     ollama_timeout: int = 120
