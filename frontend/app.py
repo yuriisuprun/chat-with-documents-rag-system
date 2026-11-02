@@ -104,7 +104,7 @@ def load_css():
 load_css()
 
 # Import API client
-from frontend.api_client import APIClient
+from api_client import APIClient
 
 # Initialize API client with backend URL
 @st.cache_resource

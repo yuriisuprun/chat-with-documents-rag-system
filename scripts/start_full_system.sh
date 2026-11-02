@@ -1,7 +1,8 @@
 #!/bin/bash
 # Chat With Documents - Complete System Startup
 # Works on: Windows Git Bash, Linux, macOS
-# Smart: Checks if services already running
+
+set -e
 
 echo "=========================================="
 echo "Chat With Documents - Starting..."
@@ -18,32 +19,20 @@ echo ""
 
 # Check Python
 echo "Checking Python..."
-if ! python --version 2>/dev/null; then
-    echo "ERROR: Python not found"
-    exit 1
-fi
-
-# Check if Ollama is already running
+python --version || { echo "ERROR: Python not found"; exit 1; }
 echo ""
-echo "Checking Ollama..."
-if curl -s http://localhost:11434/api/status >/dev/null 2>&1; then
-    echo "✓ Ollama already running on port 11434"
-else
-    echo "Starting Ollama..."
-    ollama serve &
-    OLLAMA_PID=$!
-    echo "Ollama PID: $OLLAMA_PID"
-    sleep 3
-fi
 
 # Start Backend
-echo ""
+echo "=========================================="
 echo "Starting Backend..."
+echo "=========================================="
 cd "$BACKEND" || exit 1
 
+# Check/create venv
 if [ ! -d "venv" ]; then
-    echo "Creating venv..."
-    python -m venv venv 2>/dev/null || python3 -m venv venv
+    echo "ERROR: venv not found!"
+    echo "Run: bash ../scripts/fix_and_install.sh"
+    exit 1
 fi
 
 # Activate venv
@@ -53,53 +42,58 @@ else
     source venv/bin/activate
 fi
 
-# Install deps
-echo "Upgrading pip..."
-pip install --upgrade pip 2>&1 >/dev/null
-echo "Installing build tools..."
-pip install --upgrade setuptools wheel --quiet 2>&1 >/dev/null
-echo "Installing dependencies..."
-pip install -r requirements.txt
-if [ $? -ne 0 ]; then
-    echo ""
-    echo "ERROR: Dependency installation failed!"
-    echo "Please run: bash scripts/fix_and_install.sh"
-    echo ""
-    exit 1
-fi
-echo "[OK] Dependencies installed"
+# Disable file watching during startup
+export PYTHONDONTWRITEBYTECODE=1
+export WATCHFILES_IGNORE_PATHS='venv/*'
+export PYTHONUNBUFFERED=1
 
-# Start backend
-echo "Backend starting on http://localhost:8000"
-python -m uvicorn app.main:app --reload --port 8000 &
+echo "Backend: $(which python)"
+echo ""
+
+# Start backend server
+echo "Starting uvicorn on http://localhost:8000"
+python -m uvicorn app.main:app --reload --port 8000 2>&1 &
 BACKEND_PID=$!
 echo "Backend PID: $BACKEND_PID"
-sleep 2
+sleep 3
 
 # Start Frontend
 echo ""
+echo "=========================================="
 echo "Starting Frontend..."
+echo "=========================================="
 cd "$FRONTEND" || exit 1
 
-echo "Installing Streamlit..."
-pip install -q streamlit 2>/dev/null || pip install streamlit
+# Ensure streamlit installed in main python
+pip install -q streamlit 2>/dev/null || pip install streamlit >/dev/null
 
-echo "Frontend starting on http://localhost:8501"
-streamlit run app.py &
+# Find app file
+STREAMLIT_FILE="app.py"
+if [ ! -f "$STREAMLIT_FILE" ]; then
+    echo "ERROR: $STREAMLIT_FILE not found"
+    exit 1
+fi
+
+echo "Starting Streamlit on http://localhost:8501"
+streamlit run "$STREAMLIT_FILE" --server.port 8501 --logger.level=warning 2>&1 &
 FRONTEND_PID=$!
 echo "Frontend PID: $FRONTEND_PID"
+sleep 2
 
 echo ""
 echo "=========================================="
-echo "System Started!"
+echo "✓ System Started!"
 echo "=========================================="
 echo ""
-echo "UI:   http://localhost:8501"
-echo "API:  http://localhost:8000"
-echo "Docs: http://localhost:8000/docs"
+echo "📱 UI:   http://localhost:8501"
+echo "🔧 API:  http://localhost:8000"
+echo "📚 Docs: http://localhost:8000/docs"
 echo ""
-echo "Press Ctrl+C to stop all services"
+echo "Ollama: Make sure ollama serve is running"
+echo "        (or start: ollama serve)"
+echo ""
+echo "Press Ctrl+C to stop"
 echo ""
 
-# Wait for all processes
+# Wait for processes
 wait
