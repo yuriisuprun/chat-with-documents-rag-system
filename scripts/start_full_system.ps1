@@ -64,7 +64,7 @@ python -m pip install --upgrade pip 2>&1 | Out-Null
 Write-Host 'Installing build tools...' -ForegroundColor Yellow
 pip install --upgrade setuptools wheel --quiet 2>&1 | Out-Null
 Write-Host 'Installing dependencies...' -ForegroundColor Yellow
-`$result = pip install -r requirements.txt 2>&1
+`$result = pip install --only-binary :all: -r requirements.txt 2>&1
 if (`$LASTEXITCODE -ne 0) {
     Write-Host 'ERROR: Dependency installation failed!' -ForegroundColor Red
     Write-Host `$result -ForegroundColor Red
