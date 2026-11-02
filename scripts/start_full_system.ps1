@@ -59,14 +59,26 @@ if (-not (Test-Path 'venv')) {
 }
 Write-Host 'Activating virtual environment...' -ForegroundColor Yellow
 . '.\venv\Scripts\Activate.ps1'
+Write-Host 'Upgrading pip...' -ForegroundColor Yellow
+python -m pip install --upgrade pip 2>&1 | Out-Null
+Write-Host 'Installing build tools...' -ForegroundColor Yellow
+pip install --upgrade setuptools wheel --quiet 2>&1 | Out-Null
 Write-Host 'Installing dependencies...' -ForegroundColor Yellow
-pip install -q -r requirements.txt 2>$null; if (`$?) { Write-Host '[OK] Dependencies installed' -ForegroundColor Green } else { pip install -r requirements.txt }
+`$result = pip install -r requirements.txt 2>&1
+if (`$LASTEXITCODE -ne 0) {
+    Write-Host 'ERROR: Dependency installation failed!' -ForegroundColor Red
+    Write-Host `$result -ForegroundColor Red
+    Write-Host 'Please run: .\scripts\fix_and_install.ps1' -ForegroundColor Yellow
+    Read-Host 'Press Enter to exit'
+    exit 1
+}
+Write-Host '[OK] Dependencies installed' -ForegroundColor Green
 Write-Host 'Starting uvicorn...' -ForegroundColor Cyan
 python -m uvicorn app.main:app --reload --port 8000
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendScript
-Start-Sleep -Seconds 4
+Start-Sleep -Seconds 10
 Write-Host "[OK] Backend started" -ForegroundColor Green
 
 Write-Host ""
