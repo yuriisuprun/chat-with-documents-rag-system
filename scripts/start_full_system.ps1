@@ -3,7 +3,7 @@
 
 param(
     [switch]$SkipOllama = $false,
-    [string]$OllamaModel = "qwen2.5:3b"
+    [string]$OllamaModel = "qwen3:8b"
 )
 
 Write-Host "==========================================" -ForegroundColor Cyan
