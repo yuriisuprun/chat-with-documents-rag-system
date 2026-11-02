@@ -1,5 +1,5 @@
 # Start the complete Chat With Documents system (Backend + Frontend + Ollama)
-# PowerShell version
+# PowerShell version - Smart: checks if services already running
 
 param(
     [switch]$SkipOllama = $false,
@@ -21,57 +21,69 @@ if ($LASTEXITCODE -ne 0) {
 }
 Write-Host "[OK] $pythonVersion"
 
-# Check for ollama
-if (-not $SkipOllama) {
-    $ollamaVersion = ollama --version 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "[WARN] Ollama not found in PATH" -ForegroundColor Yellow
-        Write-Host "       Install from: https://ollama.ai" -ForegroundColor Yellow
-        $SkipOllama = $true
-    } else {
-        Write-Host "[OK] $ollamaVersion"
-    }
-}
-
 Write-Host ""
 
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $backendPath = Join-Path $projectRoot "backend"
 $frontendPath = Join-Path $projectRoot "frontend"
 
-# Start Ollama (if not skipped)
-if (-not $SkipOllama) {
-    Write-Host ""
-    Write-Host "Starting Ollama server..." -ForegroundColor Cyan
-    Start-Process "ollama" -ArgumentList "serve" -NoNewWindow -PassThru | Out-Null
-    Start-Sleep -Seconds 3
-    
-    # Check if model is available
-    Write-Host "Checking $OllamaModel availability..." -ForegroundColor Yellow
-    $models = ollama list 2>&1
-    if ($models -like "*$OllamaModel*") {
-        Write-Host "[OK] $OllamaModel is available" -ForegroundColor Green
-    } else {
-        Write-Host "[WARN] $OllamaModel not found, pulling..." -ForegroundColor Yellow
-        ollama pull $OllamaModel
+# Check if Ollama is already running
+Write-Host "Checking Ollama..."
+$ollamaRunning = $false
+try {
+    $response = Invoke-WebRequest -Uri "http://localhost:11434/api/status" -UseBasicParsing -TimeoutSec 2 -ErrorAction SilentlyContinue
+    if ($response.StatusCode -eq 200) {
+        Write-Host "[OK] Ollama already running on port 11434" -ForegroundColor Green
+        $ollamaRunning = $true
     }
 }
+catch {
+    # Ollama not running
+}
+
+if (-not $ollamaRunning) {
+    Write-Host "Starting Ollama..."
+    Start-Process ollama -ArgumentList "serve" -NoNewWindow
+    Start-Sleep -Seconds 3
+}
+
+Write-Host ""
 
 # Start Backend
-Write-Host ""
 Write-Host "Starting Backend API..." -ForegroundColor Cyan
-$backendCmd = "cd '$backendPath'; python -m pip install -q -r requirements.txt; python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
-$process = Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", $backendCmd -PassThru
-Write-Host "[OK] Backend PID: $($process.Id)" -ForegroundColor Green
-Start-Sleep -Seconds 5
+$backendScript = @"
+cd '$backendPath'
+if (-not (Test-Path 'venv')) {
+    Write-Host 'Creating virtual environment...' -ForegroundColor Yellow
+    python -m venv venv
+}
+Write-Host 'Activating virtual environment...' -ForegroundColor Yellow
+. '.\venv\Scripts\Activate.ps1'
+Write-Host 'Installing dependencies...' -ForegroundColor Yellow
+pip install -q -r requirements.txt 2>$null; if (`$?) { Write-Host '[OK] Dependencies installed' -ForegroundColor Green } else { pip install -r requirements.txt }
+Write-Host 'Starting uvicorn...' -ForegroundColor Cyan
+python -m uvicorn app.main:app --reload --port 8000
+"@
+
+Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendScript
+Start-Sleep -Seconds 4
+Write-Host "[OK] Backend started" -ForegroundColor Green
+
+Write-Host ""
 
 # Start Frontend
-Write-Host ""
 Write-Host "Starting Streamlit Frontend..." -ForegroundColor Cyan
-$frontendCmd = "cd '$frontendPath'; python -m pip install -q streamlit; streamlit run app.py"
-$process = Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", $frontendCmd -PassThru
-Write-Host "[OK] Frontend PID: $($process.Id)" -ForegroundColor Green
+$frontendScript = @"
+cd '$frontendPath'
+Write-Host 'Installing Streamlit...' -ForegroundColor Yellow
+pip install -q streamlit 2>$null; if (`$?) { Write-Host '[OK] Streamlit ready' -ForegroundColor Green } else { pip install streamlit }
+Write-Host 'Starting Streamlit...' -ForegroundColor Cyan
+streamlit run app.py
+"@
+
+Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendScript
 Start-Sleep -Seconds 3
+Write-Host "[OK] Frontend started" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "=========================================" -ForegroundColor Cyan
