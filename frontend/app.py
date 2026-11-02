@@ -110,7 +110,9 @@ from api_client import APIClient
 @st.cache_resource
 def get_api_client():
     """Get or create API client."""
-    api_url = os.getenv("API_URL", f"http://{settings.api_host}:{settings.api_port}")
+    # Use 0.0.0.0 for server binding, but localhost for client connections
+    host = settings.api_host if settings.api_host != "0.0.0.0" else "localhost"
+    api_url = os.getenv("API_URL", f"http://{host}:{settings.api_port}")
     return APIClient(api_url)
 
 api_client = get_api_client()
@@ -336,9 +338,11 @@ with tab4:
     
     # API Configuration
     st.subheader("API Configuration")
-    api_url = os.getenv("API_URL", f"http://{settings.api_host}:{settings.api_port}")
+    # Use localhost for display instead of 0.0.0.0
+    display_host = settings.api_host if settings.api_host != "0.0.0.0" else "localhost"
+    api_url = os.getenv("API_URL", f"http://{display_host}:{settings.api_port}")
     st.write(f"**API URL:** {api_url}")
-    st.write(f"**API Host:** {settings.api_host}")
+    st.write(f"**API Host:** {display_host}")
     st.write(f"**API Port:** {settings.api_port}")
     
     # System Configuration
