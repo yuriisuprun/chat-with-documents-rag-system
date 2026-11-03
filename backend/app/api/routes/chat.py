@@ -5,8 +5,9 @@ Handles question answering using the RAG pipeline with source references.
 Includes input validation and prompt injection defense (Phase 8).
 """
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 
+from app.api.dependencies import get_rag_service
 from app.core.config import settings
 from app.core.exceptions import RAGException, ValidationException
 from app.core.logging import get_logger
@@ -23,17 +24,6 @@ logger = get_logger(__name__)
 
 router = APIRouter(prefix="/api/v1", tags=["chat"])
 
-# Lazy-loaded RAG service
-_rag_service = None
-
-
-def get_rag_service():
-    """Get or create RAG service."""
-    global _rag_service
-    if _rag_service is None:
-        _rag_service = RAGService()
-    return _rag_service
-
 
 @router.post(
     "/chat",
@@ -41,7 +31,10 @@ def get_rag_service():
     summary="Ask Question About Documents",
     status_code=status.HTTP_200_OK,
 )
-async def chat(request: ChatRequest) -> ChatResponse:
+async def chat(
+    request: ChatRequest,
+    rag_service: RAGService = Depends(get_rag_service),
+) -> ChatResponse:
     """
     Ask a question about indexed documents.
 
@@ -50,6 +43,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
 
     Args:
         request: ChatRequest with query and optional document_ids
+        rag_service: RAG service (injected)
 
     Returns:
         ChatResponse with generated answer and source references
@@ -96,7 +90,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
         # ====================================================================
         
         try:
-            result = get_rag_service().answer_question(
+            result = rag_service.answer_question(
                 question=query,
                 document_ids=request.document_ids,
                 top_k=4,  # Use configured top_k from settings

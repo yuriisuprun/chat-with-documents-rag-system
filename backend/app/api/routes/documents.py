@@ -5,12 +5,12 @@ Handles document upload, listing, retrieval, and deletion.
 Includes input validation and security checks (Phase 8).
 """
 
-import os
 from pathlib import Path
 from uuid import uuid4
 
-from fastapi import APIRouter, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, File, HTTPException, UploadFile, status, Depends
 
+from app.api.dependencies import get_ingestion_service, get_retrieval_service
 from app.core.config import settings
 from app.core.exceptions import (
     DuplicateDocumentException,
@@ -36,26 +36,6 @@ logger = get_logger(__name__)
 
 router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
 
-# Lazy-loaded services (initialized on first use)
-_ingestion_service = None
-_retrieval_service = None
-
-
-def get_ingestion_service():
-    """Get or create ingestion service."""
-    global _ingestion_service
-    if _ingestion_service is None:
-        _ingestion_service = IngestionService()
-    return _ingestion_service
-
-
-def get_retrieval_service():
-    """Get or create retrieval service."""
-    global _retrieval_service
-    if _retrieval_service is None:
-        _retrieval_service = RetrievalService()
-    return _retrieval_service
-
 
 @router.post(
     "/upload",
@@ -63,7 +43,11 @@ def get_retrieval_service():
     summary="Upload PDF Document",
     status_code=status.HTTP_201_CREATED,
 )
-async def upload_document(file: UploadFile = File(...)):
+async def upload_document(
+    file: UploadFile = File(...),
+    ingestion_service: IngestionService = Depends(get_ingestion_service),
+    retrieval_service: RetrievalService = Depends(get_retrieval_service),
+):
     """
     Upload a PDF document for processing.
 
@@ -71,6 +55,8 @@ async def upload_document(file: UploadFile = File(...)):
 
     Args:
         file: PDF file to upload
+        ingestion_service: Document ingestion service (injected)
+        retrieval_service: Retrieval service (injected)
 
     Returns:
         DocumentUploadResponse with document ID and status
@@ -118,13 +104,13 @@ async def upload_document(file: UploadFile = File(...)):
             temp_path.write_bytes(content)
 
             # Ingest document
-            result = get_ingestion_service().ingest_pdf(temp_path)
+            result = ingestion_service.ingest_pdf(temp_path)
 
             # Index in vector store
             try:
-                indexed_count = get_retrieval_service().index_document(
+                indexed_count = retrieval_service.index_document(
                     result["chunks"],
-                    result["document_metadata"].embedding_model or "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+                    settings.embedding_model,
                 )
                 logger.info(
                     f"Document indexed: {result['document_id']}, "
@@ -180,11 +166,16 @@ async def upload_document(file: UploadFile = File(...)):
     response_model=DocumentListResponse,
     summary="List Documents",
 )
-async def list_documents():
+async def list_documents(
+    retrieval_service: RetrievalService = Depends(get_retrieval_service),
+):
     """
     List all indexed documents.
 
     Returns statistics about indexed documents and vector store status.
+
+    Args:
+        retrieval_service: Retrieval service (injected)
 
     Returns:
         DocumentListResponse with list of documents and count
@@ -193,7 +184,7 @@ async def list_documents():
         logger.debug("Listing documents")
 
         # Get collection stats
-        stats = get_retrieval_service().get_collection_stats()
+        stats = retrieval_service.get_collection_stats()
 
         # For now, return empty list when no chunks (Phase 7 will add database integration)
         documents = []
@@ -217,7 +208,10 @@ async def list_documents():
     response_model=DocumentDetailResponse,
     summary="Get Document Details",
 )
-async def get_document(document_id: str):
+async def get_document(
+    document_id: str,
+    retrieval_service: RetrievalService = Depends(get_retrieval_service),
+):
     """
     Get details about a specific document.
 
@@ -225,6 +219,7 @@ async def get_document(document_id: str):
 
     Args:
         document_id: Document ID
+        retrieval_service: Retrieval service (injected)
 
     Returns:
         DocumentDetailResponse with metadata and sample chunks
@@ -268,12 +263,16 @@ async def get_document(document_id: str):
     response_model=DocumentDeleteResponse,
     summary="Delete Document",
 )
-async def delete_document(document_id: str):
+async def delete_document(
+    document_id: str,
+    retrieval_service: RetrievalService = Depends(get_retrieval_service),
+):
     """
     Delete a document and all its chunks from the vector store.
 
     Args:
         document_id: Document ID to delete
+        retrieval_service: Retrieval service (injected)
 
     Returns:
         DocumentDeleteResponse with deletion confirmation
@@ -297,7 +296,7 @@ async def delete_document(document_id: str):
 
         # Delete from vector store
         try:
-            deleted_count = get_retrieval_service().delete_document_chunks(document_id)
+            deleted_count = retrieval_service.delete_document_chunks(document_id)
             logger.info(f"Deleted {deleted_count} chunks for document {document_id}")
         except Exception as e:
             logger.error(f"Deletion failed: {e}")

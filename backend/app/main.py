@@ -1,11 +1,5 @@
-"""
-FastAPI application factory and entry point.
-
-Configures the application with routes, middleware, exception handlers, and startup/shutdown logic.
-Includes security middleware for Phase 8 (rate limiting, API key auth, security headers).
-"""
-
 import logging
+import uvicorn
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -223,8 +217,6 @@ def create_app() -> FastAPI:
 app = create_app()
 
 if __name__ == "__main__":
-    import uvicorn
-
     uvicorn.run(
         "main:app",
         host=settings.api_host,
