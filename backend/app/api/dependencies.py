@@ -7,14 +7,14 @@ Will be expanded as services are implemented.
 
 from functools import lru_cache
 
-from app.core.config import settings
+from app.core.config import Settings
 from app.services.ingestion_service import IngestionService
 from app.services.retrieval_service import RetrievalService
 from app.services.rag_service import RAGService
 
 
 @lru_cache(maxsize=1)
-def get_settings():
+def get_settings() -> Settings:
     """
     Get application settings (cached).
 

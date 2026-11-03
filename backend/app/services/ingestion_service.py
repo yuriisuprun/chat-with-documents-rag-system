@@ -10,6 +10,7 @@ Orchestrates the complete PDF ingestion pipeline:
 
 import uuid
 from pathlib import Path
+from typing import Any, Dict, List
 
 from app.core.exceptions import EmptyDocumentException
 from app.core.logging import get_logger
@@ -29,7 +30,7 @@ class IngestionService:
         self.extractor = PDFExtractor()
         self.chunker = PDFChunker()
 
-    def ingest_pdf(self, file_path: Path) -> dict:
+    def ingest_pdf(self, file_path: Path) -> Dict[str, Any]:
         """
         Complete ingestion pipeline for a PDF document.
 
@@ -53,6 +54,10 @@ class IngestionService:
 
         Raises:
             Various validation/processing exceptions
+
+        Example:
+            >>> result = service.ingest_pdf(Path("document.pdf"))
+            >>> print(f"Created {result['chunk_count']} chunks")
         """
         logger.info(f"Starting ingestion of {file_path.name}")
 
@@ -115,7 +120,7 @@ class IngestionService:
             "page_count": page_count,
         }
 
-    def validate_document(self, file_path: Path) -> dict:
+    def validate_document(self, file_path: Path) -> Dict[str, Any]:
         """
         Validate document without full ingestion.
 
@@ -125,10 +130,20 @@ class IngestionService:
             file_path: Path to PDF file
 
         Returns:
-            Validation result dictionary
+            Validation result dictionary with keys:
+            - is_valid: Boolean indicating validation success
+            - filename: Original filename
+            - file_size: Size in bytes
+            - file_hash: SHA256 hash
+            - page_count: Number of pages
+            - has_extractable_text: Whether text can be extracted
 
         Raises:
             Various validation exceptions
+
+        Example:
+            >>> result = service.validate_document(Path("doc.pdf"))
+            >>> print(f"Valid: {result['is_valid']}, Pages: {result['page_count']}")
         """
         logger.debug(f"Validating document: {file_path.name}")
 

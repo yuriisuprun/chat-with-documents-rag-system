@@ -1,11 +1,11 @@
 # ============================================================================
-# Chat With Documents – RAG System
-# Minimal working dependencies (Windows compatible)
+# Chat With Documents – RAG System (2026 Production Standards)
 # ============================================================================
 
 # Core Web Framework
 fastapi==0.162.0
 uvicorn[standard]==0.34.0
+gunicorn==23.0.0
 pydantic==2.14.2
 pydantic-settings==2.6.1
 
@@ -16,7 +16,7 @@ alembic==1.14.0
 # NumPy 
 numpy>=2.1.0
 
-# RAG & Vector DB (minimal)
+# RAG & Vector DB
 chromadb>=0.3.21
 sentence-transformers>=2.2.0
 langchain>=0.1.0
@@ -28,15 +28,22 @@ langchain-ollama>=0.1.0
 ollama>=0.1.0
 openai>=1.0.0
 
+# Reranking (Phase 9: Production RAG quality)
+rank_bm25>=0.2.2
+
+# Monitoring & Observability (2026 standard)
+prometheus-client>=0.21.0
+python-json-logger>=2.0.0
+
 # Frontend
 streamlit>=1.0.0
 
 # Utilities
 python-multipart>=0.0.5
 httpx>=0.24.0
-python-json-logger>=2.0.0
 
-# Testing (optional)
+# Testing
 pytest>=7.0.0
 pytest-cov>=4.0.0
 pytest-asyncio>=0.20.0
+locust>=2.0.0

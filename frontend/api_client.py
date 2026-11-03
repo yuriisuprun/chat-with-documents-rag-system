@@ -56,7 +56,9 @@ class APIClient:
                 error_detail = e.response.json()
                 raise Exception(f"API Error: {error_detail.get('detail', str(e))}")
             except Exception:
-                raise Exception(f"API Error: {e.status_code} {e.reason_phrase}")
+                raise Exception(
+                    f"API Error: {e.response.status_code} {e.response.reason_phrase}"
+                )
         except Exception as e:
             raise Exception(f"Connection error: {str(e)}")
 
