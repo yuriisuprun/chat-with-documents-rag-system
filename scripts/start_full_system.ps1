@@ -1,9 +1,11 @@
 # Start the complete Chat With Documents system (Backend + Frontend + Ollama)
-# PowerShell version - Smart: checks if services already running
+# PowerShell version - Includes production Uvicorn setup for Windows
 
 param(
     [switch]$SkipOllama = $false,
-    [string]$OllamaModel = "qwen3:8b"
+    [string]$OllamaModel = "qwen3:8b",
+    [int]$BackendPort = 8000,
+    [int]$FrontendPort = 8501
 )
 
 Write-Host "==========================================" -ForegroundColor Cyan
@@ -33,7 +35,7 @@ $ollamaRunning = $false
 try {
     $response = Invoke-WebRequest -Uri "http://localhost:11434/api/status" -UseBasicParsing -TimeoutSec 2 -ErrorAction SilentlyContinue
     if ($response.StatusCode -eq 200) {
-        Write-Host "[OK] Ollama already running on port 11434" -ForegroundColor Green
+        [OK] Ollama already running on port 11434" -ForegroundColor Green
         $ollamaRunning = $true
     }
 }
@@ -41,10 +43,11 @@ catch {
     # Ollama not running
 }
 
-if (-not $ollamaRunning) {
-    Write-Host "Starting Ollama..."
+if (-not $ollamaRunning -and -not $SkipOllama) {
+    Write-Host "Starting Ollama with $OllamaModel..."
     Start-Process ollama -ArgumentList "serve" -NoNewWindow
     Start-Sleep -Seconds 3
+    Write-Host "[OK] Ollama started" -ForegroundColor Green
 }
 
 Write-Host ""
@@ -73,8 +76,9 @@ if (`$LASTEXITCODE -ne 0) {
     exit 1
 }
 Write-Host '[OK] Dependencies installed' -ForegroundColor Green
-Write-Host 'Starting uvicorn...' -ForegroundColor Cyan
-python -m uvicorn app.main:app --reload --port 8000
+Write-Host 'Starting uvicorn on 0.0.0.0:$BackendPort...' -ForegroundColor Cyan
+`$env:ENVIRONMENT = 'production'
+python -m uvicorn app.main:app --host 0.0.0.0 --port $BackendPort --loop asyncio
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $backendScript
@@ -89,8 +93,8 @@ $frontendScript = @"
 cd '$frontendPath'
 Write-Host 'Installing Streamlit...' -ForegroundColor Yellow
 pip install -q streamlit 2>$null; if (`$?) { Write-Host '[OK] Streamlit ready' -ForegroundColor Green } else { pip install streamlit }
-Write-Host 'Starting Streamlit...' -ForegroundColor Cyan
-streamlit run app.py
+Write-Host 'Starting Streamlit on port $FrontendPort...' -ForegroundColor Cyan
+streamlit run app.py --server.port $FrontendPort
 "@
 
 Start-Process powershell -ArgumentList "-NoExit", "-Command", $frontendScript
@@ -102,9 +106,10 @@ Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "[OK] System startup complete!" -ForegroundColor Green
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Frontend: http://localhost:8501" -ForegroundColor Yellow
-Write-Host "Backend API: http://localhost:8000" -ForegroundColor Yellow
-Write-Host "API Docs: http://localhost:8000/docs" -ForegroundColor Yellow
+Write-Host "Frontend: http://localhost:$FrontendPort" -ForegroundColor Yellow
+Write-Host "Backend API: http://localhost:$BackendPort" -ForegroundColor Yellow
+Write-Host "API Docs: http://localhost:$BackendPort/docs" -ForegroundColor Yellow
+Write-Host "Metrics: http://localhost:$BackendPort/metrics" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "Documentation: Check README.md" -ForegroundColor Cyan
 Write-Host "To stop: Close the terminal windows or press Ctrl+C" -ForegroundColor Cyan

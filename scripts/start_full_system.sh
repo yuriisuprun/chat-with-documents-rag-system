@@ -1,8 +1,14 @@
 #!/bin/bash
 # Chat With Documents - Complete System Startup
 # Works on: Windows Git Bash, Linux, macOS
+# Includes production Uvicorn (or Gunicorn on Linux/macOS) setup
 
 set -e
+
+# Parameters
+BACKEND_PORT=${1:-8000}
+FRONTEND_PORT=${2:-8501}
+USE_GUNICORN=${3:-"auto"}  # auto, true, false
 
 echo "=========================================="
 echo "Chat With Documents - Starting..."
@@ -15,6 +21,8 @@ BACKEND="$PROJECT_ROOT/backend"
 FRONTEND="$PROJECT_ROOT/frontend"
 
 echo "Project: $PROJECT_ROOT"
+echo "Backend Port: $BACKEND_PORT"
+echo "Frontend Port: $FRONTEND_PORT"
 echo ""
 
 # Check Python
@@ -46,13 +54,46 @@ fi
 export PYTHONDONTWRITEBYTECODE=1
 export WATCHFILES_IGNORE_PATHS='venv/*'
 export PYTHONUNBUFFERED=1
+export ENVIRONMENT="production"
 
 echo "Backend: $(which python)"
 echo ""
 
+# Determine if we should use Gunicorn (Linux/macOS) or Uvicorn (Windows)
+USE_GUNICORN_CMD="false"
+if [ "$USE_GUNICORN" = "auto" ]; then
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+        USE_GUNICORN_CMD="false"  # Windows - use Uvicorn
+    else
+        USE_GUNICORN_CMD="true"   # Linux/macOS - use Gunicorn
+    fi
+elif [ "$USE_GUNICORN" = "true" ]; then
+    USE_GUNICORN_CMD="true"
+fi
+
 # Start backend server
-echo "Starting uvicorn on http://localhost:8000"
-python -m uvicorn app.main:app --reload --port 8000 2>&1 &
+if [ "$USE_GUNICORN_CMD" = "true" ]; then
+    # Production: Gunicorn + Uvicorn workers (Linux/macOS)
+    CORES=$(nproc || sysctl -n hw.ncpu)
+    WORKERS=$((CORES * 2))
+    echo "Starting Gunicorn with $WORKERS workers on http://0.0.0.0:$BACKEND_PORT"
+    gunicorn \
+        "app.main:app" \
+        --config "gunicorn_config.py" \
+        --workers "$WORKERS" \
+        --worker-class "uvicorn.workers.UvicornWorker" \
+        --bind "0.0.0.0:$BACKEND_PORT" \
+        --access-logfile "-" \
+        --error-logfile "-" &
+else
+    # Windows: Single Uvicorn process (async)
+    echo "Starting Uvicorn on http://0.0.0.0:$BACKEND_PORT"
+    python -m uvicorn app.main:app \
+        --host 0.0.0.0 \
+        --port $BACKEND_PORT \
+        --loop asyncio &
+fi
+
 BACKEND_PID=$!
 echo "Backend PID: $BACKEND_PID"
 sleep 3
@@ -74,8 +115,8 @@ if [ ! -f "$STREAMLIT_FILE" ]; then
     exit 1
 fi
 
-echo "Starting Streamlit on http://localhost:8501"
-streamlit run "$STREAMLIT_FILE" --server.port 8501 --logger.level=warning 2>&1 &
+echo "Starting Streamlit on http://localhost:$FRONTEND_PORT"
+streamlit run "$STREAMLIT_FILE" --server.port $FRONTEND_PORT --logger.level=warning 2>&1 &
 FRONTEND_PID=$!
 echo "Frontend PID: $FRONTEND_PID"
 sleep 2
@@ -85,9 +126,10 @@ echo "=========================================="
 echo "✓ System Started!"
 echo "=========================================="
 echo ""
-echo "📱 UI:   http://localhost:8501"
-echo "🔧 API:  http://localhost:8000"
-echo "📚 Docs: http://localhost:8000/docs"
+echo "📱 UI:   http://localhost:$FRONTEND_PORT"
+echo "🔧 API:  http://localhost:$BACKEND_PORT"
+echo "📚 Docs: http://localhost:$BACKEND_PORT/docs"
+echo "📊 Metrics: http://localhost:$BACKEND_PORT/metrics"
 echo ""
 echo "Ollama: Make sure ollama serve is running"
 echo "        (or start: ollama serve)"
