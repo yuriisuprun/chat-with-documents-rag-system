@@ -7,18 +7,10 @@ from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 
-# from prometheus_client import generate_latest, REGISTRY
-
 from app.api.routes import chat, documents, health
 from app.core.config import settings
 from app.core.exceptions import ApplicationException
 from app.core.logging import configure_logging, get_logger
-# from app.core.rate_limiter import init_rate_limiter
-# from app.core.prompt_defense import init_prompt_defense
-# from app.middleware.prometheus import PrometheusMiddleware
-# from app.middleware.rate_limiting import RateLimitMiddleware
-# from app.middleware.api_key_auth import APIKeyAuthMiddleware
-# from app.middleware.security_headers import SecurityHeadersMiddleware
 
 logger = get_logger(__name__)
 
@@ -67,26 +59,6 @@ async def lifespan(app: FastAPI):
         logger.error(f"Failed to initialize database: {e}")
         raise
 
-    # # Initialize rate limiter (Phase 8)
-    # try:
-    #     init_rate_limiter(
-    #         global_limit=settings.rate_limit_global,
-    #         upload_limit=settings.rate_limit_upload,
-    #         chat_limit=settings.rate_limit_chat,
-    #     )
-    #     logger.info("Rate limiter initialized")
-    # except Exception as e:
-    #     logger.error(f"Failed to initialize rate limiter: {e}")
-    #     raise
-
-    # # Initialize prompt defense (Phase 8)
-    # try:
-    #     init_prompt_defense(block_on_detection=False)
-    #     logger.info("Prompt defense initialized")
-    # except Exception as e:
-    #     logger.error(f"Failed to initialize prompt defense: {e}")
-    #     raise
-
     # Log configuration (without sensitive values)
     logger.info(f"Environment: {settings.environment}")
     logger.info(f"API: {settings.api_host}:{settings.api_port}")
@@ -131,30 +103,6 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-    # ========================================================================
-    # Security Middleware (Phase 8) - TEMPORARILY DISABLED
-    # ========================================================================
-    # Add middleware in reverse order (first middleware added is last to execute)
-    
-    # # 1. Prometheus metrics (added first to track all requests)
-    # app.add_middleware(PrometheusMiddleware)
-    # logger.debug("Added Prometheus metrics middleware")
-    
-    # # 2. Security headers (applied to all responses)
-    # if settings.enable_security_headers:
-    #     app.add_middleware(SecurityHeadersMiddleware)
-    #     logger.debug("Added security headers middleware")
-    
-    # # 3. API key authentication (before rate limiting)
-    # if settings.api_key_enabled:
-    #     app.add_middleware(APIKeyAuthMiddleware)
-    #     logger.debug("Added API key authentication middleware")
-    
-    # # 4. Rate limiting (applied to all routes)
-    # if settings.rate_limit_enabled:
-    #     app.add_middleware(RateLimitMiddleware)
-    #     logger.debug("Added rate limiting middleware")
 
     # ========================================================================
     # Exception Handlers
@@ -217,19 +165,6 @@ def create_app() -> FastAPI:
             "api_version": "v1",
             "metrics": "/metrics",
         }
-
-    # @app.get(
-    #     "/metrics",
-    #     tags=["monitoring"],
-    #     summary="Prometheus Metrics",
-    #     description="Prometheus metrics endpoint for monitoring",
-    # )
-    # async def metrics():
-    #     """Export metrics in Prometheus format."""
-    #     return Response(
-    #         generate_latest(REGISTRY),
-    #         media_type="text/plain; charset=utf-8",
-    #     )
 
     return app
 
