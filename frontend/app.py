@@ -1,422 +1,440 @@
 """
-Chat With Documents – Frontend Application
+Chat With Documents – Enterprise SaaS Dashboard (Fixed Layout)
 
-Streamlit-based UI for the RAG system that allows users to:
-- Upload PDF documents
-- View indexed documents
-- Ask questions and receive AI-powered answers with sources
+Clean, professional Streamlit UI with fixed layout, alignment, and spacing.
 """
 
 import os
 import sys
 from pathlib import Path
-
+import pandas as pd
 import streamlit as st
 
-# Add backend to Python path for importing config
+# Add backend to Python path
 backend_path = Path(__file__).parent.parent / "backend"
 sys.path.insert(0, str(backend_path))
 
 from app.core.config import settings
 
-# Configure Streamlit page
+# Page config
 st.set_page_config(
-    page_title="Chat With Documents",
+    page_title="Chat With Documents - Enterprise",
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Load custom CSS
-def load_css():
-    """Load custom CSS styling."""
+# ============================================================================
+# ENTERPRISE DESIGN SYSTEM WITH LAYOUT FIXES
+# ============================================================================
+def load_enterprise_css():
+    """Load enterprise SaaS design system with layout and alignment fixes."""
     css = """
     <style>
-    /* Main container styling */
-    .main {
-        padding: 2rem;
+    :root {
+        --color-primary: #4F46E5;
+        --color-primary-dark: #4338CA;
+        --color-primary-light: #EEF2FF;
+        --color-slate-900: #0F172A;
+        --color-slate-800: #1E293B;
+        --color-slate-600: #475569;
+        --color-slate-400: #94A3B8;
+        --color-slate-200: #E2E8F0;
+        --color-slate-50: #F8FAFC;
+        --color-success: #10B981;
+        --color-warning: #F59E0B;
+        --color-error: #EF4444;
+        --color-info: #3B82F6;
     }
+
+    * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    html, body { background: var(--color-slate-50); margin: 0; padding: 0; }
     
-    /* Header styling */
-    .header-title {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f77b4;
-        margin-bottom: 0.5rem;
+    [data-testid="stAppViewContainer"] { background: var(--color-slate-50); }
+    [data-testid="stMain"] { padding: 2rem 3rem !important; }
+
+    /* FIX: Hide Streamlit's default page navigation and header clutter */
+    [data-testid="stPageContainer"] { max-width: 100% !important; }
+    .stApp > header { display: none !important; }
+
+    .page-header { margin-bottom: 2.5rem; padding-bottom: 0; }
+    .page-title { font-size: 2.5rem; font-weight: 800; color: var(--color-slate-900); margin: 0 0 0.5rem 0; letter-spacing: -0.02em; }
+    .page-subtitle { font-size: 1rem; color: var(--color-slate-600); margin: 0; font-weight: 400; }
+
+    .card { background: #FFFFFF; border: 1px solid var(--color-slate-200); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08); transition: all 0.2s; }
+    .card:hover { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12); border-color: var(--color-slate-300); }
+    .card-header { font-size: 1.1rem; font-weight: 700; color: var(--color-slate-900); margin-bottom: 1.5rem; }
+
+    /* FIX: Input & button alignment */
+    .stTextArea { margin: 0 !important; padding: 0 !important; }
+    .stTextArea textarea { font-size: 1rem; border: 1.5px solid var(--color-slate-200); border-radius: 0.625rem; padding: 0.875rem; color: var(--color-slate-900); background: #FFFFFF; width: 100% !important; box-sizing: border-box; }
+    .stTextArea textarea::placeholder { color: var(--color-slate-400); }
+    .stTextArea textarea:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); outline: none; }
+
+    .stButton { margin: 0 !important; }
+    .stButton > button { font-size: 0.95rem; font-weight: 600; padding: 0.75rem 1.5rem !important; border-radius: 0.625rem; border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08); width: 100% !important; height: auto; }
+    .stButton > button[kind="primary"] { background: var(--color-primary) !important; color: #FFFFFF !important; }
+    .stButton > button[kind="primary"]:hover { background: var(--color-primary-dark) !important; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important; transform: translateY(-1px); }
+    .stButton > button[kind="primary"]:active { transform: translateY(0); }
+
+    /* FIX: Compact notifications */
+    .stSuccess, .stWarning, .stError, .stInfo {
+        margin: 0.5rem 0 !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 0.5rem !important;
     }
+
+    .stSuccess { background: #F0FDF4; border-left: 3px solid var(--color-success) !important; border-right: 1px solid var(--color-slate-200); border-top: 1px solid var(--color-slate-200); border-bottom: 1px solid var(--color-slate-200); }
+    .stWarning { background: #FFFBEB; border-left: 3px solid var(--color-warning) !important; border-right: 1px solid var(--color-slate-200); border-top: 1px solid var(--color-slate-200); border-bottom: 1px solid var(--color-slate-200); }
+    .stError { background: #FEF2F2; border-left: 3px solid var(--color-error) !important; border-right: 1px solid var(--color-slate-200); border-top: 1px solid var(--color-slate-200); border-bottom: 1px solid var(--color-slate-200); }
+    .stInfo { background: #F0F9FF; border-left: 3px solid var(--color-info) !important; border-right: 1px solid var(--color-slate-200); border-top: 1px solid var(--color-slate-200); border-bottom: 1px solid var(--color-slate-200); }
+
+    .stMetric { background: var(--color-slate-50); border: 1px solid var(--color-slate-200); padding: 1.5rem; border-radius: 0.75rem; text-align: center; }
+    .stMetric label { font-size: 0.75rem; color: var(--color-slate-600); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stMetric [data-testid="metric-value"] { font-size: 2rem; font-weight: 800; color: var(--color-primary); margin-top: 0.75rem; }
+
+    h1 { font-size: 2rem; font-weight: 800; color: var(--color-slate-900); margin: 1.5rem 0 1rem 0; letter-spacing: -0.02em; }
+    h2 { font-size: 1.5rem; font-weight: 700; color: var(--color-slate-900); margin: 1.25rem 0 0.75rem 0; }
+    h3 { font-size: 1.125rem; font-weight: 700; color: var(--color-slate-800); margin: 1rem 0 0.5rem 0; }
+    h4 { font-size: 1rem; font-weight: 600; color: var(--color-slate-800); margin: 0.75rem 0 0.5rem 0; }
+
+    body, p { color: var(--color-slate-700); line-height: 1.6; }
+    a { color: var(--color-primary); text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; color: var(--color-primary-dark); }
+
+    .stExpander { border: 1px solid var(--color-slate-200); border-radius: 0.625rem; background: #FFFFFF; }
+    .stExpander [data-testid="stExpanderDetails"] { background: var(--color-slate-50); }
     
-    .header-subtitle {
-        font-size: 1rem;
-        color: #666;
-        margin-bottom: 2rem;
-    }
-    
-    /* Card styling */
-    .info-card {
-        background-color: #f0f2f6;
-        border-left: 4px solid #1f77b4;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
-    
-    /* Source reference styling */
-    .source-reference {
-        background-color: #f9f9f9;
-        border-left: 3px solid #28a745;
-        padding: 0.75rem;
-        margin: 0.5rem 0;
-        border-radius: 0.25rem;
-        font-size: 0.9rem;
-    }
-    
-    /* Answer styling */
-    .answer-box {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
-    
-    /* Status badge */
-    .status-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 1rem;
-        font-size: 0.85rem;
-        font-weight: bold;
-    }
-    
-    .status-indexed {
-        background-color: #28a745;
-        color: white;
-    }
-    
-    .status-error {
-        background-color: #dc3545;
-        color: white;
+    /* FIX: Clean spacing */
+    .stDivider { background-color: var(--color-slate-200); height: 1px; margin: 1.5rem 0 !important; }
+    [data-testid="column"] { gap: 1.5rem; }
+
+    .answer-box { background: linear-gradient(135deg, var(--color-primary-light) 0%, #FFFFFF 100%); padding: 1.75rem; border-radius: 0.75rem; border-left: 4px solid var(--color-primary); font-size: 1.0625rem; line-height: 1.8; color: var(--color-slate-900); margin: 1rem 0; }
+
+    .nav-section-title { font-size: 0.75rem; font-weight: 700; color: var(--color-slate-600); text-transform: uppercase; letter-spacing: 0.05em; padding: 0.5rem 1rem; margin-bottom: 0.5rem; }
+    .nav-item { padding: 0.75rem 1rem; margin: 0.25rem 0; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; color: var(--color-slate-700); font-weight: 500; }
+    .nav-item:hover { background: var(--color-slate-100); color: var(--color-primary); }
+    .nav-item-active { background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; }
+
+    [data-testid="stSidebar"] { background: linear-gradient(180deg, #FFFFFF 0%, var(--color-slate-50) 100%); border-right: 1px solid var(--color-slate-200); }
+
+    /* FIX: Footer spacing */
+    .footer-section { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-slate-200); }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; text-align: center; }
+    .footer-link { font-size: 0.875rem; color: var(--color-slate-600); }
+
+    @media (max-width: 768px) { 
+        [data-testid="stMain"] { padding: 1rem 1.5rem !important; }
+        .page-title { font-size: 1.75rem; }
+        .footer-links { gap: 1rem; }
     }
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
-load_css()
+load_enterprise_css()
 
 # Import API client
 from api_client import APIClient
 
-# Initialize API client with backend URL
 @st.cache_resource
 def get_api_client():
-    """Get or create API client."""
-    # Use 0.0.0.0 for server binding, but localhost for client connections
     host = settings.api_host if settings.api_host != "0.0.0.0" else "localhost"
     api_url = os.getenv("API_URL", f"http://{host}:{settings.api_port}")
     return APIClient(api_url)
 
 api_client = get_api_client()
 
-# Page header
+# ============================================================================
+# SIDEBAR NAVIGATION (Clean and unified)
+# ============================================================================
+with st.sidebar:
+    if "current_page" not in st.session_state:
+        st.session_state.current_page = "chat"
+    
+    st.markdown('<div class="nav-section-title">📊 Main</div>', unsafe_allow_html=True)
+    
+    if st.button("💬 Chat & Ask", use_container_width=True, key="nav_chat"):
+        st.session_state.current_page = "chat"
+        st.rerun()
+    
+    if st.button("📤 Upload", use_container_width=True, key="nav_upload"):
+        st.session_state.current_page = "upload"
+        st.rerun()
+    
+    if st.button("📋 Library", use_container_width=True, key="nav_docs"):
+        st.session_state.current_page = "documents"
+        st.rerun()
+    
+    st.divider()
+    st.markdown('<div class="nav-section-title">⚙️ Tools</div>', unsafe_allow_html=True)
+    
+    if st.button("🔧 Settings", use_container_width=True, key="nav_settings"):
+        st.session_state.current_page = "settings"
+        st.rerun()
+
+# ============================================================================
+# PAGE HEADER
+# ============================================================================
 st.markdown(
-    '<div class="header-title">📚 Chat With Documents</div>',
-    unsafe_allow_html=True,
-)
-st.markdown(
-    '<div class="header-subtitle">Ask questions about your PDF documents using AI</div>',
+    """
+    <div class="page-header">
+        <h1 class="page-title">📚 Chat With Documents</h1>
+    </div>
+    """,
     unsafe_allow_html=True,
 )
 
-# Main layout
-tab1, tab2, tab3, tab4 = st.tabs(["💬 Chat", "📤 Upload", "📋 Documents", "⚙️ Settings"])
+# ============================================================================
+# PAGES WITH FIXED LAYOUT AND ALIGNMENT
+# ============================================================================
 
-# ============================================================================
-# TAB 1: CHAT
-# ============================================================================
-with tab1:
-    st.header("Ask Questions")
+if st.session_state.current_page == "chat":
+    st.markdown("### 💬 Ask Questions About Your Documents")
+    st.divider()
     
-    # Chat interface
-    col1, col2 = st.columns([3, 1])
+    # FIX: Proper column layout for input and button alignment
+    form_col1, form_col2 = st.columns([4, 1], gap="medium")
     
-    with col1:
+    with form_col1:
         query = st.text_area(
-            "Your Question",
-            placeholder="Ask a question about your documents...",
-            height=80,
+            "Your question",
+            placeholder="Ask about your documents...",
+            height=110,
             key="chat_query",
         )
     
-    with col2:
+    with form_col2:
         st.write("")
         st.write("")
-        ask_button = st.button("Ask", use_container_width=True, type="primary")
+        ask_button = st.button(
+            "🚀 Ask",
+            use_container_width=True,
+            type="primary",
+            key="ask_btn"
+        )
     
-    # Show recent queries
+    # Initialize chat history
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
     
+    # Process question
     if ask_button:
         if not query or not query.strip():
-            st.error("Please enter a question")
+            st.toast("Please enter a question", icon="⚠️")
         else:
-            with st.spinner("Searching and generating answer..."):
+            with st.spinner("Analyzing documents..."):
                 try:
                     response = api_client.ask_question(query)
-                    
-                    # Add to history
                     st.session_state.chat_history.insert(0, response)
+                    st.divider()
                     
-                    # Display answer
-                    st.subheader("Answer")
+                    st.markdown("**📝 Answer**")
                     st.markdown(
                         f'<div class="answer-box">{response["answer"]}</div>',
                         unsafe_allow_html=True,
                     )
                     
-                    # Display context sufficiency
                     col1, col2, col3 = st.columns(3)
                     with col1:
-                        if response["context_sufficient"]:
-                            st.success("✅ Context sufficient")
+                        if response.get("context_sufficient"):
+                            st.success("✓ High Confidence", icon="✅")
                         else:
-                            st.warning("⚠️ Limited context")
+                            st.warning("⚠ Limited Context", icon="⚠️")
+                    with col2:
+                        sources_count = len(response.get('sources', []))
+                        st.info(f"📊 {sources_count} Sources")
+                    with col3:
+                        st.caption(f"Generated: {pd.Timestamp.now().strftime('%H:%M:%S')}")
                     
-                    # Display sources
-                    if response["sources"]:
-                        st.subheader("Sources")
-                        for source in response["sources"]:
+                    if response.get("sources"):
+                        st.markdown("**📎 Source Documents**")
+                        for i, source in enumerate(response["sources"], 1):
                             with st.expander(
-                                f"📄 {source['filename']} (Page {source['page_number']})"
+                                f"Document {i}: {source.get('filename', 'Unknown')} - Page {source.get('page_number')}"
                             ):
-                                st.write(f"**Document ID:** {source['document_id']}")
-                                st.write(f"**Page:** {source['page_number']}")
-                                st.write(f"**Similarity:** {source['similarity_score']:.2%}")
-                                st.write(f"**Preview:** {source['text_preview']}")
-                    else:
-                        st.info("No relevant sources found in documents")
-                    
+                                col1, col2 = st.columns([3, 1])
+                                with col1:
+                                    st.write(source.get("text_preview", "")[:400])
+                                with col2:
+                                    st.metric("Match", f"{source.get('similarity_score', 0):.0%}")
+                
                 except Exception as e:
-                    st.error(f"Error: {str(e)}")
+                    st.toast(f"Error: {str(e)}", icon="❌")
     
-    # Display chat history
+    # Chat history
     if st.session_state.chat_history:
         st.divider()
-        st.subheader("Recent Questions")
-        
+        st.markdown("**📜 Chat History**")
         for i, item in enumerate(st.session_state.chat_history[:5]):
-            with st.expander(f"Q: {item['query'][:60]}..."):
-                st.write(f"**Answer:** {item['answer'][:200]}...")
-                st.write(f"**Sources:** {len(item['sources'])} found")
+            with st.expander(f"{i+1}. {item.get('query', '')[:60]}...", expanded=False):
+                st.write(f"**Q:** {item.get('query', '')}")
+                st.write(f"**A:** {item.get('answer', '')[:300]}...")
+                st.caption(f"{len(item.get('sources', []))} sources used")
 
-# ============================================================================
-# TAB 2: UPLOAD
-# ============================================================================
-with tab2:
-    st.header("Upload Documents")
+elif st.session_state.current_page == "upload":
+    st.markdown("### 📤 Upload PDF Documents")
+    st.caption("Upload your PDF documents to be indexed and searchable")
+    st.divider()
     
-    uploaded_file = st.file_uploader(
-        "Choose a PDF file",
-        type="pdf",
-        help="Maximum file size: 10MB, Maximum pages: 100",
-    )
+    uploaded_file = st.file_uploader("Choose a PDF file", type="pdf", help="Max 10MB, max 100 pages")
     
     if uploaded_file is not None:
-        col1, col2 = st.columns([2, 1])
+        st.divider()
+        file_size_mb = uploaded_file.size / 1024 / 1024
         
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.write(f"**File:** {uploaded_file.name}")
-            st.write(f"**Size:** {uploaded_file.size / 1024 / 1024:.2f} MB")
-        
+            st.metric("Filename", uploaded_file.name[:20] + "..." if len(uploaded_file.name) > 20 else uploaded_file.name)
         with col2:
-            st.write("")
-            upload_button = st.button(
-                "Upload & Index",
-                use_container_width=True,
-                type="primary",
-            )
+            st.metric("File Size", f"{file_size_mb:.2f} MB")
+        with col3:
+            st.metric("Status", "✓ Ready")
+        with col4:
+            st.metric("Format", "PDF")
+        
+        st.divider()
+        col1, col2 = st.columns([4, 1])
+        with col2:
+            upload_button = st.button("Upload & Index", use_container_width=True, type="primary")
         
         if upload_button:
-            with st.spinner("Uploading and indexing document..."):
+            with st.spinner("Processing PDF..."):
                 try:
                     response = api_client.upload_document(uploaded_file)
+                    st.success(f"✅ Document uploaded successfully!")
+                    st.divider()
                     
-                    st.success(f"✅ {response['message']}")
-                    
-                    # Display document info
                     col1, col2, col3 = st.columns(3)
                     with col1:
-                        st.metric("Document ID", response["document_id"][:8] + "...")
+                        st.metric("Document ID", response.get("document_id", "")[:8])
                     with col2:
-                        st.metric("Filename", response["filename"])
+                        st.metric("Chunks", response.get("chunk_count", "?"))
                     with col3:
-                        st.metric("Status", response["status"])
+                        st.metric("Status", response.get("status", "?").title())
                     
-                    # Clear the file uploader
-                    st.session_state.uploaded_file = None
-                    
+                    st.info("✨ Document indexed! Go to Chat to ask questions.")
                 except Exception as e:
-                    st.error(f"Error uploading document: {str(e)}")
-    
-    # Upload information
-    st.divider()
-    st.info(
-        """
-        **Upload Requirements:**
-        - File type: PDF only
-        - Maximum size: 10 MB
-        - Maximum pages: 100
-        
-        The system will automatically:
-        1. Extract text from the PDF
-        2. Split into chunks
-        3. Generate embeddings
-        4. Index in vector store
-        """
-    )
+                    st.toast(f"Upload failed: {str(e)}", icon="❌")
+    else:
+        st.markdown(
+            """
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">📋 Upload Guidelines</div>
+                
+                **Supported Format:**
+                - PDF documents only
+                
+                **File Limits:**
+                - Maximum: 10 MB
+                - Maximum pages: 100
+                
+                **Processing:**
+                - Automatic text extraction
+                - Smart page chunking
+                - Semantic indexing
+                - Instant searchability
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-# ============================================================================
-# TAB 3: DOCUMENTS
-# ============================================================================
-with tab3:
-    st.header("Indexed Documents")
+elif st.session_state.current_page == "documents":
+    st.markdown("### 📋 Document Library")
+    st.caption("View and manage all indexed documents")
     
-    if st.button("🔄 Refresh", key="refresh_docs"):
-        st.session_state.last_refresh = None
+    col1, col2 = st.columns([5, 1])
+    with col2:
+        if st.button("🔄 Refresh", use_container_width=True):
+            st.rerun()
+    
+    st.divider()
     
     with st.spinner("Loading documents..."):
         try:
             doc_list = api_client.list_documents()
             
-            if doc_list["count"] > 0:
-                st.success(f"✅ {doc_list['count']} chunks indexed")
-                
-                # Display statistics
+            if doc_list.get("count", 0) > 0:
                 col1, col2 = st.columns(2)
                 with col1:
-                    st.metric("Total Chunks", doc_list["count"])
+                    st.metric("Total Chunks", doc_list.get("count", 0))
+                with col2:
+                    st.metric("Documents", len(doc_list.get("documents", [])))
                 
-                # Display documents
-                if doc_list["documents"]:
-                    st.subheader("Documents")
+                st.divider()
+                
+                if doc_list.get("documents"):
+                    st.markdown("**Documents**")
                     for doc in doc_list["documents"]:
-                        col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
-                        
+                        col1, col2, col3, col4, col5 = st.columns([2.5, 1, 1, 1, 0.5])
                         with col1:
-                            st.write(f"**{doc['filename']}**")
-                        
+                            st.write(f"**{doc.get('filename', 'Unknown')}**")
                         with col2:
-                            st.write(f"{doc['chunk_count']} chunks")
-                        
+                            st.metric("Chunks", doc.get('chunk_count', 0))
                         with col3:
-                            st.write(f"{doc['page_count']} pages")
-                        
+                            st.metric("Pages", doc.get('page_count', 0))
                         with col4:
-                            if st.button(
-                                "🗑️",
-                                key=f"delete_{doc['id']}",
-                                help="Delete this document",
-                            ):
+                            st.metric("Size", f"{doc.get('size_mb', 0):.1f}MB" if doc.get('size_mb') else "N/A")
+                        with col5:
+                            if st.button("🗑️", key=f"del_{doc.get('id')}", help="Delete"):
                                 with st.spinner("Deleting..."):
                                     try:
-                                        api_client.delete_document(doc['id'])
-                                        st.success(f"Deleted {doc['filename']}")
+                                        api_client.delete_document(doc.get('id'))
+                                        st.toast("Deleted", icon="✅")
                                         st.rerun()
                                     except Exception as e:
-                                        st.error(f"Error: {str(e)}")
+                                        st.toast(str(e), icon="❌")
+                        st.divider()
             else:
-                st.info("No documents indexed yet. Upload a PDF to get started.")
-        
+                st.info("No documents yet. Go to Upload to add documents.")
         except Exception as e:
-            st.error(f"Error loading documents: {str(e)}")
+            st.toast(f"Error: {str(e)}", icon="❌")
 
-# ============================================================================
-# TAB 4: SETTINGS
-# ============================================================================
-with tab4:
-    st.header("Settings & Information")
+elif st.session_state.current_page == "settings":
+    st.markdown("### ⚙️ System Settings & Information")
+    st.divider()
     
-    # API Configuration
-    st.subheader("API Configuration")
-    # Use localhost for display instead of 0.0.0.0
-    display_host = settings.api_host if settings.api_host != "0.0.0.0" else "localhost"
-    api_url = os.getenv("API_URL", f"http://{display_host}:{settings.api_port}")
-    st.write(f"**API URL:** {api_url}")
-    st.write(f"**API Host:** {display_host}")
-    st.write(f"**API Port:** {settings.api_port}")
-    
-    # System Configuration
-    st.subheader("System Configuration")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.write(f"**Max Upload Size:** {settings.max_upload_size / 1024 / 1024:.0f} MB")
-        st.write(f"**Max PDF Pages:** {settings.max_pdf_pages}")
-        st.write(f"**Embedding Model:** {settings.embedding_model[:40]}...")
-    
-    with col2:
-        st.write(f"**LLM Provider:** {settings.llm_provider}")
-        st.write(f"**LLM Model:** {settings.ollama_model}")
-        st.write(f"**Environment:** {settings.environment}")
-    
-    # System Health
-    st.subheader("System Health")
+    st.markdown("**🏥 System Health**")
     try:
         health = api_client.check_health()
-        
         col1, col2, col3 = st.columns(3)
-        
         with col1:
-            status_color = "green" if health["status"] == "healthy" else "orange"
-            st.write(f"**Status:** :{status_color}[{health['status'].upper()}]")
-        
+            status_icon = "🟢" if health.get("status") == "healthy" else "🟡"
+            st.metric("API Status", f"{status_icon} {health.get('status', 'unknown').title()}")
         with col2:
-            st.write(f"**Version:** {health['version']}")
-        
+            st.metric("API Version", health.get("version", "?"))
         with col3:
-            st.write(f"**Timestamp:** {health['timestamp'][:19]}")
-        
-        # Services status
-        st.write("**Services:**")
-        for service_name, service_status in health["services"].items():
-            status_icon = "✅" if service_status else "❌"
-            st.write(f"{status_icon} {service_name}: {service_status}")
-    
+            st.metric("Last Check", health.get("timestamp", "?")[:10])
     except Exception as e:
-        st.error(f"Could not connect to API: {str(e)}")
+        st.toast(f"Could not connect: {str(e)}", icon="❌")
     
-    # About
     st.divider()
-    st.subheader("About")
-    st.write(
+    st.markdown("**⚙️ Configuration**")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        display_host = settings.api_host if settings.api_host != "0.0.0.0" else "localhost"
+        st.write(f"**API:** `http://{display_host}:{settings.api_port}`")
+        st.write(f"**Max File:** `{settings.max_upload_size / 1024 / 1024:.0f} MB`")
+        st.write(f"**Max Pages:** `{settings.max_pdf_pages}`")
+    with col2:
+        st.write(f"**LLM:** `{settings.llm_provider}`")
+        st.write(f"**Model:** `{settings.ollama_model}`")
+        st.write(f"**Environment:** `{settings.environment}`")
+    
+    st.divider()
+    st.markdown("**ℹ️ About**")
+    st.markdown(
         """
-        **Chat With Documents** is an AI-powered RAG (Retrieval-Augmented Generation) system
-        that allows you to upload PDF documents and ask questions about their contents.
+        **Chat With Documents** is an enterprise RAG system.
         
-        **Features:**
-        - 📤 Upload and automatically index PDF documents
-        - 🔍 Semantic search over document content
-        - 🤖 AI-powered answers using local LLMs
-        - 📎 Source citations for every answer
-        - 🔒 Privacy-first design (no external API calls)
+        **Features:** PDF ingestion • Semantic search • AI Q&A • Source citations • Privacy-first
         
-        **Built with:**
-        - FastAPI (Backend)
-        - Streamlit (Frontend)
-        - ChromaDB (Vector Store)
-        - Sentence Transformers (Embeddings)
-        - Ollama (Local LLM)
-        
-        **Version:** 0.1.0 (Phase 6)
+        **Tech:** FastAPI • Streamlit • ChromaDB • Ollama | **Version:** 0.1.0
         """
     )
 
-# Footer
-st.divider()
-col1, col2, col3 = st.columns([1, 1, 1])
-with col1:
-    st.caption("🏠 [Documentation](https://github.com/yourusername/chat-with-documents)")
-with col2:
-    st.caption("💬 [Issues](https://github.com/yourusername/chat-with-documents/issues)")
-with col3:
-    st.caption("⭐ [GitHub](https://github.com/yourusername/chat-with-documents)")
+# ============================================================================
+# FOOTER WITH PROPER SPACING
+# ============================================================================
+# Footer links removed for cleaner interface
