@@ -60,7 +60,10 @@ class APIClient:
                     f"API Error: {e.response.status_code} {e.response.reason_phrase}"
                 )
         except Exception as e:
-            raise Exception(f"Connection error: {str(e)}")
+            # Include full exception details for debugging
+            import traceback
+            tb = traceback.format_exc()
+            raise Exception(f"Connection error: {str(e)}\n{tb}")
 
     def upload_document(self, file_obj: Any) -> dict:
         """
@@ -72,8 +75,31 @@ class APIClient:
         Returns:
             DocumentUploadResponse
         """
-        files = {"file": (file_obj.name, file_obj.getbuffer(), "application/pdf")}
-        return self._make_request("POST", "/api/v1/documents/upload", files=files)
+        # Read file content as bytes
+        content = file_obj.read()
+        
+        # Use multipart form data with httpx
+        # Create a multipart encoded body
+        from httpx import MultipartEncoder
+        
+        multipart_data = MultipartEncoder(
+            fields={"file": (file_obj.name, content, "application/pdf")}
+        )
+        
+        url = f"{self.base_url}/api/v1/documents/upload"
+        try:
+            with httpx.Client(timeout=self.timeout) as client:
+                response = client.post(
+                    url,
+                    content=multipart_data,
+                    headers={"Content-Type": multipart_data.content_type}
+                )
+                response.raise_for_status()
+                return response.json()
+        except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
+            raise Exception(f"Upload failed: {str(e)}\n{tb}")
 
     def list_documents(self) -> dict:
         """

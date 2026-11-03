@@ -6,7 +6,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Analytics", page_icon="📊")
 
-st.title("📊 Analytics & Statistics")
+st.title("Analytics & Statistics")
 
 st.markdown(
     """

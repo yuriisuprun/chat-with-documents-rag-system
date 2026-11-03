@@ -6,7 +6,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Demo", page_icon="🎯")
 
-st.title("🎯 Demo & Examples")
+st.title("Demo & Examples")
 
 st.markdown(
     """
@@ -15,7 +15,7 @@ st.markdown(
 )
 
 # Example 1: Document Upload
-with st.expander("📤 Example 1: Uploading a Document", expanded=True):
+with st.expander("Example 1: Uploading a Document", expanded=True):
     st.markdown(
         """
         ### Steps to upload a document:
@@ -35,7 +35,7 @@ with st.expander("📤 Example 1: Uploading a Document", expanded=True):
     )
 
 # Example 2: Asking Questions
-with st.expander("💬 Example 2: Asking Questions", expanded=False):
+with st.expander("Example 2: Asking Questions", expanded=False):
     st.markdown(
         """
         ### How to ask effective questions:
@@ -61,7 +61,7 @@ with st.expander("💬 Example 2: Asking Questions", expanded=False):
     )
 
 # Example 3: Understanding Sources
-with st.expander("📎 Example 3: Understanding Sources", expanded=False):
+with st.expander("Example 3: Understanding Sources", expanded=False):
     st.markdown(
         """
         ### What are source references?
@@ -81,7 +81,7 @@ with st.expander("📎 Example 3: Understanding Sources", expanded=False):
     )
 
 # Example 4: Managing Documents
-with st.expander("📋 Example 4: Managing Documents", expanded=False):
+with st.expander("Example 4: Managing Documents", expanded=False):
     st.markdown(
         """
         ### Document management features:
@@ -104,7 +104,7 @@ with st.expander("📋 Example 4: Managing Documents", expanded=False):
     )
 
 # Example 5: System Health
-with st.expander("⚙️ Example 5: System Health & Settings", expanded=False):
+with st.expander("Example 5: System Health & Settings", expanded=False):
     st.markdown(
         """
         ### Monitoring system health:
@@ -125,7 +125,7 @@ with st.expander("⚙️ Example 5: System Health & Settings", expanded=False):
 st.divider()
 
 # Quick start guide
-st.subheader("⚡ Quick Start")
+st.subheader("Quick Start")
 
 col1, col2, col3 = st.columns(3)
 
@@ -171,7 +171,7 @@ with col3:
 st.divider()
 
 # FAQ
-st.subheader("❓ Frequently Asked Questions")
+st.subheader("Frequently Asked Questions")
 
 faq_items = [
     {
@@ -207,7 +207,7 @@ for item in faq_items:
 st.divider()
 
 # Tips & Tricks
-st.subheader("💡 Tips & Tricks")
+st.subheader("Tips & Tricks")
 
 st.markdown(
     """
