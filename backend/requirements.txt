@@ -16,6 +16,9 @@ alembic==1.14.0
 # NumPy 
 numpy>=2.1.0
 
+# PDF Processing
+PyMuPDF>=1.23.0
+
 # RAG & Vector DB
 chromadb>=0.3.21
 sentence-transformers>=2.2.0

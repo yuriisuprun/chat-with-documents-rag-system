@@ -109,9 +109,7 @@ def create_app() -> FastAPI:
     # ========================================================================
 
     @app.exception_handler(ApplicationException)
-    async def application_exception_handler(
-        request: Request, exc: ApplicationException
-    ) -> JSONResponse:
+    async def application_exception_handler(request: Request, exc: ApplicationException) -> JSONResponse:
         """Handle application exceptions."""
         logger.error(f"Application error: {exc.error_code} - {exc.message}")
         return JSONResponse(

@@ -37,7 +37,10 @@ class PDFExtractor:
             PDFPageCountException: If page count exceeds limit
         """
         try:
-            import fitz  # PyMuPDF - import here to defer large dependency
+            try:
+                import pymupdf as fitz
+            except ImportError:
+                import fitz
 
             # Open PDF
             doc = fitz.open(file_path)
@@ -117,7 +120,10 @@ class PDFExtractor:
             InvalidPDFException: If PDF cannot be opened
         """
         try:
-            import fitz  # PyMuPDF - import here
+            try:
+                import pymupdf as fitz
+            except ImportError:
+                import fitz
 
             doc = fitz.open(file_path)
             page_count = doc.page_count

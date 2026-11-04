@@ -41,33 +41,26 @@ def load_modern_css():
     css = """
     <style>
     :root {
-        /* Colors - Accessible contrast ratios */
-        --primary: #6366F1;          /* Indigo - vibrant, modern */
-        --primary-hover: #4F46E5;    /* Darker for interactions */
-        --primary-light: #EEF2FF;    /* Very light for backgrounds */
-        --primary-dark: #3730A3;     /* For strong contrast text */
-        --text: #0F172A;             /* Dark slate - excellent contrast */
-        --text-secondary: #475569;   /* Mid slate */
-        --text-tertiary: #94A3B8;    /* Light slate */
-        --success: #10B981;          /* Green for positive actions */
-        --warning: #F59E0B;          /* Amber for alerts */
-        --error: #EF4444;            /* Red for errors */
-        --border: #E2E8F0;           /* Light border */
-        --bg: #FFFFFF;               /* Pure white for content */
-        --bg-secondary: #F8FAFC;     /* Very light gray for app background */
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        --radius: 0.75rem;           /* Consistent border radius */
-        --spacing-xs: 0.25rem;
-        --spacing-sm: 0.5rem;
-        --spacing-md: 1rem;
-        --spacing-lg: 1.5rem;
-        --spacing-xl: 2rem;
-        --spacing-2xl: 3rem;
+        /* Modern color palette */
+        --primary: #5B21B6;          /* Deep purple - premium feel */
+        --primary-hover: #7C3AED;    /* Brighter purple on hover */
+        --primary-light: #EDE9FE;    /* Very light purple */
+        --accent: #3B82F6;           /* Bright blue for accents */
+        --text: #1F2937;             /* Dark gray */
+        --text-secondary: #6B7280;   /* Medium gray */
+        --text-tertiary: #9CA3AF;    /* Light gray */
+        --success: #10B981;          /* Green */
+        --warning: #F59E0B;          /* Amber */
+        --error: #EF4444;            /* Red */
+        --border: #E5E7EB;           /* Light border */
+        --bg: #FFFFFF;               /* White */
+        --bg-secondary: #F9FAFB;     /* Off-white */
+        --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 10px 25px 0 rgba(0, 0, 0, 0.1);
+        --radius: 0.5rem;
     }
 
-    /* Base typography - minimum 16px for readability */
     html, body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 16px;
@@ -76,12 +69,10 @@ def load_modern_css():
         color: var(--text);
     }
 
-    /* Global elements */
     * {
         font-family: inherit;
     }
 
-    /* Streamlit overrides */
     [data-testid="stAppViewContainer"] {
         background: var(--bg-secondary);
     }
@@ -95,93 +86,71 @@ def load_modern_css():
         display: none !important;
     }
 
-    /* Main container - centered with max width */
     .main-container {
-        max-width: 56rem;
+        max-width: 52rem;
         margin: 0 auto;
-        padding: 1rem 1.5rem 2rem 1.5rem;
+        padding: 0.5rem 1.5rem 2rem 1.5rem;
     }
 
-    /* Typography hierarchy */
     h1, .h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 2rem;
+        font-weight: 800;
         line-height: 1.2;
-        margin: 0 0 var(--spacing-md) 0;
+        margin: 0 0 0.5rem 0;
         color: var(--text);
         letter-spacing: -0.02em;
     }
 
     h2, .h2 {
-        font-size: 1.875rem;
+        font-size: 1.5rem;
         font-weight: 700;
         line-height: 1.3;
-        margin: 0 0 var(--spacing-md) 0;
-        color: var(--text);
-    }
-
-    h3, .h3 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0 0 var(--spacing-sm) 0;
+        margin: 0 0 0.5rem 0;
         color: var(--text);
     }
 
     p, .body-text {
-        font-size: 1.125rem;
+        font-size: 1rem;
         line-height: 1.6;
-        margin: 0 0 var(--spacing-md) 0;
+        margin: 0 0 1rem 0;
         color: var(--text-secondary);
     }
 
     .subtitle {
-        font-size: 1.125rem;
+        font-size: 1rem;
         line-height: 1.6;
         color: var(--text-secondary);
+        margin: 0;
     }
 
-    .caption-text {
-        font-size: 0.95rem;
-        line-height: 1.5;
-        color: var(--text-tertiary);
-    }
-
-    /* Header section */
     .header {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
 
     .header h1 {
-        margin-bottom: 0.75rem;
-        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
     }
 
-    .header p {
-        margin: 0;
-        font-size: 1.125rem;
-    }
-
-    /* Card containers */
     .card {
         background: var(--bg);
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        padding: var(--spacing-lg);
+        padding: 1.5rem;
         box-shadow: var(--shadow-sm);
         transition: all 0.2s ease;
     }
 
     .card:hover {
         box-shadow: var(--shadow-md);
+        border-color: var(--primary);
     }
 
-    /* Chat container */
     .chat-container {
         background: var(--bg);
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         box-shadow: var(--shadow-sm);
         transition: all 0.2s ease;
     }
@@ -190,56 +159,63 @@ def load_modern_css():
         box-shadow: var(--shadow-md);
     }
 
-    /* Textarea */
     .stTextArea {
-        margin: 1.5rem 0 1.5rem 0 !important;
+        margin: 1rem 0 !important;
     }
 
     .stTextArea textarea {
-        font-size: 1.125rem !important;
+        font-size: 1rem !important;
         border: 2px solid var(--border) !important;
-        border-radius: 0.625rem !important;
-        padding: var(--spacing-md) !important;
+        border-radius: 0.5rem !important;
+        padding: 0.75rem !important;
         transition: all 0.2s ease !important;
         background: var(--bg) !important;
         color: var(--text) !important;
         line-height: 1.6 !important;
-        min-height: 120px !important;
+        min-height: 100px !important;
     }
 
     .stTextArea textarea:focus {
         border-color: var(--primary) !important;
-        box-shadow: 0 0 0 4px var(--primary-light) !important;
+        box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.1) !important;
         outline: none !important;
     }
 
     .stTextArea textarea::placeholder {
         color: var(--text-tertiary);
-        font-size: 1.125rem;
+        font-size: 1rem;
     }
 
-    /* Buttons - Large, accessible touch targets */
     .stButton {
         margin: 0 !important;
     }
 
     .stButton button {
-        font-size: 1.125rem !important;
-        font-weight: 600 !important;
-        padding: 1rem 2rem !important;
-        border-radius: 0.625rem !important;
+        font-size: 1rem !important;
+        font-weight: 700 !important;
+        padding: 0.75rem 1.5rem !important;
+        border-radius: 0.5rem !important;
         border: none !important;
         transition: all 0.2s ease !important;
-        letter-spacing: -0.01em !important;
         cursor: pointer !important;
-        min-height: 52px !important;
-        line-height: 1.5 !important;
+        min-height: 44px !important;
     }
 
     .stButton button[kind="primary"] {
         background: var(--primary) !important;
-        color: white !important;
+        color: #FFFFFF !important;
         box-shadow: var(--shadow-sm) !important;
+        font-weight: 700 !important;
+    }
+
+    .stButton button[kind="primary"] > * {
+        color: #FFFFFF !important;
+    }
+
+    .stButton button[kind="primary"] p,
+    .stButton button[kind="primary"] span,
+    .stButton button[kind="primary"] div {
+        color: #FFFFFF !important;
     }
 
     .stButton button[kind="primary"]:hover {
@@ -248,62 +224,55 @@ def load_modern_css():
         transform: translateY(-1px);
     }
 
-    .stButton button[kind="primary"]:focus {
-        outline: 3px solid var(--primary-light) !important;
-        outline-offset: 2px !important;
+    .stButton button[kind="secondary"] {
+        background: var(--bg) !important;
+        color: #1F2937 !important;
+        border: 1.5px solid var(--border) !important;
+        font-weight: 700 !important;
     }
 
-    .stButton button[kind="secondary"] {
-        background: var(--bg-secondary) !important;
-        color: var(--text) !important;
-        border: 2px solid var(--border) !important;
+    .stButton button[kind="secondary"] > * {
+        color: #1F2937 !important;
+    }
+
+    .stButton button[kind="secondary"] p,
+    .stButton button[kind="secondary"] span,
+    .stButton button[kind="secondary"] div {
+        color: #1F2937 !important;
     }
 
     .stButton button[kind="secondary"]:hover {
-        background: var(--border) !important;
-        border-color: var(--text-secondary) !important;
+        background: var(--bg-secondary) !important;
+        border-color: var(--primary) !important;
+        color: var(--primary) !important;
     }
 
-    .stButton button[kind="secondary"]:focus {
-        outline: 3px solid var(--primary-light) !important;
-        outline-offset: 2px !important;
-    }
-
-    /* Answer box with left accent */
     .answer-box {
         background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg) 100%);
-        border-left: 5px solid var(--primary);
-        padding: var(--spacing-lg);
+        border-left: 4px solid var(--primary);
+        padding: 1.25rem;
         border-radius: var(--radius);
-        margin: var(--spacing-lg) 0;
-        line-height: 1.8;
+        margin: 1.5rem 0;
+        line-height: 1.7;
         color: var(--text);
         box-shadow: var(--shadow-sm);
-        font-size: 1.125rem;
+        font-size: 1rem;
     }
 
-    .answer-box strong {
-        color: var(--text);
-        font-weight: 600;
-    }
-
-    /* Expandable sections */
     .stExpander {
         border: 1px solid var(--border) !important;
-        border-radius: 0.625rem !important;
+        border-radius: 0.5rem !important;
         background: var(--bg) !important;
-        margin: var(--spacing-md) 0 !important;
+        margin: 1rem 0 !important;
         box-shadow: var(--shadow-sm) !important;
     }
 
-    /* File uploader - prominent drop zone */
     [data-testid="stFileUploader"] {
         border: 2px dashed var(--border) !important;
         border-radius: var(--radius) !important;
-        padding: var(--spacing-2xl) var(--spacing-lg) !important;
+        padding: 2rem 1.5rem !important;
         background: var(--bg) !important;
         transition: all 0.2s ease !important;
-        cursor: pointer;
     }
 
     [data-testid="stFileUploader"]:hover {
@@ -311,92 +280,84 @@ def load_modern_css():
         background: var(--primary-light) !important;
     }
 
-    /* Metrics - Large, readable numbers */
     .stMetric {
         background: var(--bg);
         border: 1px solid var(--border);
-        padding: var(--spacing-md);
-        border-radius: 0.625rem;
+        padding: 1rem;
+        border-radius: 0.5rem;
         box-shadow: var(--shadow-sm);
     }
 
     .stMetric label {
-        font-size: 0.95rem !important;
+        font-size: 0.875rem !important;
         color: var(--text-tertiary) !important;
-        font-weight: 700 !important;
+        font-weight: 600 !important;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: var(--spacing-xs) !important;
+        letter-spacing: 0.04em;
     }
 
     .stMetric [data-testid="metric-value"] {
-        color: var(--text) !important;
+        color: var(--primary) !important;
         font-weight: 700 !important;
-        font-size: 2.25rem !important;
-        line-height: 1.2 !important;
+        font-size: 1.75rem !important;
     }
 
-    /* Sidebar - Navigation area */
     [data-testid="stSidebar"] {
         background: var(--bg);
         border-right: 1px solid var(--border);
-        padding: var(--spacing-lg) var(--spacing-md) !important;
+        padding: 1.5rem 1rem !important;
     }
 
     [data-testid="stSidebar"] .stButton {
-        margin-bottom: 1rem !important;
+        margin-bottom: 0.75rem !important;
     }
 
     [data-testid="stSidebar"] .stButton button {
-        font-size: 1.125rem !important;
-        padding: 1rem 1.25rem !important;
+        font-size: 1rem !important;
+        padding: 0.875rem 1rem !important;
         justify-content: flex-start !important;
         text-align: left !important;
         width: 100% !important;
-        height: 52px !important;
+        height: 44px !important;
     }
 
-    /* Sidebar typography */
     [data-testid="stSidebar"] h3 {
-        font-size: 1.5rem !important;
+        font-size: 1.25rem !important;
         font-weight: 700 !important;
-        margin: 0 0 var(--spacing-sm) 0 !important;
+        margin: 0 0 0.5rem 0 !important;
         color: var(--text);
     }
 
     [data-testid="stSidebar"] .stCaption {
-        font-size: 1rem !important;
+        font-size: 0.875rem !important;
         color: var(--text-secondary) !important;
-        line-height: 1.5 !important;
     }
 
-    /* Dividers */
     .stDivider {
-        margin: 1.5rem 0 !important;
+        margin: 1rem 0 !important;
         border-color: var(--border) !important;
     }
 
-    /* Empty state - Centered, friendly messaging */
     .empty-state {
         text-align: center;
-        padding: 3rem 1.5rem;
+        padding: 2rem 1.5rem;
         background: var(--bg);
         border: 2px dashed var(--border);
         border-radius: var(--radius);
-        margin: 2rem 0;
+        margin: 1.5rem 0;
         color: var(--text-secondary);
     }
 
     .empty-state-icon {
-        font-size: 4rem;
-        margin-bottom: 1.5rem;
-        opacity: 0.4;
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
     }
 
     .empty-state p {
-        font-size: 1.125rem;
-        margin: var(--spacing-sm) 0;
-        line-height: 1.6;
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        line-height: 1.5;
     }
 
     .empty-state p strong {
@@ -405,80 +366,18 @@ def load_modern_css():
     }
 
     .empty-state p.hint {
-        font-size: 1rem;
+        font-size: 0.925rem;
         color: var(--text-tertiary);
     }
 
-    /* Utility classes */
-    .text-secondary {
-        color: var(--text-secondary);
-    }
+    .stDeployButton { display: none; }
+    footer { display: none; }
+    #MainMenu { display: none; }
 
-    .text-tertiary {
-        color: var(--text-tertiary);
-    }
-
-    .text-success {
-        color: var(--success);
-    }
-
-    .text-error {
-        color: var(--error);
-    }
-
-    /* Hide Streamlit branding */
-    .stDeployButton {
-        display: none;
-    }
-
-    footer {
-        display: none;
-    }
-
-    #MainMenu {
-        display: none;
-    }
-
-    /* Focus states for accessibility */
-    button:focus-visible,
-    input:focus-visible,
-    textarea:focus-visible,
-    a:focus-visible {
-        outline: 3px solid var(--primary);
-        outline-offset: 2px;
-    }
-
-    /* Mobile responsiveness */
     @media (max-width: 768px) {
-        .main-container {
-            padding: var(--spacing-lg) var(--spacing-md);
-        }
-
-        h1, .h1 {
-            font-size: 2rem;
-        }
-
-        h2, .h2 {
-            font-size: 1.5rem;
-        }
-
-        p, .body-text {
-            font-size: 1rem;
-        }
-
-        .stButton button {
-            font-size: 1rem !important;
-            padding: 0.875rem 1.5rem !important;
-        }
-
-        .stTextArea textarea {
-            font-size: 1rem !important;
-        }
-    }
-
-    /* Dark mode support (if needed in future) */
-    @media (prefers-color-scheme: dark) {
-        /* Can be extended with dark mode colors */
+        .main-container { padding: 1rem; }
+        h1, .h1 { font-size: 1.5rem; }
+        .stButton button { font-size: 0.95rem !important; }
     }
     </style>
     """
@@ -535,17 +434,6 @@ with st.sidebar:
     ):
         st.session_state.page = "library"
         st.rerun()
-
-    # Status indicator at bottom
-    st.divider()
-    try:
-        health = api_client.check_health()
-        status = (
-            "🟢 Connected" if health.get("status") == "healthy" else "🟡 Limited"
-        )
-        st.caption(status)
-    except:
-        st.caption("🔴 Disconnected")
 
 # ============================================================================
 # MAIN CONTENT
