@@ -1,13 +1,13 @@
 """
-Chat With Documents – Enterprise SaaS Dashboard (Fixed Layout)
+Chat With Documents - Modern UI Following 2026 UX/UI Best Practices
 
-Clean, professional Streamlit UI with fixed layout, alignment, and spacing.
+Clean, minimal design with proper visual hierarchy, typography, spacing,
+accessibility, and user-centered interactions.
 """
 
 import os
 import sys
 from pathlib import Path
-import pandas as pd
 import streamlit as st
 
 # Add backend to Python path
@@ -16,223 +16,475 @@ sys.path.insert(0, str(backend_path))
 
 from app.core.config import settings
 
-# Page config
+# Page config - wider layout for better readability
 st.set_page_config(
-    page_title="Chat With Documents - Enterprise",
-    page_icon="📚",
+    page_title="Chat With Documents",
+    page_icon="💬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # ============================================================================
-# MODERN ENTERPRISE DESIGN SYSTEM (2026)
+# MODERN UI/UX DESIGN - 2026 Best Practices
 # ============================================================================
-def load_enterprise_css():
-    """Load modern enterprise SaaS design system with clean typography and layout."""
+def load_modern_css():
+    """
+    Modern design following 2026 UX/UI best practices:
+    - Large, readable typography (min 16px)
+    - Generous whitespace and padding
+    - Clear visual hierarchy
+    - Accessible color contrasts
+    - Smooth transitions and micro-interactions
+    - Mobile-responsive design
+    - Focus states for keyboard navigation
+    """
     css = """
     <style>
     :root {
-        --color-primary: #4F46E5;
-        --color-primary-dark: #4338CA;
-        --color-primary-light: #EEF2FF;
-        --color-slate-900: #0F172A;
-        --color-slate-800: #1E293B;
-        --color-slate-600: #475569;
-        --color-slate-400: #94A3B8;
-        --color-slate-200: #E2E8F0;
-        --color-slate-100: #F1F5F9;
-        --color-slate-50: #F8FAFC;
-        --color-success: #10B981;
-        --color-warning: #F59E0B;
-        --color-error: #EF4444;
-        --color-info: #3B82F6;
+        /* Colors - Accessible contrast ratios */
+        --primary: #6366F1;          /* Indigo - vibrant, modern */
+        --primary-hover: #4F46E5;    /* Darker for interactions */
+        --primary-light: #EEF2FF;    /* Very light for backgrounds */
+        --primary-dark: #3730A3;     /* For strong contrast text */
+        --text: #0F172A;             /* Dark slate - excellent contrast */
+        --text-secondary: #475569;   /* Mid slate */
+        --text-tertiary: #94A3B8;    /* Light slate */
+        --success: #10B981;          /* Green for positive actions */
+        --warning: #F59E0B;          /* Amber for alerts */
+        --error: #EF4444;            /* Red for errors */
+        --border: #E2E8F0;           /* Light border */
+        --bg: #FFFFFF;               /* Pure white for content */
+        --bg-secondary: #F8FAFC;     /* Very light gray for app background */
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --radius: 0.75rem;           /* Consistent border radius */
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-2xl: 3rem;
     }
 
-    * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif; }
-    html, body { background: var(--color-slate-50); margin: 0; padding: 0; }
-    
-    [data-testid="stAppViewContainer"] { background: var(--color-slate-50); }
-    [data-testid="stMain"] { padding: 1.5rem 2rem !important; }
-
-    /* Hide Streamlit's default page navigation and header clutter */
-    [data-testid="stPageContainer"] { max-width: 100% !important; }
-    .stApp > header { display: none !important; }
-
-    /* Clean typography with reduced contrast */
-    .page-header { margin-bottom: 1.5rem; padding-bottom: 0; }
-    .page-title { font-size: 1.875rem; font-weight: 600; color: var(--color-slate-900); margin: 0; letter-spacing: -0.01em; line-height: 1.3; }
-
-    /* Cleaner card styling without harsh borders */
-    .card { background: #FFFFFF; border: none; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05); transition: box-shadow 0.2s ease; }
-    .card:hover { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); }
-    .card-header { font-size: 1rem; font-weight: 600; color: var(--color-slate-900); margin-bottom: 1.5rem; letter-spacing: -0.01em; }
-
-    /* Modern input styling with soft focus state */
-    .stTextArea { margin: 0 !important; padding: 0 !important; }
-    .stTextArea textarea { 
-        font-size: 0.9rem; 
-        border: 1px solid var(--color-slate-200); 
-        border-radius: 0.5rem; 
-        padding: 0.625rem; 
-        color: var(--color-slate-900); 
-        background: #FFFFFF; 
-        width: 100% !important; 
-        box-sizing: border-box; 
-        font-weight: 400;
-    }
-    .stTextArea textarea::placeholder { color: var(--color-slate-400); font-weight: 400; }
-    .stTextArea textarea:focus { 
-        border-color: var(--color-primary); 
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08), inset 0 0 0 1px var(--color-primary); 
-        outline: none; 
+    /* Base typography - minimum 16px for readability */
+    html, body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        background: var(--bg-secondary);
+        color: var(--text);
     }
 
-    /* Integrated button action style */
-    .stButton { margin: 0.5rem 0 0 0 !important; }
-    .stButton > button { 
-        font-size: 0.85rem; 
-        font-weight: 600; 
-        padding: 0.5rem 1rem !important; 
-        border-radius: 0.5rem; 
-        border: none; 
-        cursor: pointer; 
-        transition: all 0.15s ease; 
-        width: 100% !important; 
-        height: auto; 
-        letter-spacing: -0.01em;
+    /* Global elements */
+    * {
+        font-family: inherit;
     }
-    .stButton > button[kind="primary"] { 
-        background: var(--color-primary) !important; 
-        color: #FFFFFF !important; 
-        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.15) !important;
+
+    /* Streamlit overrides */
+    [data-testid="stAppViewContainer"] {
+        background: var(--bg-secondary);
     }
-    .stButton > button[kind="primary"]:hover { 
-        background: var(--color-primary-dark) !important; 
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important; 
+
+    [data-testid="stMain"] {
+        padding: 0 !important;
+        background: var(--bg-secondary);
+    }
+
+    .stApp > header {
+        display: none !important;
+    }
+
+    /* Main container - centered with max width */
+    .main-container {
+        max-width: 56rem;
+        margin: 0 auto;
+        padding: 1rem 1.5rem 2rem 1.5rem;
+    }
+
+    /* Typography hierarchy */
+    h1, .h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 var(--spacing-md) 0;
+        color: var(--text);
+        letter-spacing: -0.02em;
+    }
+
+    h2, .h2 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        line-height: 1.3;
+        margin: 0 0 var(--spacing-md) 0;
+        color: var(--text);
+    }
+
+    h3, .h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 var(--spacing-sm) 0;
+        color: var(--text);
+    }
+
+    p, .body-text {
+        font-size: 1.125rem;
+        line-height: 1.6;
+        margin: 0 0 var(--spacing-md) 0;
+        color: var(--text-secondary);
+    }
+
+    .subtitle {
+        font-size: 1.125rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+    }
+
+    .caption-text {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--text-tertiary);
+    }
+
+    /* Header section */
+    .header {
+        margin-bottom: 3rem;
+    }
+
+    .header h1 {
+        margin-bottom: 0.75rem;
+        font-size: 2.5rem;
+    }
+
+    .header p {
+        margin: 0;
+        font-size: 1.125rem;
+    }
+
+    /* Card containers */
+    .card {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+        transition: all 0.2s ease;
+    }
+
+    .card:hover {
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Chat container */
+    .chat-container {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.2s ease;
+    }
+
+    .chat-container:hover {
+        box-shadow: var(--shadow-md);
+    }
+
+    /* Textarea */
+    .stTextArea {
+        margin: 1.5rem 0 1.5rem 0 !important;
+    }
+
+    .stTextArea textarea {
+        font-size: 1.125rem !important;
+        border: 2px solid var(--border) !important;
+        border-radius: 0.625rem !important;
+        padding: var(--spacing-md) !important;
+        transition: all 0.2s ease !important;
+        background: var(--bg) !important;
+        color: var(--text) !important;
+        line-height: 1.6 !important;
+        min-height: 120px !important;
+    }
+
+    .stTextArea textarea:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 4px var(--primary-light) !important;
+        outline: none !important;
+    }
+
+    .stTextArea textarea::placeholder {
+        color: var(--text-tertiary);
+        font-size: 1.125rem;
+    }
+
+    /* Buttons - Large, accessible touch targets */
+    .stButton {
+        margin: 0 !important;
+    }
+
+    .stButton button {
+        font-size: 1.125rem !important;
+        font-weight: 600 !important;
+        padding: 1rem 2rem !important;
+        border-radius: 0.625rem !important;
+        border: none !important;
+        transition: all 0.2s ease !important;
+        letter-spacing: -0.01em !important;
+        cursor: pointer !important;
+        min-height: 52px !important;
+        line-height: 1.5 !important;
+    }
+
+    .stButton button[kind="primary"] {
+        background: var(--primary) !important;
+        color: white !important;
+        box-shadow: var(--shadow-sm) !important;
+    }
+
+    .stButton button[kind="primary"]:hover {
+        background: var(--primary-hover) !important;
+        box-shadow: var(--shadow-md) !important;
         transform: translateY(-1px);
     }
-    .stButton > button[kind="primary"]:active { transform: translateY(0); }
 
-    /* Clean compact notifications */
-    .stSuccess, .stWarning, .stError, .stInfo {
-        margin: 0.5rem 0 !important;
-        padding: 0.75rem 1rem !important;
-        border-radius: 0.5rem !important;
-        border: none !important;
+    .stButton button[kind="primary"]:focus {
+        outline: 3px solid var(--primary-light) !important;
+        outline-offset: 2px !important;
     }
 
-    .stSuccess { background: #F0FDF4; color: #065F46; }
-    .stWarning { background: #FFFBEB; color: #92400E; }
-    .stError { background: #FEF2F2; color: #7F1D1D; }
-    .stInfo { background: #F0F9FF; color: #0C2D6B; }
-
-    /* Modern metric cards */
-    .stMetric { 
-        background: #FFFFFF; 
-        border: 1px solid var(--color-slate-100); 
-        padding: 1rem; 
-        border-radius: 0.5rem; 
-        text-align: center; 
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
-    }
-    .stMetric label { 
-        font-size: 0.7rem; 
-        color: var(--color-slate-500); 
-        font-weight: 600; 
-        text-transform: uppercase; 
-        letter-spacing: 0.05em; 
-    }
-    .stMetric [data-testid="metric-value"] { 
-        font-size: 1.75rem; 
-        font-weight: 600; 
-        color: var(--color-primary); 
-        margin-top: 0.5rem; 
+    .stButton button[kind="secondary"] {
+        background: var(--bg-secondary) !important;
+        color: var(--text) !important;
+        border: 2px solid var(--border) !important;
     }
 
-    /* Refined typography */
-    h1 { font-size: 1.875rem; font-weight: 600; color: var(--color-slate-900); margin: 0 0 0.5rem 0; letter-spacing: -0.01em; }
-    h2 { font-size: 1.25rem; font-weight: 600; color: var(--color-slate-900); margin: 1rem 0 0.5rem 0; letter-spacing: -0.01em; }
-    h3 { font-size: 1rem; font-weight: 600; color: var(--color-slate-800); margin: 0.75rem 0 0.5rem 0; }
-    h4 { font-size: 0.95rem; font-weight: 600; color: var(--color-slate-800); margin: 0.5rem 0 0.375rem 0; }
-
-    body, p { color: var(--color-slate-700); line-height: 1.6; font-weight: 400; }
-    a { color: var(--color-primary); text-decoration: none; font-weight: 500; }
-    a:hover { text-decoration: underline; color: var(--color-primary-dark); }
-
-    .stExpander { border: 1px solid var(--color-slate-100); border-radius: 0.5rem; background: #FFFFFF; }
-    .stExpander [data-testid="stExpanderDetails"] { background: var(--color-slate-50); }
-    
-    /* Clean spacing */
-    .stDivider { background-color: var(--color-slate-100); height: 1px; margin: 1.25rem 0 !important; }
-    [data-testid="column"] { gap: 1rem; }
-
-    /* Modern answer box without heavy border */
-    .answer-box { 
-        background: #FFFFFF; 
-        padding: 1.5rem; 
-        border-radius: 0.625rem; 
-        border-left: 3px solid var(--color-primary);
-        font-size: 1rem; 
-        line-height: 1.7; 
-        color: var(--color-slate-900); 
-        margin: 1rem 0; 
-        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    .stButton button[kind="secondary"]:hover {
+        background: var(--border) !important;
+        border-color: var(--text-secondary) !important;
     }
 
-    /* Modern sidebar navigation */
-    .nav-section-title { 
-        font-size: 0.7rem; 
-        font-weight: 700; 
-        color: var(--color-slate-500); 
-        text-transform: uppercase; 
-        letter-spacing: 0.08em; 
-        padding: 0.75rem 1rem 0.5rem 1rem; 
-        margin: 0.75rem 0 0.5rem 0; 
+    .stButton button[kind="secondary"]:focus {
+        outline: 3px solid var(--primary-light) !important;
+        outline-offset: 2px !important;
     }
-    .nav-item { 
-        padding: 0.625rem 1rem; 
-        margin: 0.25rem 0; 
-        border-radius: 0.5rem; 
-        cursor: pointer; 
-        transition: all 0.15s ease; 
-        color: var(--color-slate-700); 
-        font-weight: 500;
-        font-size: 0.95rem;
-        position: relative;
-        padding-left: 1rem;
+
+    /* Answer box with left accent */
+    .answer-box {
+        background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg) 100%);
+        border-left: 5px solid var(--primary);
+        padding: var(--spacing-lg);
+        border-radius: var(--radius);
+        margin: var(--spacing-lg) 0;
+        line-height: 1.8;
+        color: var(--text);
+        box-shadow: var(--shadow-sm);
+        font-size: 1.125rem;
     }
-    .nav-item:hover { background: var(--color-slate-50); color: var(--color-primary); }
-    .nav-item-active { 
-        background: transparent;
-        color: var(--color-primary); 
+
+    .answer-box strong {
+        color: var(--text);
         font-weight: 600;
     }
-    .nav-item-active::before { 
-        content: ''; 
-        position: absolute; 
-        left: 0; 
-        top: 50%; 
-        transform: translateY(-50%); 
-        width: 3px; 
-        height: 1.5rem; 
-        background: var(--color-primary); 
-        border-radius: 0 2px 2px 0;
+
+    /* Expandable sections */
+    .stExpander {
+        border: 1px solid var(--border) !important;
+        border-radius: 0.625rem !important;
+        background: var(--bg) !important;
+        margin: var(--spacing-md) 0 !important;
+        box-shadow: var(--shadow-sm) !important;
     }
 
-    [data-testid="stSidebar"] { 
-        background: #FFFFFF; 
-        border-right: 1px solid var(--color-slate-100);
+    /* File uploader - prominent drop zone */
+    [data-testid="stFileUploader"] {
+        border: 2px dashed var(--border) !important;
+        border-radius: var(--radius) !important;
+        padding: var(--spacing-2xl) var(--spacing-lg) !important;
+        background: var(--bg) !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer;
     }
 
-    @media (max-width: 768px) { 
-        [data-testid="stMain"] { padding: 1rem 1.25rem !important; }
-        .page-title { font-size: 1.5rem; }
+    [data-testid="stFileUploader"]:hover {
+        border-color: var(--primary) !important;
+        background: var(--primary-light) !important;
+    }
+
+    /* Metrics - Large, readable numbers */
+    .stMetric {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        padding: var(--spacing-md);
+        border-radius: 0.625rem;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .stMetric label {
+        font-size: 0.95rem !important;
+        color: var(--text-tertiary) !important;
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: var(--spacing-xs) !important;
+    }
+
+    .stMetric [data-testid="metric-value"] {
+        color: var(--text) !important;
+        font-weight: 700 !important;
+        font-size: 2.25rem !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Sidebar - Navigation area */
+    [data-testid="stSidebar"] {
+        background: var(--bg);
+        border-right: 1px solid var(--border);
+        padding: var(--spacing-lg) var(--spacing-md) !important;
+    }
+
+    [data-testid="stSidebar"] .stButton {
+        margin-bottom: 1rem !important;
+    }
+
+    [data-testid="stSidebar"] .stButton button {
+        font-size: 1.125rem !important;
+        padding: 1rem 1.25rem !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        width: 100% !important;
+        height: 52px !important;
+    }
+
+    /* Sidebar typography */
+    [data-testid="stSidebar"] h3 {
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        margin: 0 0 var(--spacing-sm) 0 !important;
+        color: var(--text);
+    }
+
+    [data-testid="stSidebar"] .stCaption {
+        font-size: 1rem !important;
+        color: var(--text-secondary) !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Dividers */
+    .stDivider {
+        margin: 1.5rem 0 !important;
+        border-color: var(--border) !important;
+    }
+
+    /* Empty state - Centered, friendly messaging */
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        background: var(--bg);
+        border: 2px dashed var(--border);
+        border-radius: var(--radius);
+        margin: 2rem 0;
+        color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        opacity: 0.4;
+    }
+
+    .empty-state p {
+        font-size: 1.125rem;
+        margin: var(--spacing-sm) 0;
+        line-height: 1.6;
+    }
+
+    .empty-state p strong {
+        color: var(--text);
+        font-weight: 600;
+    }
+
+    .empty-state p.hint {
+        font-size: 1rem;
+        color: var(--text-tertiary);
+    }
+
+    /* Utility classes */
+    .text-secondary {
+        color: var(--text-secondary);
+    }
+
+    .text-tertiary {
+        color: var(--text-tertiary);
+    }
+
+    .text-success {
+        color: var(--success);
+    }
+
+    .text-error {
+        color: var(--error);
+    }
+
+    /* Hide Streamlit branding */
+    .stDeployButton {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }
+
+    #MainMenu {
+        display: none;
+    }
+
+    /* Focus states for accessibility */
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    a:focus-visible {
+        outline: 3px solid var(--primary);
+        outline-offset: 2px;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .main-container {
+            padding: var(--spacing-lg) var(--spacing-md);
+        }
+
+        h1, .h1 {
+            font-size: 2rem;
+        }
+
+        h2, .h2 {
+            font-size: 1.5rem;
+        }
+
+        p, .body-text {
+            font-size: 1rem;
+        }
+
+        .stButton button {
+            font-size: 1rem !important;
+            padding: 0.875rem 1.5rem !important;
+        }
+
+        .stTextArea textarea {
+            font-size: 1rem !important;
+        }
+    }
+
+    /* Dark mode support (if needed in future) */
+    @media (prefers-color-scheme: dark) {
+        /* Can be extended with dark mode colors */
     }
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
-load_enterprise_css()
+load_modern_css()
 
 # Import API client
 from api_client import APIClient
@@ -246,303 +498,315 @@ def get_api_client():
 api_client = get_api_client()
 
 # ============================================================================
-# SIDEBAR NAVIGATION (Clean and unified)
+# SIDEBAR - Navigation
 # ============================================================================
 with st.sidebar:
-    if "current_page" not in st.session_state:
-        st.session_state.current_page = "chat"
-    
-    st.markdown('<div class="nav-section-title">📊 Main</div>', unsafe_allow_html=True)
-    
-    if st.button("💬 Chat & Ask", width="stretch", key="nav_chat"):
-        st.session_state.current_page = "chat"
-        st.rerun()
-    
-    if st.button("📤 Upload", width="stretch", key="nav_upload"):
-        st.session_state.current_page = "upload"
-        st.rerun()
-    
-    if st.button("📋 Library", width="stretch", key="nav_docs"):
-        st.session_state.current_page = "documents"
-        st.rerun()
-    
+    st.markdown("### Documents")
+    st.caption("AI-powered document Q&A")
     st.divider()
-    st.markdown('<div class="nav-section-title">⚙️ Tools</div>', unsafe_allow_html=True)
-    
-    if st.button("🔧 Settings", width="stretch", key="nav_settings"):
-        st.session_state.current_page = "settings"
+
+    if "page" not in st.session_state:
+        st.session_state.page = "chat"
+
+    # Navigation buttons
+    if st.button(
+        "Chat",
+        width="stretch",
+        type="primary" if st.session_state.page == "chat" else "secondary",
+        key="nav_chat",
+    ):
+        st.session_state.page = "chat"
         st.rerun()
 
-# ============================================================================
-# PAGE HEADER (Simplified)
-# ============================================================================
-st.markdown(
-    """
-    <div class="page-header">
-        <h1 class="page-title">Ask Your Documents</h1>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+    if st.button(
+        "Upload",
+        width="stretch",
+        type="primary" if st.session_state.page == "upload" else "secondary",
+        key="nav_upload",
+    ):
+        st.session_state.page = "upload"
+        st.rerun()
 
-# ============================================================================
-# PAGES WITH FIXED LAYOUT AND ALIGNMENT
-# ============================================================================
+    if st.button(
+        "Library",
+        width="stretch",
+        type="primary" if st.session_state.page == "library" else "secondary",
+        key="nav_library",
+    ):
+        st.session_state.page = "library"
+        st.rerun()
 
-if st.session_state.current_page == "chat":
+    # Status indicator at bottom
     st.divider()
-    
-    # Initialize chat history
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-    
-    # Display chat history first
-    if st.session_state.chat_history:
-        st.markdown("**Recent Answers**")
-        for i, item in enumerate(st.session_state.chat_history[:3]):
-            with st.expander(f"Q: {item.get('query', '')[:55]}...", expanded=i == 0):
-                st.markdown(f'<div class="answer-box">{item.get("answer", "")}</div>', unsafe_allow_html=True)
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.caption(f"📊 {len(item.get('sources', []))} sources used")
-                with col2:
-                    st.caption(f"⏱️ {pd.Timestamp.now().strftime('%H:%M:%S')}")
-        st.divider()
-    else:
-        st.markdown("**Get Started**")
-        st.caption("Ask questions about your uploaded documents. Answers are grounded in document content with source citations.")
-        st.divider()
-    
-    # Modern conversational input at bottom
-    st.markdown("**Enter Your Question**")
-    
-    query = st.text_area(
-        "label",
-        placeholder="Ask anything about your documents...",
-        height=60,
-        key="chat_query",
-        label_visibility="collapsed"
-    )
-    
-    col_btn, col_spacer = st.columns([1, 4], gap="small")
-    
-    with col_btn:
-        ask_button = st.button(
-            "Send",
-            width="stretch",
-            type="primary",
-            key="ask_btn"
+    try:
+        health = api_client.check_health()
+        status = (
+            "🟢 Connected" if health.get("status") == "healthy" else "🟡 Limited"
         )
-    
-    # Process question
-    if ask_button:
-        if not query or not query.strip():
-            st.toast("Please enter a question", icon="⚠️")
-        else:
-            with st.spinner("Analyzing documents..."):
-                try:
-                    response = api_client.ask_question(query)
-                    st.session_state.chat_history.insert(0, response)
-                    st.divider()
-                    
-                    st.markdown("**Answer**")
-                    st.markdown(
-                        f'<div class="answer-box">{response["answer"]}</div>',
-                        unsafe_allow_html=True,
-                    )
-                    
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        if response.get("context_sufficient"):
-                            st.success("✓ High Confidence", icon="✅")
-                        else:
-                            st.warning("⚠ Limited Context", icon="⚠️")
-                    with col2:
-                        sources_count = len(response.get('sources', []))
-                        st.info(f"📊 {sources_count} Sources")
-                    with col3:
-                        st.caption(f"Generated: {pd.Timestamp.now().strftime('%H:%M:%S')}")
-                    
-                    if response.get("sources"):
-                        st.markdown("**Source Documents**")
-                        for i, source in enumerate(response["sources"], 1):
-                            with st.expander(
-                                f"Document {i}: {source.get('filename', 'Unknown')} - Page {source.get('page_number')}"
-                            ):
-                                col1, col2 = st.columns([3, 1])
-                                with col1:
-                                    st.write(source.get("text_preview", "")[:400])
-                                with col2:
-                                    st.metric("Match", f"{source.get('similarity_score', 0):.0%}")
-                    
-                    st.rerun()
-                
-                except Exception as e:
-                    st.toast(f"Error: {str(e)}", icon="❌")
+        st.caption(status)
+    except:
+        st.caption("🔴 Disconnected")
 
-elif st.session_state.current_page == "upload":
-    st.markdown("### Upload Documents")
-    st.caption("Add PDF files to your knowledge base")
-    st.divider()
-    
-    uploaded_file = st.file_uploader("Choose a PDF file", type="pdf", help="Max 10MB, max 100 pages")
-    
-    if uploaded_file is not None:
-        st.divider()
-        file_size_mb = uploaded_file.size / 1024 / 1024
-        
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Filename", uploaded_file.name[:18] + "..." if len(uploaded_file.name) > 18 else uploaded_file.name)
-        with col2:
-            st.metric("File Size", f"{file_size_mb:.2f} MB")
-        with col3:
-            st.metric("Status", "✓ Ready")
-        with col4:
-            st.metric("Format", "PDF")
-        
-        st.divider()
-        col1, col2 = st.columns([5, 1])
-        with col2:
-            upload_button = st.button("Upload", width="stretch", type="primary")
-        
-        if upload_button:
-            with st.spinner("Processing PDF..."):
-                try:
-                    response = api_client.upload_document(uploaded_file)
-                    st.success(f"✅ Document uploaded successfully!")
-                    st.divider()
-                    
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Document ID", response.get("document_id", "")[:8])
-                    with col2:
-                        st.metric("Chunks", response.get("chunk_count", "?"))
-                    with col3:
-                        st.metric("Status", response.get("status", "?").title())
-                    
-                    st.info("✨ Document indexed! Go to Chat to ask questions.")
-                except Exception as e:
-                    st.toast(f"Upload failed: {str(e)}", icon="❌")
+# ============================================================================
+# MAIN CONTENT
+# ============================================================================
+
+# ----- CHAT PAGE -----
+if st.session_state.page == "chat":
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+
+    # Header
+    st.markdown(
+        """
+        <div class="header">
+            <h1>Ask Your Documents</h1>
+            <p class="subtitle">Get instant answers with source citations from your knowledge base</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    # Chat history
+    if "history" not in st.session_state:
+        st.session_state.history = []
+
+    # Show recent answers
+    if st.session_state.history:
+        for idx, item in enumerate(st.session_state.history[:3]):
+            st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+
+            # Question
+            st.markdown(f"**Q:** {item['query']}")
+            st.divider()
+
+            # Answer
+            st.markdown(
+                f'<div class="answer-box">{item["answer"]}</div>',
+                unsafe_allow_html=True,
+            )
+
+            # Sources
+            if item.get("sources"):
+                with st.expander(
+                    f"📎 Sources ({len(item['sources'])})",
+                    expanded=False,
+                ):
+                    for i, src in enumerate(item["sources"], 1):
+                        col1, col2 = st.columns([4, 1])
+                        with col1:
+                            st.markdown(
+                                f"**{src.get('filename')}** · Page {src.get('page_number')}"
+                            )
+                            st.caption(
+                                src.get("text_preview", "")[:200] + "..."
+                            )
+                        with col2:
+                            st.metric(
+                                "Match",
+                                f"{src.get('similarity_score', 0):.0%}",
+                            )
+                        if i < len(item["sources"]):
+                            st.divider()
+
+            st.markdown("</div>", unsafe_allow_html=True)
     else:
+        # Empty state
         st.markdown(
             """
-            <div class="card" style="margin-top: 1.5rem;">
-                <div class="card-header">Guidelines</div>
-                
-                **Supported Format**
-                - PDF documents only
-                
-                **File Limits**
-                - Maximum: 10 MB
-                - Maximum pages: 100
-                
-                **Processing**
-                - Automatic text extraction
-                - Smart page chunking
-                - Semantic indexing
-                - Instant searchability
+            <div class="empty-state">
+                <div class="empty-state-icon">💬</div>
+                <p><strong>No conversations yet</strong></p>
+                <p class="hint">Ask your first question below to get started</p>
             </div>
-            """,
+        """,
             unsafe_allow_html=True,
         )
 
-elif st.session_state.current_page == "documents":
-    st.markdown("### Your Library")
-    st.caption("Manage all indexed documents")
-    
-    col1, col2 = st.columns([5, 1])
-    with col2:
-        if st.button("🔄 Refresh", width="stretch"):
-            st.rerun()
-    
-    st.divider()
-    
-    with st.spinner("Loading documents..."):
-        try:
-            doc_list = api_client.list_documents()
-            
-            if doc_list.get("count", 0) > 0:
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.metric("Total Chunks", doc_list.get("count", 0))
-                with col2:
-                    st.metric("Documents", len(doc_list.get("documents", [])))
-                
-                st.divider()
-                
-                if doc_list.get("documents"):
-                    for doc in doc_list["documents"]:
-                        col1, col2, col3, col4, col5 = st.columns([2.5, 1, 1, 1, 0.5])
-                        with col1:
-                            st.write(f"**{doc.get('filename', 'Unknown')}**")
-                        with col2:
-                            st.metric("Chunks", doc.get('chunk_count', 0))
-                        with col3:
-                            st.metric("Pages", doc.get('page_count', 0))
-                        with col4:
-                            st.metric("Size", f"{doc.get('size_mb', 0):.1f}MB" if doc.get('size_mb') else "N/A")
-                        with col5:
-                            if st.button("🗑️", key=f"del_{doc.get('id')}", help="Delete"):
-                                with st.spinner("Deleting..."):
-                                    try:
-                                        api_client.delete_document(doc.get('id'))
-                                        st.toast("Deleted", icon="✅")
-                                        st.rerun()
-                                    except Exception as e:
-                                        st.toast(str(e), icon="❌")
-                        st.divider()
-            else:
-                st.info("No documents yet. Go to Upload to add documents.")
-        except Exception as e:
-            st.toast(f"Error: {str(e)}", icon="❌")
-
-elif st.session_state.current_page == "settings":
-    st.markdown("### System Settings")
-    st.caption("Configuration and diagnostics")
-    st.divider()
-    
-    st.markdown("**Health Status**")
-    try:
-        health = api_client.check_health()
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            status_icon = "🟢" if health.get("status") == "healthy" else "🟡"
-            st.metric("API Status", f"{status_icon} {health.get('status', 'unknown').title()}")
-        with col2:
-            st.metric("Version", health.get("version", "?"))
-        with col3:
-            st.metric("Check Time", health.get("timestamp", "?")[:10])
-    except Exception as e:
-        st.toast(f"Could not connect: {str(e)}", icon="❌")
-    
-    st.divider()
-    st.markdown("**Configuration**")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        display_host = settings.api_host if settings.api_host != "0.0.0.0" else "localhost"
-        st.write(f"**API:** `http://{display_host}:{settings.api_port}`")
-        st.write(f"**Max File:** `{settings.max_upload_size / 1024 / 1024:.0f} MB`")
-        st.write(f"**Max Pages:** `{settings.max_pdf_pages}`")
-    with col2:
-        st.write(f"**LLM:** `{settings.llm_provider}`")
-        st.write(f"**Model:** `{settings.ollama_model}`")
-        st.write(f"**Environment:** `{settings.environment}`")
-    
-    st.divider()
-    st.markdown("**About**")
-    st.markdown(
-        """
-        **Chat With Documents** is an enterprise RAG system for intelligent document analysis.
-        
-        **Features:** PDF ingestion • Semantic search • AI-powered Q&A • Source citations • Privacy-first
-        
-        **Technology:** FastAPI • Streamlit • ChromaDB • Ollama | **Version:** 0.1.0
-        """
+    # Input area
+    query = st.text_area(
+        "Ask a question",
+        placeholder="What would you like to know about your documents?",
+        height=120,
+        key="chat_input",
+        label_visibility="collapsed",
     )
 
-# ============================================================================
-# FOOTER WITH PROPER SPACING
-# ============================================================================
-# Footer links removed for cleaner interface
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        send_btn = st.button(
+            "Send", width="stretch", type="primary", key="send_btn"
+        )
+    with col2:
+        if st.session_state.history:
+            if st.button("Clear", width="stretch", type="secondary", key="clear_btn"):
+                st.session_state.history = []
+                st.rerun()
+
+    # Handle send action
+    if send_btn and query.strip():
+        with st.spinner("Thinking..."):
+            try:
+                response = api_client.ask_question(query)
+                st.session_state.history.insert(
+                    0,
+                    {
+                        "query": query,
+                        "answer": response.get("answer", ""),
+                        "sources": response.get("sources", []),
+                    },
+                )
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error: {str(e)}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ----- UPLOAD PAGE -----
+elif st.session_state.page == "upload":
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+
+    # Header
+    st.markdown(
+        """
+        <div class="header">
+            <h1>Upload Documents</h1>
+            <p class="subtitle">Add PDF files to build your searchable knowledge base</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+
+    uploaded = st.file_uploader(
+        "Drag and drop or click to browse",
+        type="pdf",
+        help="Supported: PDF · Max 10MB, 100 pages",
+        label_visibility="collapsed",
+    )
+
+    if uploaded:
+        st.divider()
+
+        # File info
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(
+                "Filename",
+                uploaded.name[:20] + "..." if len(uploaded.name) > 20 else uploaded.name,
+            )
+        with col2:
+            st.metric("Size", f"{uploaded.size / 1024 / 1024:.2f} MB")
+        with col3:
+            st.metric("Type", "PDF")
+
+        st.divider()
+
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            if st.button(
+                "Upload & Index", width="stretch", type="primary", key="upload_btn"
+            ):
+                with st.spinner("Processing document..."):
+                    try:
+                        response = api_client.upload_document(uploaded)
+                        st.success("✅ Document uploaded successfully!")
+                        st.info(
+                            f"📊 Indexed **{response.get('chunk_count')}** chunks from **{response.get('page_count')}** pages"
+                        )
+                        st.markdown("💬 Go to **Chat** to start asking questions")
+                    except Exception as e:
+                        st.error(f"Upload failed: {str(e)}")
+    else:
+        # Guidelines
+        st.markdown(
+            """
+            **📋 Upload Guidelines**
+
+            - **Format:** PDF documents only
+            - **Size limit:** 10 MB maximum
+            - **Page limit:** 100 pages maximum
+            - **Processing:** Automatic text extraction and semantic indexing
+            - **Privacy:** Documents are stored locally and never shared
+        """
+        )
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+# ----- LIBRARY PAGE -----
+elif st.session_state.page == "library":
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+
+    # Header
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        st.markdown(
+            """
+            <div class="header">
+                <h1>Document Library</h1>
+                <p class="subtitle">Manage and organize your indexed documents</p>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+    with col2:
+        st.write("")  # Spacing
+        if st.button("🔄 Refresh", width="stretch", type="secondary", key="refresh_btn"):
+            st.rerun()
+
+    try:
+        docs = api_client.list_documents()
+
+        if docs.get("count", 0) > 0:
+            # Stats
+            st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric("Total Documents", len(docs.get("documents", [])))
+            with col2:
+                st.metric("Total Chunks", docs.get("count", 0))
+            st.markdown("</div>", unsafe_allow_html=True)
+
+            # Document list
+            for doc in docs.get("documents", []):
+                st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+
+                col1, col2, col3, col4, col5 = st.columns([3, 1, 1, 1, 0.6])
+                with col1:
+                    st.markdown(f"**{doc.get('filename')}**")
+                with col2:
+                    st.caption(f"📄 {doc.get('page_count', 0)} pages")
+                with col3:
+                    st.caption(f"📊 {doc.get('chunk_count', 0)} chunks")
+                with col4:
+                    size_mb = doc.get("size_mb", 0)
+                    st.caption(f"💾 {size_mb:.1f} MB" if size_mb else "N/A")
+                with col5:
+                    if st.button(
+                        "Delete", key=f"del_{doc.get('id')}", type="secondary"
+                    ):
+                        with st.spinner("Deleting..."):
+                            try:
+                                api_client.delete_document(doc.get("id"))
+                                st.success("Document deleted")
+                                st.rerun()
+                            except Exception as e:
+                                st.error(f"Failed: {str(e)}")
+
+                st.markdown("</div>", unsafe_allow_html=True)
+        else:
+            # Empty state
+            st.markdown(
+                """
+                <div class="empty-state">
+                    <div class="empty-state-icon">📚</div>
+                    <p><strong>No documents in your library yet</strong></p>
+                    <p class="hint">Upload PDF files to build your knowledge base</p>
+                </div>
+            """,
+                unsafe_allow_html=True,
+            )
+    except Exception as e:
+        st.error(f"Error loading documents: {str(e)}")
+
+    st.markdown("</div>", unsafe_allow_html=True)

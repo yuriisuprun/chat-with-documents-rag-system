@@ -69,6 +69,8 @@ async def upload_document(
     """
     try:
         logger.info(f"Document upload started: {file.filename}")
+        logger.debug(f"File content type: {file.content_type}")
+        logger.debug(f"File size: {file.size} bytes")
 
         # Validate filename (Phase 8)
         if not file.filename:
@@ -80,7 +82,9 @@ async def upload_document(
 
         # Sanitize filename
         try:
+            logger.debug(f"Validating filename: {file.filename}")
             safe_filename = validate_filename(file.filename)
+            logger.debug(f"Safe filename: {safe_filename}")
         except ValidationException as e:
             logger.warning(f"Filename validation failed: {e.message}")
             raise HTTPException(
@@ -94,20 +98,31 @@ async def upload_document(
 
         temp_filename = f"temp_{uuid4()}_{file.filename}"
         temp_path = temp_dir / temp_filename
+        logger.debug(f"Temp file path: {temp_path}")
 
         try:
             # Write file
+            logger.debug("Reading file content...")
             content = await file.read()
+            logger.info(f"File read successfully. Content size: {len(content)} bytes")
+            
             if not content:
+                logger.error(f"File content is empty: {file.filename}")
                 raise InvalidFileTypeException(file.filename or "unknown")
 
+            logger.debug("Writing file to temp location...")
             temp_path.write_bytes(content)
+            logger.info(f"File written to: {temp_path}")
 
             # Ingest document
+            logger.debug("Starting PDF ingestion...")
             result = ingestion_service.ingest_pdf(temp_path)
+            logger.info(f"PDF ingestion complete. Document ID: {result['document_id']}")
+            logger.debug(f"Ingestion result keys: {result.keys()}")
 
             # Index in vector store
             try:
+                logger.debug(f"Indexing {len(result['chunks'])} chunks...")
                 indexed_count = retrieval_service.index_document(
                     result["chunks"],
                     settings.embedding_model,
@@ -117,19 +132,21 @@ async def upload_document(
                     f"{indexed_count} chunks"
                 )
             except Exception as e:
-                logger.error(f"Indexing failed: {e}")
+                logger.error(f"Indexing failed: {e}", exc_info=True)
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Failed to index document",
                 )
 
-            return DocumentUploadResponse(
+            response = DocumentUploadResponse(
                 document_id=result["document_id"],
                 filename=result["filename"],
                 status="indexed",
                 message=f"Document successfully uploaded and indexed "
                 f"({result['page_count']} pages, {result['chunk_count']} chunks)",
             )
+            logger.info(f"Returning successful response: {response}")
+            return response
 
         except (
             FileSizeException,
@@ -138,7 +155,7 @@ async def upload_document(
             PDFPageCountException,
             EmptyDocumentException,
         ) as e:
-            logger.warning(f"Validation error: {e.error_code}")
+            logger.warning(f"Validation error: {e.error_code} - {e.message}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=str(e.message),
@@ -148,6 +165,7 @@ async def upload_document(
             if temp_path.exists():
                 try:
                     temp_path.unlink()
+                    logger.debug(f"Cleaned up temp file: {temp_path}")
                 except Exception as e:
                     logger.warning(f"Failed to clean up temp file: {e}")
 

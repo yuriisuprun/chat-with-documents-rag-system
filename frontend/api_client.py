@@ -4,9 +4,14 @@ API Client for communication with the backend.
 Provides methods to interact with the RAG system API endpoints.
 """
 
+import logging
 from typing import Any, Optional
 
-import httpx
+import requests
+
+# Setup logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 class APIClient:
@@ -34,7 +39,7 @@ class APIClient:
         Args:
             method: HTTP method (GET, POST, etc.)
             endpoint: API endpoint path
-            **kwargs: Additional arguments for httpx request
+            **kwargs: Additional arguments for requests
 
         Returns:
             Response JSON data
@@ -45,19 +50,18 @@ class APIClient:
         url = f"{self.base_url}{endpoint}"
 
         try:
-            with httpx.Client(timeout=self.timeout) as client:
-                response = client.request(method, url, **kwargs)
-                response.raise_for_status()
-                return response.json()
-        except httpx.TimeoutException:
+            response = requests.request(method, url, timeout=self.timeout, **kwargs)
+            response.raise_for_status()
+            return response.json()
+        except requests.Timeout:
             raise Exception("Request timed out. The LLM may be processing.")
-        except httpx.HTTPStatusError as e:
+        except requests.HTTPError as e:
             try:
                 error_detail = e.response.json()
                 raise Exception(f"API Error: {error_detail.get('detail', str(e))}")
             except Exception:
                 raise Exception(
-                    f"API Error: {e.response.status_code} {e.response.reason_phrase}"
+                    f"API Error: {e.response.status_code} {e.response.reason}"
                 )
         except Exception as e:
             # Include full exception details for debugging
@@ -75,31 +79,79 @@ class APIClient:
         Returns:
             DocumentUploadResponse
         """
-        # Read file content as bytes
-        content = file_obj.read()
+        logger.info(f"Starting PDF upload: {file_obj.name}")
+        logger.debug(f"File object type: {type(file_obj)}")
         
-        # Use multipart form data with httpx
-        # Create a multipart encoded body
-        from httpx import MultipartEncoder
-        
-        multipart_data = MultipartEncoder(
-            fields={"file": (file_obj.name, content, "application/pdf")}
-        )
-        
-        url = f"{self.base_url}/api/v1/documents/upload"
         try:
-            with httpx.Client(timeout=self.timeout) as client:
-                response = client.post(
-                    url,
-                    content=multipart_data,
-                    headers={"Content-Type": multipart_data.content_type}
-                )
-                response.raise_for_status()
-                return response.json()
+            # Streamlit UploadedFile has different behavior than regular files
+            logger.debug("Reading file content into bytes...")
+            
+            # Method 1: Try file_obj.read() - the standard way
+            if hasattr(file_obj, 'getvalue') and callable(file_obj.getvalue):
+                # UploadedFile inherits from BytesIO, use getvalue() for efficiency
+                logger.debug("Using file_obj.getvalue() (BytesIO method)")
+                content = file_obj.getvalue()
+            elif hasattr(file_obj, 'read') and callable(file_obj.read):
+                logger.debug("Using file_obj.read()")
+                # Reset pointer first
+                if hasattr(file_obj, 'seek'):
+                    file_obj.seek(0)
+                content = file_obj.read()
+            else:
+                raise ValueError(f"Cannot read file from object of type {type(file_obj)}")
+            
+            # CRITICAL: Ensure content is bytes, not memoryview or other buffer type
+            if isinstance(content, memoryview):
+                logger.debug("Content is memoryview, converting to bytes")
+                content = bytes(content)
+            elif not isinstance(content, bytes):
+                logger.debug(f"Content type is {type(content)}, converting to bytes")
+                content = bytes(content)
+            
+            logger.info(f"File read successfully. Size: {len(content)} bytes")
+            logger.debug(f"Final content type: {type(content)}")
+            
+            url = f"{self.base_url}/api/v1/documents/upload"
+            logger.info(f"Uploading to: {url}")
+            
+            # Use requests library with bytes directly (not file-like object)
+            # This prevents requests from trying to call .read() on our object
+            files = {
+                "file": (file_obj.name, content, "application/pdf")
+            }
+            logger.debug(f"Files dict created with name: {file_obj.name}")
+            
+            logger.debug("Sending POST request with requests library...")
+            response = requests.post(url, files=files, timeout=self.timeout)
+            
+            logger.info(f"Response status: {response.status_code}")
+            logger.debug(f"Response headers: {dict(response.headers)}")
+            
+            if response.status_code >= 400:
+                logger.error(f"Response text: {response.text}")
+            
+            response.raise_for_status()
+            result = response.json()
+            logger.info(f"Upload successful. Document ID: {result.get('document_id')}")
+            logger.debug(f"Full response: {result}")
+            return result
+                
+        except requests.HTTPError as e:
+            logger.error(f"HTTP Status Error: {e.response.status_code}")
+            logger.error(f"Response text: {e.response.text}")
+            try:
+                error_detail = e.response.json()
+                detail = error_detail.get('detail', str(e))
+            except Exception:
+                detail = e.response.text
+            raise Exception(f"Upload failed: {detail}")
+            
         except Exception as e:
+            logger.exception(f"Unexpected error during upload: {type(e).__name__}: {str(e)}")
             import traceback
             tb = traceback.format_exc()
-            raise Exception(f"Upload failed: {str(e)}\n{tb}")
+            logger.error(f"Traceback:\n{tb}")
+            raise Exception(f"Upload failed: {str(e)}")
 
     def list_documents(self) -> dict:
         """
