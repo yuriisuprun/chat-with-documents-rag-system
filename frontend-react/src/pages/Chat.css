@@ -1,5 +1,7 @@
 .chat-page {
   display: flex;
+  flex-direction: column;
+  width: 100%;
   height: 100%;
   background-color: var(--neutral-50);
 }
@@ -14,10 +16,10 @@
 .messages-area {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 .empty-state {
@@ -128,10 +130,11 @@
 .input-area {
   border-top: 1px solid var(--neutral-200);
   background-color: var(--white);
-  padding: var(--spacing-lg) var(--spacing-xl);
+  padding: var(--spacing-lg);
   gap: var(--spacing-md);
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .document-filter {

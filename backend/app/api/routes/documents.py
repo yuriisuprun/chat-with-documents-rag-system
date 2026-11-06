@@ -181,7 +181,6 @@ async def upload_document(
 
 @router.get(
     "",
-    response_model=DocumentListResponse,
     summary="List Documents",
 )
 async def list_documents(
@@ -190,28 +189,19 @@ async def list_documents(
     """
     List all indexed documents.
 
-    Returns statistics about indexed documents and vector store status.
+    Returns empty list (Phase 7 will add database integration).
 
     Args:
         retrieval_service: Retrieval service (injected)
 
     Returns:
-        DocumentListResponse with list of documents and count
+        List of documents
     """
     try:
         logger.debug("Listing documents")
-
-        # Get collection stats
-        stats = retrieval_service.get_collection_stats()
-
-        # For now, return empty list when no chunks (Phase 7 will add database integration)
-        documents = []
-        chunk_count = stats.get("chunk_count", 0)
-
-        return DocumentListResponse(
-            documents=documents,
-            count=chunk_count,
-        )
+        
+        # Return empty list for now (Phase 7 will integrate database)
+        return []
 
     except Exception as e:
         logger.error(f"Error listing documents: {e}", exc_info=True)

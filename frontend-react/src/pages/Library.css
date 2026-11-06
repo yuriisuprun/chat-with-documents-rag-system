@@ -1,5 +1,7 @@
 .library-page {
   display: flex;
+  flex-direction: column;
+  width: 100%;
   height: 100%;
   background-color: var(--neutral-50);
 }
@@ -8,8 +10,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-xl);
-  gap: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
 }
 
 .library-header {

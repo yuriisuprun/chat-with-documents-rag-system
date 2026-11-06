@@ -2,22 +2,29 @@
   background: var(--white);
   border-bottom: 1px solid var(--neutral-200);
   padding: var(--spacing-lg) var(--spacing-xl);
+  padding-left: var(--spacing-2xl);
   box-shadow: var(--shadow-sm);
 }
 
 .header-content {
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--spacing-xl);
 }
 
 .header h1 {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   margin: 0;
   color: var(--neutral-900);
+  letter-spacing: 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-status {
@@ -26,6 +33,8 @@
   gap: var(--spacing-sm);
   font-size: var(--font-size-sm);
   color: var(--neutral-600);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .status-indicator {
