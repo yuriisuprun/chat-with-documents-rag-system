@@ -37,6 +37,7 @@ class PDFExtractor:
             PDFPageCountException: If page count exceeds limit
         """
         try:
+            # Import fitz - handle both old and new module names
             try:
                 import pymupdf as fitz
             except ImportError:
@@ -120,6 +121,7 @@ class PDFExtractor:
             InvalidPDFException: If PDF cannot be opened
         """
         try:
+            # Import fitz - handle both old and new module names
             try:
                 import pymupdf as fitz
             except ImportError:

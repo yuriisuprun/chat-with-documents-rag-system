@@ -1,0 +1,115 @@
+.sidebar {
+  width: 260px;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xl);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
+}
+
+.sidebar-header {
+  margin-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--white);
+}
+
+.sidebar-subtitle {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(4px);
+}
+
+.nav-button.active {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: var(--white);
+  color: var(--white);
+  box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.2);
+}
+
+.nav-label {
+  flex: 1;
+  text-align: left;
+}
+
+.sidebar-footer {
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.footer-text {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    padding: var(--spacing-lg);
+    align-items: center;
+    gap: var(--spacing-xl);
+  }
+
+  .sidebar-header {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    flex: 1;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    gap: var(--spacing-md);
+  }
+
+  .sidebar-footer {
+    padding-top: 0;
+    border-top: none;
+    display: none;
+  }
+
+  .nav-button {
+    flex: 1;
+    justify-content: center;
+  }
+}

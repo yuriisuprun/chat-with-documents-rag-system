@@ -1,141 +1,145 @@
 #!/bin/bash
-# Chat With Documents - Complete System Startup
-# Works on: Windows Git Bash, Linux, macOS
-# Includes production Uvicorn (or Gunicorn on Linux/macOS) setup
+
+# Start the complete Chat With Documents system (Backend + React Frontend)
+# Bash version for macOS and Linux
+# Requires: Python 3.11+, Node.js 18+, npm
 
 set -e
 
-# Parameters
 BACKEND_PORT=${1:-8000}
-FRONTEND_PORT=${2:-8501}
-USE_GUNICORN=${3:-"auto"}  # auto, true, false
+FRONTEND_PORT=${2:-5173}
+SKIP_OLLAMA=${SKIP_OLLAMA:-false}
+OLLAMA_MODEL=${OLLAMA_MODEL:-qwen3:8b}
 
-echo "=========================================="
-echo "Chat With Documents - Starting..."
-echo "=========================================="
+cat << "EOF"
+==========================================
+Chat With Documents - Full System Startup
+==========================================
+EOF
 echo ""
 
-# Get paths
-PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-BACKEND="$PROJECT_ROOT/backend"
-FRONTEND="$PROJECT_ROOT/frontend"
+# Check prerequisites
+echo "Checking prerequisites..."
 
-echo "Project: $PROJECT_ROOT"
-echo "Backend Port: $BACKEND_PORT"
-echo "Frontend Port: $FRONTEND_PORT"
+if ! command -v python3 &> /dev/null; then
+    echo "[FAIL] Python 3 not found. Please install Python 3.11+"
+    exit 1
+fi
+echo "[OK] $(python3 --version)"
+
+if ! command -v node &> /dev/null; then
+    echo "[FAIL] Node.js not found. Please install Node.js 18+"
+    exit 1
+fi
+echo "[OK] Node.js $(node --version)"
+
+if ! command -v npm &> /dev/null; then
+    echo "[FAIL] npm not found. Please install npm"
+    exit 1
+fi
+echo "[OK] npm $(npm --version)"
+
 echo ""
 
-# Check Python
-echo "Checking Python..."
-python --version || { echo "ERROR: Python not found"; exit 1; }
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BACKEND_PATH="$PROJECT_ROOT/backend"
+FRONTEND_PATH="$PROJECT_ROOT/frontend-react"
+
+# Check if Ollama is running
+echo "Checking Ollama..."
+if curl -s http://localhost:11434/api/status > /dev/null 2>&1; then
+    echo "[OK] Ollama already running on port 11434"
+else
+    if [ "$SKIP_OLLAMA" = "false" ]; then
+        echo "Starting Ollama with $OLLAMA_MODEL..."
+        if command -v ollama &> /dev/null; then
+            ollama serve &
+            sleep 3
+            echo "[OK] Ollama started"
+        else
+            echo "[WARN] Ollama not found. Skipping Ollama startup."
+            echo "       Install from: https://ollama.ai"
+        fi
+    fi
+fi
+
 echo ""
 
 # Start Backend
-echo "=========================================="
-echo "Starting Backend..."
-echo "=========================================="
-cd "$BACKEND" || exit 1
-
-# Check/create venv
-if [ ! -d "venv" ]; then
-    echo "ERROR: venv not found!"
-    echo "Run: bash ../scripts/fix_and_install.sh"
-    exit 1
-fi
-
-# Activate venv
-if [ -f "venv/Scripts/activate" ]; then
-    source venv/Scripts/activate
-else
-    source venv/bin/activate
-fi
-
-# Disable file watching during startup
-export PYTHONDONTWRITEBYTECODE=1
-export WATCHFILES_IGNORE_PATHS='venv/*'
-export PYTHONUNBUFFERED=1
-export ENVIRONMENT="production"
-
-echo "Backend: $(which python)"
-echo ""
-
-# Determine if we should use Gunicorn (Linux/macOS) or Uvicorn (Windows)
-USE_GUNICORN_CMD="false"
-if [ "$USE_GUNICORN" = "auto" ]; then
-    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-        USE_GUNICORN_CMD="false"  # Windows - use Uvicorn
-    else
-        USE_GUNICORN_CMD="true"   # Linux/macOS - use Gunicorn
+echo "Starting Backend API..."
+(
+    cd "$BACKEND_PATH"
+    
+    if [ ! -d "venv" ]; then
+        echo "Creating virtual environment..."
+        python3 -m venv venv
     fi
-elif [ "$USE_GUNICORN" = "true" ]; then
-    USE_GUNICORN_CMD="true"
-fi
-
-# Start backend server
-if [ "$USE_GUNICORN_CMD" = "true" ]; then
-    # Production: Gunicorn + Uvicorn workers (Linux/macOS)
-    CORES=$(nproc || sysctl -n hw.ncpu)
-    WORKERS=$((CORES * 2))
-    echo "Starting Gunicorn with $WORKERS workers on http://0.0.0.0:$BACKEND_PORT"
-    gunicorn \
-        "app.main:app" \
-        --config "gunicorn_config.py" \
-        --workers "$WORKERS" \
-        --worker-class "uvicorn.workers.UvicornWorker" \
-        --bind "0.0.0.0:$BACKEND_PORT" \
-        --access-logfile "-" \
-        --error-logfile "-" &
-else
-    # Windows: Single Uvicorn process (async)
-    echo "Starting Uvicorn on http://0.0.0.0:$BACKEND_PORT"
-    python -m uvicorn app.main:app \
-        --host 0.0.0.0 \
-        --port $BACKEND_PORT \
-        --loop asyncio &
-fi
-
+    
+    echo "Activating virtual environment..."
+    source venv/bin/activate
+    
+    echo "Upgrading pip..."
+    python -m pip install --upgrade pip >/dev/null 2>&1
+    
+    echo "Installing build tools..."
+    pip install --upgrade setuptools wheel >/dev/null 2>&1
+    
+    echo "Installing dependencies..."
+    if ! pip install -r requirements.txt 2>/dev/null; then
+        echo "[ERROR] Dependency installation failed!"
+        exit 1
+    fi
+    
+    echo "[OK] Dependencies installed"
+    echo "Starting FastAPI on 0.0.0.0:$BACKEND_PORT..."
+    export ENVIRONMENT=development
+    python -m uvicorn app.main:app --host 0.0.0.0 --port $BACKEND_PORT --reload
+) &
 BACKEND_PID=$!
-echo "Backend PID: $BACKEND_PID"
-sleep 3
+sleep 8
+echo "[OK] Backend started on http://localhost:$BACKEND_PORT"
+
+echo ""
 
 # Start Frontend
-echo ""
-echo "=========================================="
-echo "Starting Frontend..."
-echo "=========================================="
-cd "$FRONTEND" || exit 1
-
-# Ensure streamlit installed in main python
-pip install -q streamlit 2>/dev/null || pip install streamlit >/dev/null
-
-# Find app file
-STREAMLIT_FILE="app.py"
-if [ ! -f "$STREAMLIT_FILE" ]; then
-    echo "ERROR: $STREAMLIT_FILE not found"
-    exit 1
-fi
-
-echo "Starting Streamlit on http://localhost:$FRONTEND_PORT"
-streamlit run "$STREAMLIT_FILE" --server.port $FRONTEND_PORT --logger.level=warning 2>&1 &
+echo "Starting React Frontend..."
+(
+    cd "$FRONTEND_PATH"
+    
+    echo "Checking Node dependencies..."
+    if [ ! -d "node_modules" ]; then
+        echo "Installing npm dependencies (this may take a minute)..."
+        npm install
+        if [ $? -ne 0 ]; then
+            echo "[ERROR] npm install failed!"
+            exit 1
+        fi
+    fi
+    
+    echo "[OK] Dependencies ready"
+    echo "Starting Vite dev server on http://localhost:$FRONTEND_PORT..."
+    npm run dev
+) &
 FRONTEND_PID=$!
-echo "Frontend PID: $FRONTEND_PID"
-sleep 2
+sleep 3
+echo "[OK] Frontend started"
 
 echo ""
-echo "=========================================="
-echo "✓ System Started!"
-echo "=========================================="
-echo ""
-echo "📱 UI:   http://localhost:$FRONTEND_PORT"
-echo "🔧 API:  http://localhost:$BACKEND_PORT"
-echo "📚 Docs: http://localhost:$BACKEND_PORT/docs"
-echo "📊 Metrics: http://localhost:$BACKEND_PORT/metrics"
-echo ""
-echo "Ollama: Make sure ollama serve is running"
-echo "        (or start: ollama serve)"
-echo ""
-echo "Press Ctrl+C to stop"
-echo ""
+cat << "EOF"
+=========================================
+[OK] System startup complete!
+=========================================
 
-# Wait for processes
+Frontend (React): http://localhost:5173
+Backend API: http://localhost:8000
+API Docs: http://localhost:8000/docs
+
+The React dev server will open in your browser automatically.
+If not, navigate to http://localhost:5173 in your browser.
+
+To stop: Press Ctrl+C in this terminal or close the windows.
+
+EOF
+
+# Wait for both processes
 wait
