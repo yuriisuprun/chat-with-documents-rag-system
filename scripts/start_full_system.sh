@@ -76,7 +76,14 @@ echo "Starting Backend API..."
     fi
     
     echo "Activating virtual environment..."
-    source venv/bin/activate
+    # Detect OS and use appropriate activation script
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OS" == "Windows_NT" ]]; then
+        # Windows (Git Bash or WSL)
+        source venv/Scripts/activate
+    else
+        # macOS and Linux
+        source venv/bin/activate
+    fi
     
     echo "Upgrading pip..."
     python -m pip install --upgrade pip >/dev/null 2>&1
