@@ -95,7 +95,7 @@ class Settings(BaseSettings):
     # ========================================================================
     # Security Settings
     # ========================================================================
-    cors_origins: str = "http://localhost:3000,http://localhost:8501"
+    cors_origins: str = "http://localhost:3000,http://localhost:5173,http://localhost:5174,http://localhost:8501"
     
     # API key authentication (Phase 8)
     api_key_enabled: bool = False

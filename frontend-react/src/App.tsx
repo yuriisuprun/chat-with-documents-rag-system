@@ -14,21 +14,29 @@ export default function App() {
   const [isOnline, setIsOnline] = useState(true)
   const [loading, setLoading] = useState(true)
 
-  // Check backend connectivity on mount
+  // Check backend connectivity on mount and periodically
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        await apiClient.health()
+        console.log('[App] Health check initiated...')
+        const response = await apiClient.health()
+        console.log('[App] ✓ Backend is online:', response)
         setIsOnline(true)
       } catch (error) {
-        console.error('Backend unavailable:', error)
+        console.error('[App] ✗ Backend is offline:', error)
         setIsOnline(false)
       } finally {
         setLoading(false)
       }
     }
 
+    // Initial health check
     checkHealth()
+
+    // Periodic health checks every 10 seconds
+    const intervalId = setInterval(checkHealth, 10000)
+
+    return () => clearInterval(intervalId)
   }, [])
 
   if (loading) {

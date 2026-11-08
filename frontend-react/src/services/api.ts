@@ -42,7 +42,7 @@ interface UploadProgress {
 class ApiClient {
   private client: AxiosInstance
 
-  constructor(baseURL: string = '/api') {
+  constructor(baseURL: string = 'http://localhost:8000/api/v1') {
     this.client = axios.create({
       baseURL,
       headers: {
@@ -51,11 +51,18 @@ class ApiClient {
       timeout: 30000,
     })
 
-    // Error interceptor
+    // Add response interceptor for debugging
     this.client.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        console.log('[Axios] Success response interceptor:', { status: response.status, data: response.data })
+        return response
+      },
       (error: AxiosError) => {
-        console.error('API Error:', error.message)
+        console.error('[Axios] Error interceptor:', { 
+          status: error.response?.status,
+          message: error.message,
+          code: error.code,
+        })
         throw this.handleError(error)
       }
     )
@@ -78,9 +85,33 @@ class ApiClient {
   /**
    * Health check endpoint
    */
-  async health(): Promise<ApiResponse<{ status: string }>> {
-    const response = await this.client.get('/health')
-    return response.data
+  async health(): Promise<any> {
+    try {
+      console.log('[health()] Starting health check with axios...')
+      const url = `/health?t=${Date.now()}`
+      console.log('[health()] Requesting:', url)
+      
+      const response = await this.client.get(url)
+      console.log('[health()] Success:', response)
+      return response.data
+    } catch (error) {
+      console.error('[health()] Axios failed:', error)
+      
+      // Fallback to fetch
+      console.log('[health()] Trying fetch fallback...')
+      try {
+        const fullUrl = `http://localhost:8000/api/v1/health?t=${Date.now()}`
+        console.log('[health()] Fetch URL:', fullUrl)
+        const response = await fetch(fullUrl)
+        console.log('[health()] Fetch success:', response)
+        const data = await response.json()
+        console.log('[health()] Fetch data:', data)
+        return data
+      } catch (fetchError) {
+        console.error('[health()] Fetch also failed:', fetchError)
+        throw error
+      }
+    }
   }
 
   /**

@@ -86,6 +86,8 @@ def create_app() -> FastAPI:
     Returns:
         FastAPI: Configured application instance
     """
+    from app.core.config import settings as cors_settings
+    
     app = FastAPI(
         title="Chat With Documents – RAG System",
         description="AI-powered PDF question answering system using Retrieval-Augmented Generation",
@@ -94,15 +96,42 @@ def create_app() -> FastAPI:
     )
 
     # ========================================================================
-    # CORS Middleware
+    # Manual CORS Header Middleware
     # ========================================================================
+    cors_list = cors_settings.cors_origins_list
+    print(f"\n*** CORS MIDDLEWARE SETUP: {len(cors_list)} origins ***\n", flush=True)
+    
+    @app.middleware("http")
+    async def add_cors_headers(request: Request, call_next):
+        """Manually add CORS headers to all responses."""
+        origin = request.headers.get("origin")
+        
+        # Log for debugging
+        if origin:
+            logger.debug(f"CORS request from origin: {origin}")
+            logger.debug(f"Allowed origins: {cors_list}")
+        
+        response = await call_next(request)
+        
+        # Add CORS headers if origin matches
+        if origin in cors_list:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            response.headers["Access-Control-Allow-Methods"] = "*"
+            response.headers["Access-Control-Allow-Headers"] = "*"
+            logger.debug(f"Added CORS headers for origin: {origin}")
+        
+        return response
+    
+    # Also add FastAPI's CORSMiddleware as backup
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.cors_origins_list,
+        allow_origins=cors_list,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    logger.info(f"CORS configured for {len(cors_list)} origins")
 
     # ========================================================================
     # Exception Handlers
@@ -135,7 +164,7 @@ def create_app() -> FastAPI:
         )
 
     # ========================================================================
-    # Include Routers
+    # Include Routers (after middleware and exception handlers)
     # ========================================================================
     app.include_router(health.router)
     app.include_router(documents.router)
