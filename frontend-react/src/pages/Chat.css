@@ -29,7 +29,7 @@
   justify-content: center;
   height: 100%;
   gap: var(--spacing-lg);
-  color: var(--neutral-500);
+  color: var(--neutral-700);
 }
 
 .empty-icon {
@@ -43,7 +43,7 @@
 }
 
 .empty-state p {
-  color: var(--neutral-600);
+  color: var(--neutral-700);
   margin: 0;
 }
 
@@ -115,6 +115,10 @@
   color: var(--neutral-700);
 }
 
+.message-user .message-sources strong {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .message-sources ul {
   list-style: none;
   padding: 0;
@@ -123,8 +127,44 @@
 
 .message-sources li {
   font-size: var(--font-size-sm);
-  color: var(--primary);
+  color: var(--neutral-700);
   padding: var(--spacing-xs) 0;
+  margin-bottom: var(--spacing-xs);
+}
+
+.message-user .message-sources li {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.source-filename {
+  font-weight: var(--font-weight-medium);
+  color: inherit;
+}
+
+.source-page {
+  color: inherit;
+  opacity: 0.9;
+}
+
+.source-confidence {
+  color: inherit;
+  opacity: 0.8;
+  font-size: var(--font-size-xs);
+}
+
+.source-preview {
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  color: inherit;
+  opacity: 0.9;
+  line-height: var(--line-height-tight);
+}
+
+.message-user .source-preview {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .input-area {
@@ -246,7 +286,7 @@
 
 .help-text {
   font-size: var(--font-size-sm);
-  color: var(--neutral-500);
+  color: var(--neutral-700);
   margin: 0;
   text-align: center;
 }

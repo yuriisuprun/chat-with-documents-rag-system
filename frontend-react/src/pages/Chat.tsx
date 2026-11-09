@@ -120,7 +120,15 @@ export default function Chat() {
                         <strong>Sources:</strong>
                         <ul>
                           {msg.sources.map((source, idx) => (
-                            <li key={idx}>{source}</li>
+                            <li key={idx}>
+                              <span className="source-filename">{source.filename}</span>
+                              {' — '}
+                              <span className="source-page">Page {source.page_number}</span>
+                              <span className="source-confidence">
+                                {' '}({(source.similarity_score * 100).toFixed(0)}% match)
+                              </span>
+                              <div className="source-preview">{source.text_preview}</div>
+                            </li>
                           ))}
                         </ul>
                       </div>
@@ -171,9 +179,9 @@ export default function Chat() {
                   handleSend()
                 }
               }}
-              placeholder="Ask a question about your documents... (Shift+Enter for new line)"
+              placeholder={documents.length === 0 ? "Upload documents first to start chatting..." : "Ask a question about your documents... (Shift+Enter for new line)"}
               className="message-input"
-              disabled={loading || documents.length === 0}
+              disabled={loading}
             />
             <div className="input-actions">
               <button
