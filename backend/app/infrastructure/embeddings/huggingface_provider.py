@@ -92,7 +92,7 @@ class HuggingFaceEmbeddingProvider(EmbeddingProvider):
 
     def embed_texts(self, texts: list[str]) -> list[list[float]]:
         """
-        Embed multiple text strings.
+        Embed multiple text strings with optimized batching.
 
         Args:
             texts: List of texts to embed
@@ -106,12 +106,17 @@ class HuggingFaceEmbeddingProvider(EmbeddingProvider):
         try:
             self._load_model()
 
-            # Embed texts in batch
+            # Use larger batch size for faster encoding
+            batch_size = 32  # Process 32 chunks at a time for speed
+            
+            # Embed texts in batch with optimized parameters
             embeddings = self._model.encode(
                 texts,
                 normalize_embeddings=self.normalize,
                 convert_to_numpy=False,
                 show_progress_bar=False,
+                batch_size=batch_size,
+                device=self.device,
             )
 
             return [emb.tolist() for emb in embeddings]

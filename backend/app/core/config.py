@@ -48,13 +48,13 @@ class Settings(BaseSettings):
     # ========================================================================
     # Chunking Settings
     # ========================================================================
-    chunk_size: int = 800
-    chunk_overlap: int = 120
+    chunk_size: int = 1500
+    chunk_overlap: int = 200
 
     # ========================================================================
     # Embeddings Settings
     # ========================================================================
-    embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     embedding_device: Literal["cpu", "cuda"] = "cpu"
     embedding_normalize: bool = True
 
@@ -67,19 +67,25 @@ class Settings(BaseSettings):
     # ========================================================================
     # LLM Settings
     # ========================================================================
-    llm_provider: Literal["ollama", "openai"] = "ollama"
+    llm_provider: Literal["ollama", "openai", "groq"] = "groq"
 
     # Ollama settings
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "qwen3:8b"
     ollama_temperature: float = 0.3
     ollama_top_p: float = 0.9
-    ollama_timeout: int = 120
+    ollama_timeout: int = 180
 
     # OpenAI settings (optional)
     openai_api_key: str = ""
     openai_model: str = "gpt-3.5-turbo"
     openai_temperature: float = 0.3
+
+    # Groq settings
+    groq_api_key: str = ""
+    groq_model: str = "llama-3.1-70b-versatile"
+    groq_temperature: float = 0.3
+    groq_timeout: int = 30
 
     # ========================================================================
     # Retrieval Settings
