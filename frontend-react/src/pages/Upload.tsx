@@ -67,13 +67,14 @@ export default function Upload() {
     }
 
     setUploads((prev) =>
-      prev.map((u) => (u.id === uploadId ? { ...u, status: 'uploading' } : u))
+      prev.map((u) => (u.id === uploadId ? { ...u, status: 'uploading', progress: 0 } : u))
     )
 
     try {
       await apiClient.uploadDocument(file, (progress: UploadProgress) => {
+        const percentage = Math.round((progress.loaded / progress.total) * 100) || 1
         setUploads((prev) =>
-          prev.map((u) => (u.id === uploadId ? { ...u, progress: progress.percentage } : u))
+          prev.map((u) => (u.id === uploadId ? { ...u, progress: percentage } : u))
         )
       })
 
@@ -81,13 +82,16 @@ export default function Upload() {
         prev.map((u) => (u.id === uploadId ? { ...u, status: 'success', progress: 100 } : u))
       )
     } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Upload failed'
+      console.error(`Upload failed for ${file.name}:`, errorMsg)
+      
       setUploads((prev) =>
         prev.map((u) =>
           u.id === uploadId
             ? {
                 ...u,
                 status: 'error',
-                error: error instanceof Error ? error.message : 'Upload failed',
+                error: errorMsg,
               }
             : u
         )
@@ -182,7 +186,13 @@ export default function Upload() {
                           style={{ width: `${upload.progress}%` }}
                         ></div>
                       </div>
-                      <span className="progress-text">{upload.progress}%</span>
+                      <div className="progress-info">
+                        {upload.progress < 5 && <span className="progress-text">Uploading...</span>}
+                        {upload.progress >= 5 && upload.progress < 50 && <span className="progress-text">Reading file...</span>}
+                        {upload.progress >= 50 && upload.progress < 90 && <span className="progress-text">Processing PDF...</span>}
+                        {upload.progress >= 90 && upload.progress < 100 && <span className="progress-text">Indexing...</span>}
+                        {upload.progress === 100 && <span className="progress-text">Finalizing...</span>}
+                      </div>
                     </div>
                   )}
 

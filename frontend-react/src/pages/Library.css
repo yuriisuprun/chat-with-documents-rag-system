@@ -33,7 +33,7 @@
 .header-subtitle {
   margin: 0;
   font-size: var(--font-size-sm);
-  color: var(--neutral-600);
+  color: var(--neutral-700);
 }
 
 .sort-control {
@@ -78,7 +78,7 @@
   justify-content: center;
   min-height: 400px;
   gap: var(--spacing-lg);
-  color: var(--neutral-600);
+  color: var(--neutral-700);
   background: var(--white);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
@@ -184,7 +184,7 @@
 .doc-date {
   margin: 0;
   font-size: var(--font-size-sm);
-  color: var(--neutral-500);
+  color: var(--neutral-600);
 }
 
 .card-info {
@@ -203,7 +203,7 @@
 }
 
 .info-label {
-  color: var(--neutral-600);
+  color: var(--neutral-700);
   font-weight: var(--font-weight-medium);
 }
 
