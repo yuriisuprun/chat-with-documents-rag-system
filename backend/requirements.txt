@@ -30,6 +30,7 @@ langchain-ollama>=0.1.0
 # LLM
 ollama>=0.1.0
 openai>=1.0.0
+groq>=0.8.0
 
 # Reranking (Phase 9: Production RAG quality)
 rank_bm25>=0.2.2
