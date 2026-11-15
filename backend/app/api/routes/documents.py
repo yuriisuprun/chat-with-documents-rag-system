@@ -5,6 +5,7 @@ Handles document upload, listing, retrieval, and deletion.
 Includes input validation and security checks (Phase 8).
 """
 
+import asyncio
 from pathlib import Path
 from uuid import uuid4
 
@@ -37,6 +38,24 @@ logger = get_logger(__name__)
 router = APIRouter(prefix="/api/v1/documents", tags=["documents"])
 
 
+@router.options("", include_in_schema=False)
+async def options_documents():
+    """Handle CORS preflight for documents endpoint."""
+    return None
+
+
+@router.options("/{document_id}", include_in_schema=False)
+async def options_document(document_id: str):
+    """Handle CORS preflight for document detail endpoint."""
+    return None
+
+
+@router.options("/upload", include_in_schema=False)
+async def options_document_upload():
+    """Handle CORS preflight for document upload endpoint."""
+    return None
+
+
 @router.post(
     "/upload",
     response_model=DocumentUploadResponse,
@@ -52,6 +71,9 @@ async def upload_document(
     Upload a PDF document for processing.
 
     Validates the PDF, extracts text, creates chunks, and indexes embeddings.
+    
+    Note: This operation can take 30-120 seconds depending on document size.
+    The frontend should set an appropriate timeout (suggested: 300s).
 
     Args:
         file: PDF file to upload
@@ -67,6 +89,8 @@ async def upload_document(
         422: PDF page count exceeded
         500: Processing error
     """
+    upload_timeout = 300  # 5 minutes for large document processing
+    
     try:
         logger.info(f"Document upload started: {file.filename}")
         logger.debug(f"File content type: {file.content_type}")
@@ -96,6 +120,7 @@ async def upload_document(
         temp_dir = settings.upload_directory
         temp_dir.mkdir(parents=True, exist_ok=True)
 
+        file_size = file.size or 0
         temp_filename = f"temp_{uuid4()}_{file.filename}"
         temp_path = temp_dir / temp_filename
         logger.debug(f"Temp file path: {temp_path}")
@@ -114,22 +139,47 @@ async def upload_document(
             temp_path.write_bytes(content)
             logger.info(f"File written to: {temp_path}")
 
-            # Ingest document
+            # Ingest document with timeout
             logger.debug("Starting PDF ingestion...")
-            result = ingestion_service.ingest_pdf(temp_path)
+            try:
+                result = await asyncio.wait_for(
+                    asyncio.to_thread(
+                        ingestion_service.ingest_pdf,
+                        temp_path,
+                        safe_filename
+                    ),
+                    timeout=upload_timeout
+                )
+            except asyncio.TimeoutError:
+                logger.error(f"PDF ingestion timed out after {upload_timeout}s")
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail=f"Document processing took too long (>{upload_timeout}s). Try uploading a smaller file.",
+                )
+            
             logger.info(f"PDF ingestion complete. Document ID: {result['document_id']}")
             logger.debug(f"Ingestion result keys: {result.keys()}")
 
-            # Index in vector store
+            # Index in vector store with timeout
             try:
                 logger.debug(f"Indexing {len(result['chunks'])} chunks...")
-                indexed_count = retrieval_service.index_document(
-                    result["chunks"],
-                    settings.embedding_model,
+                indexed_count = await asyncio.wait_for(
+                    asyncio.to_thread(
+                        retrieval_service.index_document,
+                        result["chunks"],
+                        settings.embedding_model,
+                    ),
+                    timeout=180  # 3 minutes for indexing (includes model load on first request)
                 )
                 logger.info(
                     f"Document indexed: {result['document_id']}, "
                     f"{indexed_count} chunks"
+                )
+            except asyncio.TimeoutError:
+                logger.error("Vector indexing timed out after 60s")
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Document indexing timed out. The document may still be partially indexed.",
                 )
             except Exception as e:
                 logger.error(f"Indexing failed: {e}", exc_info=True)
@@ -137,6 +187,30 @@ async def upload_document(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                     detail="Failed to index document",
                 )
+
+            # Save document metadata to database
+            try:
+                from app.db.database import db
+                from app.db.repositories import DocumentRepository
+                
+                with db.session_context() as session:
+                    repo = DocumentRepository(session)
+                    doc_metadata = result.get("document_metadata")
+                    repo.create(
+                        document_id=result["document_id"],
+                        filename=result["filename"],
+                        file_path=str(temp_path),
+                        file_size=len(content),  # Actual file size
+                        sha256_hash=doc_metadata.sha256 if doc_metadata else "",
+                        page_count=result["page_count"],
+                        chunk_count=result["chunk_count"],
+                        embedding_model=settings.embedding_model,
+                    )
+                    repo.update_status(result["document_id"], "indexed")
+                    logger.info(f"Saved document metadata to database: {result['document_id']}")
+            except Exception as e:
+                logger.warning(f"Failed to save document metadata to database: {e}")
+                # Don't fail the upload, just log the warning
 
             response = DocumentUploadResponse(
                 document_id=result["document_id"],
@@ -189,26 +263,89 @@ async def list_documents(
     """
     List all indexed documents.
 
-    Returns empty list (Phase 7 will add database integration).
+    First tries to query the database for documents with actual metadata.
+    Falls back to ChromaDB if no database records exist.
 
     Args:
         retrieval_service: Retrieval service (injected)
 
     Returns:
-        List of documents
+        List of documents with metadata
     """
     try:
-        logger.debug("Listing documents")
+        from app.db.database import db
+        from app.db.repositories import DocumentRepository
         
-        # Return empty list for now (Phase 7 will integrate database)
-        return []
+        logger.debug("Fetching documents from database...")
+        
+        # Query database for all indexed documents
+        with db.session_context() as session:
+            repo = DocumentRepository(session)
+            documents = repo.get_by_status("indexed")
+        
+        logger.debug(f"Found {len(documents)} indexed documents in database")
+        
+        if len(documents) > 0:
+            # Format response from database (has real metadata)
+            result = []
+            for doc in documents:
+                result.append({
+                    "id": doc.id,
+                    "name": doc.filename,
+                    "uploaded_at": doc.created_at.isoformat() if doc.created_at else "Unknown",
+                    "file_size": doc.file_size,
+                    "pages": doc.page_count,
+                    "chunk_count": doc.chunk_count,
+                })
+            
+            logger.info(f"Returning {len(result)} documents from database")
+            return result
+        else:
+            # No documents in database, try ChromaDB
+            logger.debug("No documents in database, falling back to ChromaDB...")
+            raise Exception("No documents in database")
 
     except Exception as e:
-        logger.error(f"Error listing documents: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to list documents",
-        )
+        logger.debug(f"Database query failed: {e}, trying ChromaDB fallback...")
+        # Fallback to ChromaDB if database fails or is empty
+        try:
+            logger.debug("Querying ChromaDB for documents...")
+            results = retrieval_service.vector_store.collection.get()
+            
+            documents_dict = {}
+            metadatas = results.get('metadatas', []) or []
+            logger.debug(f"Got {len(metadatas)} chunks from ChromaDB")
+            
+            for metadata in metadatas:
+                if not metadata:
+                    continue
+                doc_id = metadata.get('document_id')
+                filename = metadata.get('filename')
+                
+                if doc_id and filename:
+                    clean_filename = filename
+                    if filename.startswith('temp_'):
+                        parts = filename.split('_', 2)
+                        if len(parts) > 2:
+                            clean_filename = parts[2]
+                    
+                    if doc_id not in documents_dict:
+                        documents_dict[doc_id] = {
+                            'id': doc_id,
+                            'name': clean_filename,
+                            'uploaded_at': 'Unknown',
+                            'file_size': 0,  # ChromaDB doesn't store file size
+                            'pages': None,
+                            'chunk_count': 0,
+                        }
+                    documents_dict[doc_id]['chunk_count'] += 1
+            
+            result = list(documents_dict.values())
+            logger.info(f"Returning {len(result)} documents from ChromaDB fallback")
+            return result
+        except Exception as fallback_error:
+            logger.error(f"Both database and ChromaDB failed: {fallback_error}", exc_info=True)
+            return []
 
 
 @router.get(
@@ -303,15 +440,29 @@ async def delete_document(
         logger.info(f"Deleting document: {document_id}")
 
         # Delete from vector store
+        deleted_count = 0
         try:
             deleted_count = retrieval_service.delete_document_chunks(document_id)
-            logger.info(f"Deleted {deleted_count} chunks for document {document_id}")
+            logger.info(f"Deleted {deleted_count} chunks from vector store for document {document_id}")
         except Exception as e:
-            logger.error(f"Deletion failed: {e}")
+            logger.error(f"Vector store deletion failed: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to delete document",
+                detail="Failed to delete document from vector store",
             )
+
+        # Delete from database
+        try:
+            from app.db.database import db
+            from app.db.repositories import DocumentRepository
+            
+            with db.session_context() as session:
+                repo = DocumentRepository(session)
+                repo.delete(document_id)
+                logger.info(f"Deleted document {document_id} from database")
+        except Exception as e:
+            logger.warning(f"Failed to delete document from database: {e}")
+            # Don't fail the request, as vector store deletion was successful
 
         return DocumentDeleteResponse(
             document_id=document_id,

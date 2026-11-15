@@ -30,7 +30,7 @@ class IngestionService:
         self.extractor = PDFExtractor()
         self.chunker = PDFChunker()
 
-    def ingest_pdf(self, file_path: Path) -> Dict[str, Any]:
+    def ingest_pdf(self, file_path: Path, original_filename: str = None) -> Dict[str, Any]:
         """
         Complete ingestion pipeline for a PDF document.
 
@@ -42,6 +42,7 @@ class IngestionService:
 
         Args:
             file_path: Path to uploaded PDF file
+            original_filename: Original filename from upload (optional, if not provided uses file_path.name)
 
         Returns:
             Dictionary containing:
@@ -56,7 +57,7 @@ class IngestionService:
             Various validation/processing exceptions
 
         Example:
-            >>> result = service.ingest_pdf(Path("document.pdf"))
+            >>> result = service.ingest_pdf(Path("document.pdf"), "original.pdf")
             >>> print(f"Created {result['chunk_count']} chunks")
         """
         logger.info(f"Starting ingestion of {file_path.name}")
@@ -65,7 +66,8 @@ class IngestionService:
         logger.debug("Step 1: Validating PDF file")
         validation_result = validate_pdf_file(file_path)
         file_hash = validation_result["file_hash"]
-        filename = validation_result["filename"]
+        # Use original filename if provided, otherwise use validated filename
+        filename = original_filename or validation_result["filename"]
 
         # Generate document ID
         document_id = str(uuid.uuid4())

@@ -62,7 +62,15 @@ async def lifespan(app: FastAPI):
     # Log configuration (without sensitive values)
     logger.info(f"Environment: {settings.environment}")
     logger.info(f"API: {settings.api_host}:{settings.api_port}")
-    logger.info(f"LLM Provider: {settings.llm_provider} ({settings.ollama_model})")
+    
+    # Log LLM provider with appropriate model
+    if settings.llm_provider == "groq":
+        logger.info(f"LLM Provider: {settings.llm_provider} ({settings.groq_model})")
+    elif settings.llm_provider == "ollama":
+        logger.info(f"LLM Provider: {settings.llm_provider} ({settings.ollama_model})")
+    else:
+        logger.info(f"LLM Provider: {settings.llm_provider}")
+    
     logger.info(f"Embedding Model: {settings.embedding_model}")
     logger.info(f"Database: {settings.database_url}")
     logger.info(f"Debug Mode: {settings.debug}")
@@ -86,8 +94,6 @@ def create_app() -> FastAPI:
     Returns:
         FastAPI: Configured application instance
     """
-    from app.core.config import settings as cors_settings
-    
     app = FastAPI(
         title="Chat With Documents – RAG System",
         description="AI-powered PDF question answering system using Retrieval-Augmented Generation",
@@ -98,19 +104,28 @@ def create_app() -> FastAPI:
     # ========================================================================
     # Manual CORS Header Middleware
     # ========================================================================
-    cors_list = cors_settings.cors_origins_list
-    print(f"\n*** CORS MIDDLEWARE SETUP: {len(cors_list)} origins ***\n", flush=True)
+    cors_list = settings.cors_origins_list
     
     @app.middleware("http")
     async def add_cors_headers(request: Request, call_next):
         """Manually add CORS headers to all responses."""
         origin = request.headers.get("origin")
         
-        # Log for debugging
-        if origin:
-            logger.debug(f"CORS request from origin: {origin}")
-            logger.debug(f"Allowed origins: {cors_list}")
+        # Handle OPTIONS preflight requests
+        if request.method == "OPTIONS":
+            if origin in cors_list:
+                return Response(
+                    status_code=200,
+                    headers={
+                        "Access-Control-Allow-Origin": origin,
+                        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+                        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+                        "Access-Control-Allow-Credentials": "true",
+                    },
+                )
+            return Response(status_code=200)
         
+        # Handle regular requests
         response = await call_next(request)
         
         # Add CORS headers if origin matches
@@ -119,7 +134,6 @@ def create_app() -> FastAPI:
             response.headers["Access-Control-Allow-Credentials"] = "true"
             response.headers["Access-Control-Allow-Methods"] = "*"
             response.headers["Access-Control-Allow-Headers"] = "*"
-            logger.debug(f"Added CORS headers for origin: {origin}")
         
         return response
     
@@ -131,7 +145,6 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    logger.info(f"CORS configured for {len(cors_list)} origins")
 
     # ========================================================================
     # Exception Handlers

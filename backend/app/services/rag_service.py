@@ -9,6 +9,8 @@ from typing import Optional
 from app.core.config import settings
 from app.core.exceptions import LLMUnavailableException, RAGException
 from app.core.logging import get_logger
+from app.infrastructure.llm.base import LLMProvider
+from app.infrastructure.llm.groq_provider import GroqProvider
 from app.infrastructure.llm.ollama_provider import OllamaProvider
 from app.infrastructure.vectorstore.base import RetrievedChunk
 from app.prompts.rag_prompt import build_rag_prompt, build_sufficiency_check_prompt
@@ -17,26 +19,45 @@ from app.services.retrieval_service import RetrievalService
 logger = get_logger(__name__)
 
 
+def get_llm_provider() -> LLMProvider:
+    """
+    Get LLM provider based on configuration.
+
+    Returns:
+        Configured LLM provider instance
+
+    Raises:
+        RAGException: If provider configuration is invalid
+    """
+    if settings.llm_provider == "groq":
+        return GroqProvider()
+    elif settings.llm_provider == "ollama":
+        return OllamaProvider()
+    else:
+        raise RAGException(f"Unknown LLM provider: {settings.llm_provider}")
+
+
 class RAGService:
     """Service for retrieval-augmented generation."""
 
     def __init__(
         self,
         retrieval_service: Optional[RetrievalService] = None,
-        llm_provider: Optional[OllamaProvider] = None,
+        llm_provider: Optional[LLMProvider] = None,
     ):
         """
         Initialize RAG service.
 
         Args:
             retrieval_service: Retrieval service (creates new if not provided)
-            llm_provider: LLM provider (creates Ollama if not provided)
+            llm_provider: LLM provider (creates provider based on settings if not provided)
         """
         self.retrieval_service = retrieval_service or RetrievalService()
-        self.llm_provider = llm_provider or OllamaProvider()
+        self.llm_provider = llm_provider or get_llm_provider()
 
         logger.debug(
-            f"RAGService initialized: llm_model={self.llm_provider.get_model_name()}"
+            f"RAGService initialized: llm_provider={settings.llm_provider}, "
+            f"llm_model={self.llm_provider.get_model_name()}"
         )
 
     def answer_question(

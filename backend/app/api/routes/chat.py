@@ -25,6 +25,67 @@ logger = get_logger(__name__)
 router = APIRouter(prefix="/api/v1", tags=["chat"])
 
 
+@router.options("/chat", include_in_schema=False)
+async def options_chat():
+    """Handle CORS preflight for chat endpoint."""
+    return None
+
+
+@router.options("/chat/history", include_in_schema=False)
+async def options_chat_history():
+    """Handle CORS preflight for chat history endpoint."""
+    return None
+
+
+@router.get(
+    "/chat/history",
+    response_model=list,
+    summary="Get Chat History",
+    status_code=status.HTTP_200_OK,
+)
+async def get_chat_history() -> list:
+    """
+    Get chat history for the current session.
+
+    Returns:
+        List of chat messages (empty for now - Phase 7 will add persistence)
+    """
+    try:
+        logger.debug("Getting chat history")
+        # Phase 7 will add database integration to persist chat history
+        return []
+    except Exception as e:
+        logger.error(f"Error getting chat history: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get chat history",
+        )
+
+
+@router.delete(
+    "/chat/history",
+    summary="Clear Chat History",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def clear_chat_history():
+    """
+    Clear chat history for the current session.
+
+    Returns:
+        204 No Content
+    """
+    try:
+        logger.debug("Clearing chat history")
+        # Phase 7 will add database integration
+        return None
+    except Exception as e:
+        logger.error(f"Error clearing chat history: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to clear chat history",
+        )
+
+
 @router.post(
     "/chat",
     response_model=ChatResponse,

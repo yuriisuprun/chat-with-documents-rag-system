@@ -52,7 +52,7 @@ interface UploadProgress {
 class ApiClient {
   private baseURL: string
 
-  constructor(baseURL: string = 'http://localhost:8000/api/v1') {
+  constructor(baseURL: string = 'http://localhost:8001/api/v1') {
     this.baseURL = baseURL
   }
 
