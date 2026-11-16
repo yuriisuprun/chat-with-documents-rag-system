@@ -305,6 +305,24 @@ class ApiClient {
   }
 
   /**
+   * Health check endpoint
+   */
+  async health(): Promise<any> {
+    const url = `${this.baseURL}/health`
+    console.log('[health()] Requesting:', url)
+
+    const response = await this.fetchWithTimeout(
+      url,
+      {
+        method: 'GET',
+      },
+      5000 // 5 second timeout for health check
+    )
+
+    return this.handleResponse(response)
+  }
+
+  /**
    * Get chat history
    */
   async getChatHistory(): Promise<ChatMessage[]> {
