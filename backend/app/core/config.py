@@ -83,7 +83,7 @@ class Settings(BaseSettings):
 
     # Groq settings
     groq_api_key: str = ""
-    groq_model: str = "llama-3.1-70b-versatile"
+    groq_model: str = "openai/gpt-oss-120b"
     groq_temperature: float = 0.3
     groq_timeout: int = 30
 

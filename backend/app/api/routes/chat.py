@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 
 from app.api.dependencies import get_rag_service
 from app.core.config import settings
-from app.core.exceptions import RAGException, ValidationException
+from app.core.exceptions import RAGException, ValidationException, LLMUnavailableException
 from app.core.logging import get_logger
 from app.core.prompt_defense import get_prompt_defense
 from app.core.validators import (
@@ -155,6 +155,12 @@ async def chat(
                 question=query,
                 document_ids=request.document_ids,
                 top_k=4,  # Use configured top_k from settings
+            )
+        except LLMUnavailableException as e:
+            logger.warning(f"LLM unavailable: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=f"LLM service temporarily unavailable. To use this feature, ensure your LLM provider ({settings.llm_provider}) is properly configured and accessible.",
             )
         except RAGException as e:
             logger.error(f"RAG pipeline failed: {e}")

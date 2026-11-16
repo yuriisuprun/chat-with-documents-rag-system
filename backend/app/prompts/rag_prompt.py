@@ -55,18 +55,17 @@ def build_sufficiency_check_prompt(question: str, context: str) -> str:
     Returns:
         Formatted prompt for sufficiency check
     """
-    prompt = f"""Determine if the following context contains enough information to answer the question.
+    prompt = f"""You will determine if the following context contains enough information to answer the question.
 
-<CONTEXT>
+Context:
 {context}
-</CONTEXT>
 
-<QUESTION>
+Question:
 {question}
-</QUESTION>
 
-Respond with exactly one word: "SUFFICIENT" or "INSUFFICIENT"
+Can this context answer the question above? 
+Reply with ONLY the word "SUFFICIENT" if yes, or "INSUFFICIENT" if no. Do not include any other text.
 
-Answer:"""
+Answer: """
 
     return prompt

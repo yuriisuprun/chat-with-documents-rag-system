@@ -208,10 +208,19 @@ class RAGService:
             prompt = build_sufficiency_check_prompt(question, context)
             response = self.llm_provider.generate(prompt, temperature=0.0)
 
-            # Check response
-            response_upper = response.upper().strip()
-            if "SUFFICIENT" in response_upper:
-                return True
+            # Parse response - extract just the first word
+            response_clean = response.upper().strip()
+            
+            # Get first word (split on whitespace/punctuation)
+            import re
+            words = re.findall(r'\b[A-Z]+\b', response_clean)
+            
+            if words:
+                first_word = words[0]
+                logger.debug(f"Sufficiency check response: '{response_clean}' -> extracted: '{first_word}'")
+                return first_word == "SUFFICIENT"
+            
+            logger.debug(f"Sufficiency check response: '{response_clean}' (no clear word found)")
             return False
 
         except Exception as e:
