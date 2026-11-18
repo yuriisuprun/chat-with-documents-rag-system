@@ -173,8 +173,11 @@ async def chat(
         sources = []
         if request.include_sources:
             for source in result.get("sources", []):
-                # Get full chunk data from retrieval service for similarity score
-                # For now, we'll use a placeholder similarity score
+                logger.debug(
+                    f"Building source ref: filename={source.get('filename')}, "
+                    f"page={source.get('page_number')}, "
+                    f"similarity={source.get('similarity_score', 0.0)}"
+                )
                 source_ref = SourceReference(
                     document_id=source.get("document_id", "unknown"),
                     filename=source.get("filename", "Unknown"),
@@ -183,6 +186,7 @@ async def chat(
                     similarity_score=source.get("similarity_score", 0.0),
                     text_preview=source.get("text_preview", ""),
                 )
+                logger.debug(f"Created source_ref: similarity_score={source_ref.similarity_score}")
                 sources.append(source_ref)
 
         return ChatResponse(

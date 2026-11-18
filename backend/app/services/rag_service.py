@@ -138,6 +138,9 @@ class RAGService:
 
             # Step 5: Extract sources
             logger.debug("Step 5: Extracting source references")
+            logger.debug(f"Retrieved chunks count: {len(retrieved_chunks)}")
+            for i, chunk in enumerate(retrieved_chunks):
+                logger.debug(f"Chunk {i}: similarity={chunk.similarity_score:.4f}, page={chunk.metadata.get('page_number')}")
             sources = self._extract_sources(retrieved_chunks)
             logger.debug(f"Extracted {len(sources)} sources")
 
@@ -227,8 +230,7 @@ class RAGService:
             logger.warning(f"Sufficiency check error: {e}")
             return False
 
-    @staticmethod
-    def _extract_sources(chunks: list[RetrievedChunk]) -> list[dict]:
+    def _extract_sources(self, chunks: list[RetrievedChunk]) -> list[dict]:
         """
         Extract and deduplicate source references from chunks.
 
@@ -236,10 +238,9 @@ class RAGService:
             chunks: Retrieved chunks with metadata
 
         Returns:
-            List of unique source references
+            List of unique source references with best similarity score
         """
-        sources = []
-        seen_sources = set()
+        sources = {}  # Use dict to track best score per source
 
         for chunk in chunks:
             # Build source reference from metadata
@@ -249,20 +250,38 @@ class RAGService:
                 chunk.metadata.get("filename"),
             )
 
-            # Skip duplicates
-            if source_key in seen_sources:
-                continue
+            # Get similarity score from chunk object (not metadata)
+            similarity = chunk.similarity_score
 
-            seen_sources.add(source_key)
+            logger.debug(f"Processing chunk: {chunk.chunk_id[:8]}... similarity={similarity:.4f} page={chunk.metadata.get('page_number')}")
 
-            source = {
-                "filename": chunk.metadata.get("filename", "Unknown"),
-                "page_number": chunk.metadata.get("page_number", 0),
-                "document_id": chunk.metadata.get("document_id", "Unknown"),
-            }
-            sources.append(source)
+            # Keep the best (highest) similarity score for this source
+            if source_key not in sources or similarity > sources[source_key]["similarity_score"]:
+                # Create text preview (first 200 chars)
+                text_preview = chunk.text[:200] if chunk.text else ""
+                
+                sources[source_key] = {
+                    "filename": chunk.metadata.get("filename", "Unknown"),
+                    "page_number": chunk.metadata.get("page_number", 0),
+                    "document_id": chunk.metadata.get("document_id", "Unknown"),
+                    "chunk_index": chunk.metadata.get("chunk_index", 0),
+                    "similarity_score": similarity,
+                    "text_preview": text_preview,
+                }
+                logger.debug(
+                    f"Updated source {source_key[2]} page {source_key[1]}: "
+                    f"similarity={similarity:.4f}, chunk_id={chunk.chunk_id}"
+                )
 
-        # Sort by page number
-        sources.sort(key=lambda x: x.get("page_number", 0))
+        # Convert to list and sort by page number
+        result = list(sources.values())
+        result.sort(key=lambda x: x.get("page_number", 0))
+        
+        # Log extraction summary
+        log_sources = [
+            (s['filename'], s['page_number'], f"{s['similarity_score']:.3f}")
+            for s in result
+        ]
+        logger.debug(f"Extracted {len(result)} sources: {log_sources}")
 
-        return sources
+        return result

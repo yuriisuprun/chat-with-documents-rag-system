@@ -116,37 +116,7 @@ class ApiClient {
     return error
   }
 
-  /**
-   * Health check endpoint
-   */
-  async health(): Promise<any> {
-    try {
-      console.log('[health()] Starting health check...')
-      const url = `${this.baseURL}/health?t=${Date.now()}`
-      console.log('[health()] Requesting:', url)
 
-      const response = await this.fetchWithTimeout(
-        url,
-        {
-          method: 'GET',
-          // No headers - GET requests don't need Content-Type, avoids CORS preflight
-        },
-        15000 // 15 second timeout - increased to account for occasional delays
-      )
-
-      const data = await this.handleResponse(response)
-      console.log('[health()] Success:', data)
-      return data
-    } catch (error) {
-      const err = error as Error
-      if (err.name === 'AbortError') {
-        console.error('[health()] Request was aborted (likely timeout)')
-      } else {
-        console.error('[health()] Failed:', error)
-      }
-      throw error
-    }
-  }
 
   /**
    * Upload a PDF document using Fetch API with manual progress tracking
@@ -316,7 +286,7 @@ class ApiClient {
       {
         method: 'GET',
       },
-      5000 // 5 second timeout for health check
+      15000 // 15 second timeout - increased to account for occasional delays
     )
 
     return this.handleResponse(response)
