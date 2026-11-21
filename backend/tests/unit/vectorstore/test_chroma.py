@@ -4,6 +4,7 @@ Unit tests for ChromaDB vector store.
 Tests adding, searching, and deleting chunks.
 """
 
+import platform
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -15,10 +16,9 @@ from app.infrastructure.vectorstore.chroma import ChromaVectorStore
 
 
 @pytest.fixture
-def temp_dir():
-    """Create temporary directory for test database."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        yield Path(tmpdir)
+def temp_dir(temp_dir_windows_safe):
+    """Use Windows-safe temporary directory fixture."""
+    yield Path(temp_dir_windows_safe)
 
 
 @pytest.fixture

@@ -19,11 +19,22 @@ from app.services.database_service import DatabaseService
 
 @pytest.fixture
 def test_db():
-    """Create in-memory SQLite database for testing."""
+    """
+    Create in-memory SQLite database for testing.
+    
+    Ensures proper cleanup with session closure to prevent
+    ResourceWarning: unclosed database errors.
+    """
     engine = create_engine("sqlite:///:memory:")
     Base.metadata.create_all(bind=engine)
     SessionLocal = sessionmaker(bind=engine)
-    return SessionLocal()
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        # CRITICAL: Always close the session to prevent resource leaks
+        session.close()
+        engine.dispose()
 
 
 @pytest.fixture
