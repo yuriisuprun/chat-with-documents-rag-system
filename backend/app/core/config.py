@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     # ========================================================================
     environment: Literal["development", "testing", "production"] = "development"
     api_host: str = "0.0.0.0"
-    api_port: int = 8001
+    api_port: int = 8000
     frontend_port: int = 5173
     debug: bool = False
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO"

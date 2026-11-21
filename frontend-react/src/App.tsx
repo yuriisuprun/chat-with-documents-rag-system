@@ -83,7 +83,7 @@ export default function App() {
         {!isOnline && (
           <div className="offline-banner">
             ⚠️ Backend server is not available. Some features may not work. Make sure the FastAPI
-            server is running on http://localhost:8001
+            server is running on http://localhost:8000
           </div>
         )}
         <div className="page-content">

@@ -4,6 +4,8 @@ Groq LLM provider for fast cloud-based inference.
 Supports Groq's fast LLM API with various open-source models.
 """
 
+from tenacity import retry, stop_after_attempt, wait_exponential
+
 from app.core.config import settings
 from app.core.exceptions import LLMTimeoutException, LLMUnavailableException
 from app.core.logging import get_logger
@@ -38,6 +40,11 @@ class GroqProvider(LLMProvider):
             f"timeout={self.timeout}s"
         )
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        reraise=True,
+    )
     def generate(
         self, prompt: str, temperature: float | None = None, timeout: int | None = None
     ) -> str:

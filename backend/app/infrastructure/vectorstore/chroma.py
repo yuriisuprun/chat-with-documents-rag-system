@@ -102,10 +102,18 @@ class ChromaVectorStore(VectorStore):
         try:
             logger.debug(f"Searching with top_k={top_k}, filter={filter_dict}")
 
-            # Build where filter if provided
+            # Validate filter structure if provided
             where_filter = None
             if filter_dict:
-                where_filter = filter_dict
+                # Ensure filter is a dict and not nested beyond acceptable depth
+                if not isinstance(filter_dict, dict):
+                    logger.warning(f"Invalid filter type: {type(filter_dict)}, ignoring")
+                else:
+                    # Validate filter keys are strings (ChromaDB requirement)
+                    if not all(isinstance(k, str) for k in filter_dict.keys()):
+                        logger.warning("Invalid filter keys: not all strings, ignoring")
+                    else:
+                        where_filter = filter_dict
 
             # Query collection
             results = self.collection.query(

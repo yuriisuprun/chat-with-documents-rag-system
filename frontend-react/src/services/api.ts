@@ -52,7 +52,7 @@ interface UploadProgress {
 class ApiClient {
   private baseURL: string
 
-  constructor(baseURL: string = 'http://localhost:8001/api/v1') {
+  constructor(baseURL: string = 'http://localhost:8000/api/v1') {
     this.baseURL = baseURL
   }
 
@@ -108,15 +108,6 @@ class ApiClient {
 
     return (await response.text()) as unknown as T
   }
-
-  private handleFetchError(error: Error, url: string): Error {
-    if (error.name === 'AbortError') {
-      return new Error(`Request timeout or was aborted while requesting ${url}`)
-    }
-    return error
-  }
-
-
 
   /**
    * Upload a PDF document using Fetch API with manual progress tracking
@@ -218,7 +209,7 @@ class ApiClient {
       20000 // 20 second timeout - increased to handle initialization
     )
 
-    return this.handleResponse(response)
+    return this.handleResponse<Document[]>(response)
   }
 
   /**
@@ -260,9 +251,9 @@ class ApiClient {
         180000 // 180s timeout for LLM processing (3 minutes)
       )
 
-      const data = await this.handleResponse(response)
+      const data = await this.handleResponse<ChatResponse>(response)
       console.log('[chat()] Response received:', data)
-      return data
+      return data as ChatResponse
     } catch (error) {
       const err = error as Error
       console.error('[chat()] Request failed:', err.message)
@@ -289,7 +280,7 @@ class ApiClient {
       15000 // 15 second timeout - increased to account for occasional delays
     )
 
-    return this.handleResponse(response)
+    return this.handleResponse<any>(response)
   }
 
   /**
@@ -308,7 +299,7 @@ class ApiClient {
       20000 // 20 second timeout - increased to handle initialization
     )
 
-    return this.handleResponse(response)
+    return this.handleResponse<ChatMessage[]>(response)
   }
 
   /**

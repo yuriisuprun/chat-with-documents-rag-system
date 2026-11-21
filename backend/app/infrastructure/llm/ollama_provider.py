@@ -4,6 +4,9 @@ Ollama LLM provider for local model inference.
 Supports all Ollama models for on-device generation.
 """
 
+import requests
+from tenacity import retry, stop_after_attempt, wait_exponential
+
 from app.core.config import settings
 from app.core.exceptions import LLMTimeoutException, LLMUnavailableException
 from app.core.logging import get_logger
@@ -32,6 +35,11 @@ class OllamaProvider(LLMProvider):
             f"url={self.base_url}, timeout={self.timeout}s"
         )
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        reraise=True,
+    )
     def generate(
         self, prompt: str, temperature: float | None = None, timeout: int | None = None
     ) -> str:
@@ -51,8 +59,6 @@ class OllamaProvider(LLMProvider):
             LLMTimeoutException: If request times out
         """
         try:
-            import requests
-
             temp = temperature if temperature is not None else self.default_temperature
             timeout_val = timeout if timeout is not None else self.timeout
 
