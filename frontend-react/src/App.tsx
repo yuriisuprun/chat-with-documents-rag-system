@@ -9,8 +9,23 @@ import './App.css'
 
 type PageType = 'chat' | 'upload' | 'library'
 
+const STORAGE_KEY = 'currentPage'
+
+// Get saved page from localStorage or default to 'chat'
+const getSavedPage = (): PageType => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY)
+    if (saved === 'chat' || saved === 'upload' || saved === 'library') {
+      return saved
+    }
+  } catch (e) {
+    console.warn('Failed to read from localStorage:', e)
+  }
+  return 'chat'
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageType>('chat')
+  const [currentPage, setCurrentPage] = useState<PageType>(getSavedPage)
   const [isOnline, setIsOnline] = useState(true)
   const [loading, setLoading] = useState(true)
 
@@ -38,6 +53,16 @@ export default function App() {
 
     return () => clearInterval(intervalId)
   }, [])
+
+  // Save current page to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, currentPage)
+      console.log(`[App] Saved page preference: ${currentPage}`)
+    } catch (e) {
+      console.warn('Failed to save page preference to localStorage:', e)
+    }
+  }, [currentPage])
 
   if (loading) {
     return (
