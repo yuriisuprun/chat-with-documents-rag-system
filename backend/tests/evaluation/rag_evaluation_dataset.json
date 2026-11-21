@@ -1,0 +1,1160 @@
+{
+  "metadata": {
+    "total_questions": 100,
+    "categories": {
+      "factual": 30,
+      "multi_page": 20,
+      "cross_document": 15,
+      "unanswerable": 15,
+      "ambiguous": 10,
+      "adversarial": 10
+    },
+    "created_at": "2026-01-06",
+    "version": "1.0"
+  },
+  "questions": [
+    {
+      "id": "factual_001",
+      "question": "What is the main topic of the document?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The document covers Retrieval-Augmented Generation (RAG) systems and their architecture.",
+      "ground_truth_sources": [
+        {"document": "rag_overview.pdf", "pages": [1, 2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_002",
+      "question": "Who are the key contributors to this project?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The project team includes AI researchers, backend engineers, and infrastructure specialists.",
+      "ground_truth_sources": [
+        {"document": "project_overview.pdf", "pages": [3]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_003",
+      "question": "What framework is used for the backend API?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "FastAPI is used as the web framework for the backend API.",
+      "ground_truth_sources": [
+        {"document": "technical_stack.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_004",
+      "question": "Which embedding model is recommended for production use?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "sentence-transformers/all-MiniLM-L6-v2 is recommended for production due to its balance of speed and quality.",
+      "ground_truth_sources": [
+        {"document": "embeddings_guide.pdf", "pages": [5, 6]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_005",
+      "question": "What is the default maximum number of chunks to retrieve?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The default maximum number of chunks to retrieve is 4, which can be configured via the RAG_TOP_K setting.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_006",
+      "question": "What database is used for persistence?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "SQLite is used as the default database with the option to upgrade to PostgreSQL for production.",
+      "ground_truth_sources": [
+        {"document": "database_guide.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_007",
+      "question": "What is the purpose of ChromaDB in this system?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "ChromaDB serves as the vector database for storing and retrieving document embeddings.",
+      "ground_truth_sources": [
+        {"document": "vectorstore_guide.pdf", "pages": [1, 2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_008",
+      "question": "How are documents processed before indexing?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Documents are extracted from PDF format, split into chunks, and embedded using sentence-transformers before indexing.",
+      "ground_truth_sources": [
+        {"document": "ingestion_pipeline.pdf", "pages": [2, 3]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_009",
+      "question": "What is the maximum file size for PDF uploads?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The maximum file size for PDF uploads is 50MB by default.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_010",
+      "question": "What logging framework is used in the project?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Python's built-in logging module is used with structured logging capabilities via python-json-logger.",
+      "ground_truth_sources": [
+        {"document": "logging_guide.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_011",
+      "question": "How does the system ensure document security?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "The system uses CORS restrictions, API key authentication, rate limiting, and prompt injection defense mechanisms.",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [2, 3, 4]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_012",
+      "question": "What testing frameworks are included in the project?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "pytest, pytest-cov, and pytest-asyncio are used for testing with additional support for RAG evaluation metrics.",
+      "ground_truth_sources": [
+        {"document": "testing_guide.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_013",
+      "question": "What is the minimum Python version required?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "Python 3.11 or higher is required to run this project.",
+      "ground_truth_sources": [
+        {"document": "installation.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_014",
+      "question": "How are responses generated from retrieved context?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Responses are generated using LLMs (Ollama or Groq) with a RAG prompt that includes the retrieved context.",
+      "ground_truth_sources": [
+        {"document": "rag_prompt_guide.pdf", "pages": [1, 2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_015",
+      "question": "What is the purpose of the sufficiency check in the RAG pipeline?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "The sufficiency check validates whether retrieved context is adequate to answer the query, preventing generation from insufficient information.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [4]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_016",
+      "question": "What containerization solution is recommended?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "Docker and Docker Compose are used for containerization and multi-container orchestration.",
+      "ground_truth_sources": [
+        {"document": "deployment.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_017",
+      "question": "How is the frontend implemented?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The frontend is built using Streamlit for interactive web UI.",
+      "ground_truth_sources": [
+        {"document": "frontend_guide.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_018",
+      "question": "What is the chunking strategy for PDF documents?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Documents are split using recursive character-based chunking with overlap to preserve context between chunks.",
+      "ground_truth_sources": [
+        {"document": "chunking_strategy.pdf", "pages": [2, 3]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_019",
+      "question": "What is the default chunk size for document splitting?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The default chunk size is 1000 characters with 100 character overlap between chunks.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_020",
+      "question": "How are source citations included in responses?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Source citations include document filename, page number, and a preview of relevant text from retrieved chunks.",
+      "ground_truth_sources": [
+        {"document": "source_attribution.pdf", "pages": [1, 2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_021",
+      "question": "What linting and formatting tools are configured?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Ruff, Black, isort, and mypy are configured for code quality, formatting, import sorting, and type checking.",
+      "ground_truth_sources": [
+        {"document": "development_setup.pdf", "pages": [2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_022",
+      "question": "What is the API version prefix used for endpoints?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The API version prefix is /api/v1 for all endpoints.",
+      "ground_truth_sources": [
+        {"document": "api_reference.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_023",
+      "question": "How does the system handle concurrent requests?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "The system uses async/await patterns with FastAPI and Uvicorn for non-blocking I/O and concurrent request handling.",
+      "ground_truth_sources": [
+        {"document": "performance_guide.pdf", "pages": [3, 4]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_024",
+      "question": "What is the default temperature setting for LLM generation?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The default temperature is 0.7 for balanced creativity and consistency in responses.",
+      "ground_truth_sources": [
+        {"document": "llm_configuration.pdf", "pages": [1]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_025",
+      "question": "How are documents stored and indexed in the system?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Documents are stored in SQLite with associated metadata, while their embeddings are indexed in ChromaDB for fast retrieval.",
+      "ground_truth_sources": [
+        {"document": "storage_architecture.pdf", "pages": [1, 2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_026",
+      "question": "What is the purpose of the rate limiter in the system?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The rate limiter prevents abuse by restricting the number of API requests per user within a specified time window.",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_027",
+      "question": "What is the purpose of prompt injection defense?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "Prompt injection defense sanitizes user inputs to prevent adversarial instructions from being passed to the LLM.",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [4]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_028",
+      "question": "How are retrieval metrics calculated for evaluation?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "Retrieval metrics include Recall@K, Precision@K, Mean Reciprocal Rank (MRR), and normalized Discounted Cumulative Gain (nDCG@K).",
+      "ground_truth_sources": [
+        {"document": "evaluation_metrics.pdf", "pages": [1, 2]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_029",
+      "question": "What is the hallucination detection mechanism?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "Hallucination detection compares generated answers against retrieved context to identify unsupported claims.",
+      "ground_truth_sources": [
+        {"document": "evaluation_metrics.pdf", "pages": [3]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "factual_030",
+      "question": "How are CORS origins configured for security?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "CORS origins are configured via environment variables in the settings, restricting cross-origin requests to specified domains.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [3]}
+      ],
+      "type": "direct_answer"
+    },
+    {
+      "id": "multi_page_001",
+      "question": "Explain the complete document ingestion pipeline from PDF upload to vector indexing.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "The pipeline involves: PDF extraction using PyMuPDF, text splitting into chunks, embedding generation with sentence-transformers, and final storage in ChromaDB for retrieval.",
+      "ground_truth_sources": [
+        {"document": "ingestion_pipeline.pdf", "pages": [1, 2, 3, 4]},
+        {"document": "pdf_extraction.pdf", "pages": [1, 2]},
+        {"document": "chunking_strategy.pdf", "pages": [1, 2, 3]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_002",
+      "question": "Describe the RAG architecture and how each component interacts.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "The RAG architecture comprises: retrieval service (embedding + vector search), context assembly, sufficiency checking, LLM generation, and source extraction, working together to produce grounded answers.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [1, 2, 3, 4, 5]},
+        {"document": "rag_overview.pdf", "pages": [2, 3]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_003",
+      "question": "What are all the security measures implemented in the system?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Security measures include CORS restrictions, API key authentication, rate limiting, prompt injection defense, input validation, error sanitization, and secure logging.",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [1, 2, 3, 4, 5]},
+        {"document": "configuration.pdf", "pages": [3]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_004",
+      "question": "How does the system handle different types of LLM providers?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "The system abstracts LLM providers through a base class interface supporting Ollama (local), Groq (cloud), and OpenAI (optional) with configurable provider selection.",
+      "ground_truth_sources": [
+        {"document": "llm_providers.pdf", "pages": [1, 2, 3]},
+        {"document": "architecture.pdf", "pages": [2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_005",
+      "question": "Explain the data flow from user query to response generation.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Data flow: user query → embedding generation → vector search → context assembly → sufficiency validation → LLM prompt construction → response generation → source extraction and formatting.",
+      "ground_truth_sources": [
+        {"document": "rag_overview.pdf", "pages": [1, 2]},
+        {"document": "rag_architecture.pdf", "pages": [3, 4, 5]},
+        {"document": "api_flow.pdf", "pages": [1, 2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_006",
+      "question": "What are the deployment considerations and prerequisites?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Deployment requires Python 3.11+, Docker/Docker Compose, configured environment variables, external LLM service (Ollama or Groq), and proper network security setup.",
+      "ground_truth_sources": [
+        {"document": "deployment.pdf", "pages": [1, 2, 3]},
+        {"document": "installation.pdf", "pages": [1, 2]},
+        {"document": "configuration.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_007",
+      "question": "How does the system ensure response quality and faithfulness?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Quality assurance includes: context sufficiency checking, source attribution with citations, hallucination detection, retrieval ranking, and comprehensive logging for debugging.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [4, 5]},
+        {"document": "source_attribution.pdf", "pages": [1, 2]},
+        {"document": "evaluation_metrics.pdf", "pages": [1, 2, 3]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_008",
+      "question": "Describe the complete testing strategy for the application.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Testing includes unit tests for individual components, integration tests for full workflows, RAG evaluation with quality metrics, and performance benchmarking.",
+      "ground_truth_sources": [
+        {"document": "testing_guide.pdf", "pages": [1, 2, 3]},
+        {"document": "evaluation_metrics.pdf", "pages": [1, 2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_009",
+      "question": "What are the configuration options and how do they affect system behavior?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Configuration covers: LLM provider/model selection, embedding model choice, chunk size/overlap, retrieval top-k, max context tokens, rate limits, CORS settings, and logging levels.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [1, 2, 3]},
+        {"document": "llm_configuration.pdf", "pages": [1]},
+        {"document": "logging_guide.pdf", "pages": [1, 2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_010",
+      "question": "How is the system monitored and debugged in production?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Monitoring uses structured logging, separate error logs, performance metrics, health check endpoints, and detailed pipeline traces for debugging RAG failures.",
+      "ground_truth_sources": [
+        {"document": "logging_guide.pdf", "pages": [1, 2, 3]},
+        {"document": "monitoring.pdf", "pages": [1, 2]},
+        {"document": "troubleshooting.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_011",
+      "question": "Explain the embedding and vector search process with all technical details.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Process: text normalization → sentence-transformers encoding → 384-dimensional vectors → ChromaDB indexing → cosine similarity search → ranking by relevance score.",
+      "ground_truth_sources": [
+        {"document": "embeddings_guide.pdf", "pages": [1, 2, 3, 4]},
+        {"document": "vectorstore_guide.pdf", "pages": [1, 2, 3]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_012",
+      "question": "What is the complete error handling strategy?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Error handling includes custom exceptions, validation at API layer, graceful fallbacks for LLM services, transaction rollback for database operations, and detailed error logging.",
+      "ground_truth_sources": [
+        {"document": "error_handling.pdf", "pages": [1, 2, 3]},
+        {"document": "exceptions.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_013",
+      "question": "How does the database schema support document and chunk storage?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "The schema includes documents table with metadata, chunks table linking to documents with content/page info, and indexes for efficient querying.",
+      "ground_truth_sources": [
+        {"document": "database_guide.pdf", "pages": [1, 2, 3]},
+        {"document": "schema.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_014",
+      "question": "Describe the API structure and available endpoints.",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "API includes health checks (/api/v1/health), document upload/list/delete (/api/v1/documents), chat endpoint (/api/v1/chat), and analytics (/api/v1/analytics).",
+      "ground_truth_sources": [
+        {"document": "api_reference.pdf", "pages": [1, 2, 3]},
+        {"document": "endpoints.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_015",
+      "question": "What is the performance optimization strategy?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Optimizations include embedding caching, batch processing, vector index optimization, connection pooling for databases, and async/await for I/O operations.",
+      "ground_truth_sources": [
+        {"document": "performance_guide.pdf", "pages": [1, 2, 3, 4]},
+        {"document": "optimization_tips.pdf", "pages": [1, 2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_016",
+      "question": "How does version control and branching strategy work?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "The project uses Git with main branch protection, feature branches for development, conventional commits, and pull request reviews before merging.",
+      "ground_truth_sources": [
+        {"document": "development_setup.pdf", "pages": [3, 4]},
+        {"document": "git_workflow.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_017",
+      "question": "What is the relationship between chunks, embeddings, and documents?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Documents are split into chunks with overlap. Each chunk gets embedded into a vector. Chunk metadata links back to source document and page number.",
+      "ground_truth_sources": [
+        {"document": "data_model.pdf", "pages": [1, 2]},
+        {"document": "chunking_strategy.pdf", "pages": [1]},
+        {"document": "storage_architecture.pdf", "pages": [1]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_018",
+      "question": "Explain the role of each layer in the clean architecture.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "API layer handles HTTP, core layer manages config/logging, infrastructure abstracts services, services contain business logic, schemas define data models.",
+      "ground_truth_sources": [
+        {"document": "architecture.pdf", "pages": [1, 2, 3]},
+        {"document": "code_structure.pdf", "pages": [1, 2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_019",
+      "question": "How does the system maintain state across requests?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Session state is managed through database transactions, vector store persistence, and stateless service design for horizontal scaling.",
+      "ground_truth_sources": [
+        {"document": "state_management.pdf", "pages": [1, 2]},
+        {"document": "database_guide.pdf", "pages": [2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "multi_page_020",
+      "question": "What is the migration strategy for database schema changes?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Alembic is used for database migrations with version control, supporting both development and production deployments safely.",
+      "ground_truth_sources": [
+        {"document": "database_guide.pdf", "pages": [3, 4]},
+        {"document": "deployment.pdf", "pages": [2]}
+      ],
+      "type": "multi_step_explanation"
+    },
+    {
+      "id": "cross_document_001",
+      "question": "How does the system compare information across multiple documents to answer queries?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "Cross-document queries retrieve chunks from multiple source documents, assemble them in context order, and let the LLM synthesize answers from all relevant information.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [3]},
+        {"document": "retrieval_service.pdf", "pages": [1, 2]},
+        {"document": "rag_prompt_guide.pdf", "pages": [2]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_002",
+      "question": "What are the differences in recommendations between document A and document B?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES MULTIPLE DOCUMENTS TO ANSWER - This tests whether the system can retrieve and compare information across document boundaries.",
+      "ground_truth_sources": [
+        {"document": "document_a.pdf", "pages": [2, 3]},
+        {"document": "document_b.pdf", "pages": [2, 3]}
+      ],
+      "type": "comparison"
+    },
+    {
+      "id": "cross_document_003",
+      "question": "How do the concepts introduced in the foundation document relate to the advanced applications described later?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES MULTI-DOCUMENT UNDERSTANDING - Tests ability to connect related concepts across different documents in a logical sequence.",
+      "ground_truth_sources": [
+        {"document": "fundamentals.pdf", "pages": [1, 2, 3]},
+        {"document": "advanced_topics.pdf", "pages": [1, 2, 3, 4]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_004",
+      "question": "Integrate information from all security documents to provide a complete security overview.",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES DOCUMENT INTEGRATION - Combines authentication, authorization, data protection, and audit logging information from multiple sources.",
+      "ground_truth_sources": [
+        {"document": "security_auth.pdf", "pages": [1, 2]},
+        {"document": "security_data.pdf", "pages": [1, 2]},
+        {"document": "security_audit.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_005",
+      "question": "How do the performance guidelines in one document affect the configuration recommendations in another?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES CROSS-REFERENCE - Performance guidelines should inform configuration choices; this tests systems ability to connect related information.",
+      "ground_truth_sources": [
+        {"document": "performance_guide.pdf", "pages": [3, 4]},
+        {"document": "configuration.pdf", "pages": [2]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_006",
+      "question": "What is the complete deployment architecture combining infrastructure, security, and monitoring?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES INTEGRATION - Combines Docker deployment, security hardening, and monitoring setup from separate documentation sources.",
+      "ground_truth_sources": [
+        {"document": "deployment.pdf", "pages": [1, 2, 3]},
+        {"document": "security_guide.pdf", "pages": [1, 2]},
+        {"document": "monitoring.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_007",
+      "question": "How do the API design decisions relate to the underlying database schema?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_answer": "REQUIRES UNDERSTANDING BOTH - API endpoints reflect database structure; this tests system's ability to connect design layers.",
+      "ground_truth_sources": [
+        {"document": "api_reference.pdf", "pages": [1, 2]},
+        {"document": "schema.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_008",
+      "question": "Explain how embedding model selection affects retrieval performance and quality.",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES LINKING COMPONENTS - Model selection affects embedding quality which impacts retrieval accuracy; tests end-to-end understanding.",
+      "ground_truth_sources": [
+        {"document": "embeddings_guide.pdf", "pages": [1, 5]},
+        {"document": "evaluation_metrics.pdf", "pages": [1, 2]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_009",
+      "question": "What are the tradeoffs between using Ollama versus Groq for LLM generation?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES COMPARISON ACROSS DOCUMENTS - Should discuss latency, cost, privacy, and quality differences across provider documentation.",
+      "ground_truth_sources": [
+        {"document": "ollama_guide.pdf", "pages": [1, 2]},
+        {"document": "groq_guide.pdf", "pages": [1, 2]}
+      ],
+      "type": "comparison"
+    },
+    {
+      "id": "cross_document_010",
+      "question": "How do input validation, rate limiting, and prompt defense work together for security?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES INTEGRATION - These are layered security measures; test shows understanding of defense-in-depth approach.",
+      "ground_truth_sources": [
+        {"document": "validators.pdf", "pages": [1]},
+        {"document": "rate_limiter.pdf", "pages": [1]},
+        {"document": "prompt_defense.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_011",
+      "question": "What is the complete workflow for handling a document from upload through answering questions?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES FULL PIPELINE - Upload validation → PDF extraction → chunking → embedding → indexing → retrieval on query → context assembly → LLM generation.",
+      "ground_truth_sources": [
+        {"document": "api_reference.pdf", "pages": [1]},
+        {"document": "ingestion_pipeline.pdf", "pages": [1, 2, 3]},
+        {"document": "rag_architecture.pdf", "pages": [1, 2, 3]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_012",
+      "question": "How do the testing strategy and monitoring approach complement each other?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_answer": "REQUIRES LINKING - Tests verify correctness, monitoring detects production issues; together they ensure quality.",
+      "ground_truth_sources": [
+        {"document": "testing_guide.pdf", "pages": [1]},
+        {"document": "monitoring.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_013",
+      "question": "What information from multiple documents would you need to troubleshoot a retrieval failure?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES INTEGRATION - Need: embedding logs, vector store stats, database state, error logs, and system configuration across documents.",
+      "ground_truth_sources": [
+        {"document": "troubleshooting.pdf", "pages": [1]},
+        {"document": "logging_guide.pdf", "pages": [1]},
+        {"document": "vectorstore_guide.pdf", "pages": [2]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_014",
+      "question": "How do code structure decisions support the testing and deployment strategies?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES LINKING DESIGN - Layered architecture enables isolated unit tests, service layer supports dependency injection for mocking.",
+      "ground_truth_sources": [
+        {"document": "code_structure.pdf", "pages": [1, 2]},
+        {"document": "testing_guide.pdf", "pages": [1]},
+        {"document": "deployment.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "cross_document_015",
+      "question": "What environmental configurations are required across development, testing, and production?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_answer": "REQUIRES MULTI-ENVIRONMENT UNDERSTANDING - Different settings for logging, debugging, security, and service endpoints.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [1, 2, 3]},
+        {"document": "development_setup.pdf", "pages": [1]},
+        {"document": "deployment.pdf", "pages": [1]}
+      ],
+      "type": "synthesis"
+    },
+    {
+      "id": "unanswerable_001",
+      "question": "What is the exact market price of the Chat With Documents system?",
+      "category": "unanswerable",
+      "difficulty": "easy",
+      "expected_answer": "UNANSWERABLE - The documents do not contain pricing information.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_002",
+      "question": "Who founded the company that created this RAG system?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Company founder information is not in the provided documents.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_003",
+      "question": "What are the specific benchmark results comparing this system to competing RAG solutions?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Competitive benchmark data is not provided in the documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_004",
+      "question": "How many users are currently using this system in production?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - User statistics are not documented.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_005",
+      "question": "What neural network architectures are used internally by the embedding model?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Deep architectural details of sentence-transformers are not in scope of system documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_006",
+      "question": "What is the quantum computing roadmap for this project?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Quantum computing is not mentioned in project documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_007",
+      "question": "How does the system support real-time video analysis?",
+      "category": "unanswerable",
+      "difficulty": "easy",
+      "expected_answer": "UNANSWERABLE - The system only handles PDF documents, not video content.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_008",
+      "question": "What are the specific latency requirements mentioned for the API?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Specific latency SLAs are not documented.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_009",
+      "question": "What are the machine learning model licensing fees?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Licensing cost information is not provided.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_010",
+      "question": "How does this system integrate with SAP enterprise systems?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - SAP integration is not mentioned in the documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_011",
+      "question": "What is the exact latency of retrieval queries in milliseconds?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Specific latency measurements are not provided in documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_012",
+      "question": "What is the historical version changelog for the project?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Detailed version history is not in the provided documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_013",
+      "question": "What are the specific HIPAA compliance certifications?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - HIPAA compliance details are not documented.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_014",
+      "question": "How does the system handle multi-language documents beyond English?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Multi-language support requirements are not specified in documentation.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "unanswerable_015",
+      "question": "What are the exact hardware requirements for optimal performance?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Specific hardware specifications are not documented.",
+      "ground_truth_sources": [],
+      "type": "factual"
+    },
+    {
+      "id": "ambiguous_001",
+      "question": "Is the system suitable for enterprise use?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Could mean: production-ready? Scalable? Secure? Security features are present but documentation doesn't explicitly recommend for enterprise.",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [1, 2, 3]},
+        {"document": "deployment.pdf", "pages": [1]},
+        {"document": "rag_overview.pdf", "pages": [1]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_002",
+      "question": "What does 'privacy-first' mean for this system?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Could mean: local LLM inference? No cloud uploads? Encryption? Data retention? All are related but different aspects.",
+      "ground_truth_sources": [
+        {"document": "rag_overview.pdf", "pages": [1]},
+        {"document": "ollama_guide.pdf", "pages": [1]},
+        {"document": "security_guide.pdf", "pages": [1]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_003",
+      "question": "How 'fast' is the system for real-time applications?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Depends on: LLM provider (Ollama vs Groq), number of documents, query complexity. No specific latency targets documented.",
+      "ground_truth_sources": [
+        {"document": "performance_guide.pdf", "pages": [1, 2]},
+        {"document": "ollama_guide.pdf", "pages": [2]},
+        {"document": "groq_guide.pdf", "pages": [2]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_004",
+      "question": "What makes the system 'production-ready'?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Ambiguous definition. Has: error handling, logging, testing, security. Lacks: specific uptime targets, performance benchmarks, compliance certs.",
+      "ground_truth_sources": [
+        {"document": "architecture.pdf", "pages": [1]},
+        {"document": "security_guide.pdf", "pages": [1]},
+        {"document": "testing_guide.pdf", "pages": [1]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_005",
+      "question": "Is the retrieval 'accurate' for all domains?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Depends on: document quality, domain-specific embeddings, query specificity. Generic embeddings work well for common domains.",
+      "ground_truth_sources": [
+        {"document": "embeddings_guide.pdf", "pages": [4, 5]},
+        {"document": "evaluation_metrics.pdf", "pages": [1, 2]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_006",
+      "question": "What is 'optimal' configuration for the system?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Depends on: use case (accuracy vs speed), hardware (local vs cloud), data size. No one-size-fits-all configuration.",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [2, 3]},
+        {"document": "performance_guide.pdf", "pages": [3, 4]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_007",
+      "question": "How 'secure' is the system against all threats?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Security is layered but not comprehensive. Has rate limiting, prompt defense, CORS. Doesn't address: supply chain attacks, zero-days.",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [1, 2, 3, 4, 5]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_008",
+      "question": "What qualifies as 'sufficient' context for answering?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Ambiguous - could mean: relevant info present? Enough for high confidence? No document ground truth? Multiple interpretations possible.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [4]},
+        {"document": "rag_prompt_guide.pdf", "pages": [1]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_009",
+      "question": "When should you upgrade from SQLite to PostgreSQL?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Criteria are not specified. Could depend on: data size, concurrent users, query complexity. Documentation doesn't define thresholds.",
+      "ground_truth_sources": [
+        {"document": "database_guide.pdf", "pages": [1, 2]},
+        {"document": "scaling.pdf", "pages": [1]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "ambiguous_010",
+      "question": "Is the system 'easy' to deploy?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Relative to what? Easier with Docker than manual setup. Harder than SaaS. Depends on infrastructure expertise.",
+      "ground_truth_sources": [
+        {"document": "deployment.pdf", "pages": [1, 2]},
+        {"document": "docker_guide.pdf", "pages": [1]}
+      ],
+      "type": "ambiguous"
+    },
+    {
+      "id": "adversarial_001",
+      "question": "The system definitely halluccinates all the time. What safeguards are in place?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Hallucinations are reduced (not eliminated) by: context grounding, sufficiency checking, source attribution, but no absolute prevention.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [4, 5]},
+        {"document": "evaluation_metrics.pdf", "pages": [3]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_002",
+      "question": "If I use the default settings, the system will definitely be insecure. Why?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Default settings have basic security (CORS, rate limiting, input validation). Requires additional hardening for production (API keys, SSL, network isolation).",
+      "ground_truth_sources": [
+        {"document": "configuration.pdf", "pages": [1]},
+        {"document": "security_guide.pdf", "pages": [1, 2, 3, 4, 5]},
+        {"document": "deployment.pdf", "pages": [2]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_003",
+      "question": "Embeddings will fail with this framework. Which embeddings actually work?",
+      "category": "adversarial",
+      "difficulty": "medium",
+      "expected_answer": "Embeddings work with sentence-transformers. Specific models: all-MiniLM-L6-v2 (production), all-mpnet-base-v2 (quality). Works fine with proper configuration.",
+      "ground_truth_sources": [
+        {"document": "embeddings_guide.pdf", "pages": [1, 2, 5]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_004",
+      "question": "The RAG pipeline is too slow for any real application. How can it be optimized?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Performance depends on components. Optimization strategies: batch processing, caching, vector index tuning, async operations, query optimization.",
+      "ground_truth_sources": [
+        {"document": "performance_guide.pdf", "pages": [1, 2, 3, 4]},
+        {"document": "optimization_tips.pdf", "pages": [1, 2]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_005",
+      "question": "The system cannot handle multi-document queries. What's the solution?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "The system supports multi-document queries. Retrieval service searches across all documents, LLM synthesizes cross-document answers.",
+      "ground_truth_sources": [
+        {"document": "rag_architecture.pdf", "pages": [2, 3]},
+        {"document": "retrieval_service.pdf", "pages": [1]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_006",
+      "question": "API keys are useless in this system. How is access actually controlled?",
+      "category": "adversarial",
+      "difficulty": "medium",
+      "expected_answer": "API keys aren't mentioned in provided docs. Access control uses: CORS, rate limiting, input validation, authentication layer (if configured).",
+      "ground_truth_sources": [
+        {"document": "security_guide.pdf", "pages": [1, 2]},
+        {"document": "configuration.pdf", "pages": [3]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_007",
+      "question": "You can't scale this system beyond a single machine. True or false? Why?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "False. System is designed for horizontal scaling: stateless services, database separation, async I/O. Requires PostgreSQL and distributed deployment.",
+      "ground_truth_sources": [
+        {"document": "architecture.pdf", "pages": [1, 2]},
+        {"document": "scaling.pdf", "pages": [1, 2]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_008",
+      "question": "The logging system will definitely leak sensitive information. What protections exist?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Logging doesn't log sensitive data by design. Error messages are sanitized, secrets not logged, structured logging for production.",
+      "ground_truth_sources": [
+        {"document": "logging_guide.pdf", "pages": [2, 3]},
+        {"document": "security_guide.pdf", "pages": [3]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_009",
+      "question": "The vector store will become corrupted if you don't regularly rebuild it. False?",
+      "category": "adversarial",
+      "difficulty": "medium",
+      "expected_answer": "Not necessarily true. ChromaDB handles consistency. Regular maintenance (periodic reindexing for optimization) is good practice, not requirement.",
+      "ground_truth_sources": [
+        {"document": "vectorstore_guide.pdf", "pages": [2, 3]},
+        {"document": "maintenance.pdf", "pages": [1]}
+      ],
+      "type": "adversarial"
+    },
+    {
+      "id": "adversarial_010",
+      "question": "The database schema cannot handle concurrent writes. What's the actual capability?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "SQLite handles concurrent reads but has limited write concurrency. PostgreSQL recommended for high-concurrency scenarios.",
+      "ground_truth_sources": [
+        {"document": "database_guide.pdf", "pages": [1, 2]},
+        {"document": "deployment.pdf", "pages": [2]}
+      ],
+      "type": "adversarial"
+    }
+  ]
+}
