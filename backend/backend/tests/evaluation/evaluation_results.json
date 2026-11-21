@@ -1,0 +1,5173 @@
+{
+  "timestamp": "2026-11-21T21:24:02.801557",
+  "summary": {
+    "total_questions": 100,
+    "passed": 0,
+    "failed": 100,
+    "errors": 0,
+    "pass_rate": 0.0
+  },
+  "retrieval_metrics": {
+    "avg_recall_at_k": 0.0,
+    "avg_precision_at_k": 0.0,
+    "avg_mrr": 0.0
+  },
+  "quality_metrics": {
+    "avg_faithfulness": 0.71,
+    "avg_relevance": 0.7344321789321789,
+    "hallucination_rate": 0.0,
+    "citation_rate": 0.0
+  },
+  "category_breakdown": {
+    "factual": {
+      "count": 30,
+      "passed": 0,
+      "avg_score": 0.3691666666666666,
+      "avg_retrieval_recall": 0.0,
+      "avg_faithfulness": 0.8000000000000004,
+      "pass_rate": 0.0
+    },
+    "multi_page": {
+      "count": 20,
+      "passed": 0,
+      "avg_score": 0.36449702380952387,
+      "avg_retrieval_recall": 0.0,
+      "avg_faithfulness": 0.8000000000000002,
+      "pass_rate": 0.0
+    },
+    "cross_document": {
+      "count": 15,
+      "passed": 0,
+      "avg_score": 0.3362323232323233,
+      "avg_retrieval_recall": 0.0,
+      "avg_faithfulness": 0.8000000000000002,
+      "pass_rate": 0.0
+    },
+    "unanswerable": {
+      "count": 15,
+      "passed": 0,
+      "avg_score": 0.24454761904761904,
+      "avg_retrieval_recall": 0.0,
+      "avg_faithfulness": 0.20000000000000004,
+      "pass_rate": 0.0
+    },
+    "ambiguous": {
+      "count": 10,
+      "passed": 0,
+      "avg_score": 0.3673571428571429,
+      "avg_retrieval_recall": 0.0,
+      "avg_faithfulness": 0.7999999999999999,
+      "pass_rate": 0.0
+    },
+    "adversarial": {
+      "count": 10,
+      "passed": 0,
+      "avg_score": 0.3466271645021645,
+      "avg_retrieval_recall": 0.0,
+      "avg_faithfulness": 0.7999999999999999,
+      "pass_rate": 0.0
+    }
+  },
+  "detailed_results": [
+    {
+      "question_id": "factual_001",
+      "question": "What is the main topic of the document?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The document covers Retrieval-Augmented Generation (RAG) systems and their architecture.",
+      "generated_answer": "Mock answer to: What is the main topic of the document?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the main topic of the document?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.10538101196289062
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "factual_002",
+      "question": "Who are the key contributors to this project?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The project team includes AI researchers, backend engineers, and infrastructure specialists.",
+      "generated_answer": "Mock answer to: Who are the key contributors to this project?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Who are the key contributors to this project?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.06794929504394531
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_003",
+      "question": "What framework is used for the backend API?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "FastAPI is used as the web framework for the backend API.",
+      "generated_answer": "Mock answer to: What framework is used for the backend API?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What framework is used for the backend API?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.04506111145019531
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_004",
+      "question": "Which embedding model is recommended for production use?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "sentence-transformers/all-MiniLM-L6-v2 is recommended for production due to its balance of speed and quality.",
+      "generated_answer": "Mock answer to: Which embedding model is recommended for productio... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Which embedding model is recommended for production use?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.0820159912109375
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "factual_005",
+      "question": "What is the default maximum number of chunks to retrieve?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The default maximum number of chunks to retrieve is 4, which can be configured via the RAG_TOP_K setting.",
+      "generated_answer": "Mock answer to: What is the default maximum number of chunks to re... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the default maximum number of chunks to retrieve?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.07462501525878906
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_006",
+      "question": "What database is used for persistence?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "SQLite is used as the default database with the option to upgrade to PostgreSQL for production.",
+      "generated_answer": "Mock answer to: What database is used for persistence?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What database is used for persistence?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.087738037109375
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "factual_007",
+      "question": "What is the purpose of ChromaDB in this system?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "ChromaDB serves as the vector database for storing and retrieving document embeddings.",
+      "generated_answer": "Mock answer to: What is the purpose of ChromaDB in this system?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the purpose of ChromaDB in this system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.1327991485595703
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_008",
+      "question": "How are documents processed before indexing?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Documents are extracted from PDF format, split into chunks, and embedded using sentence-transformers before indexing.",
+      "generated_answer": "Mock answer to: How are documents processed before indexing?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How are documents processed before indexing?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.12087821960449219
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_009",
+      "question": "What is the maximum file size for PDF uploads?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The maximum file size for PDF uploads is 50MB by default.",
+      "generated_answer": "Mock answer to: What is the maximum file size for PDF uploads?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the maximum file size for PDF uploads?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.029087066650390625
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_010",
+      "question": "What logging framework is used in the project?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Python's built-in logging module is used with structured logging capabilities via python-json-logger.",
+      "generated_answer": "Mock answer to: What logging framework is used in the project?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What logging framework is used in the project?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.024318695068359375
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_011",
+      "question": "How does the system ensure document security?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "The system uses CORS restrictions, API key authentication, rate limiting, and prompt injection defense mechanisms.",
+      "generated_answer": "Mock answer to: How does the system ensure document security?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system ensure document security?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02193450927734375
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_012",
+      "question": "What testing frameworks are included in the project?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "pytest, pytest-cov, and pytest-asyncio are used for testing with additional support for RAG evaluation metrics.",
+      "generated_answer": "Mock answer to: What testing frameworks are included in the projec... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What testing frameworks are included in the project?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.025272369384765625
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_013",
+      "question": "What is the minimum Python version required?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "Python 3.11 or higher is required to run this project.",
+      "generated_answer": "Mock answer to: What is the minimum Python version required?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the minimum Python version required?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020265579223632812
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_014",
+      "question": "How are responses generated from retrieved context?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Responses are generated using LLMs (Ollama or Groq) with a RAG prompt that includes the retrieved context.",
+      "generated_answer": "Mock answer to: How are responses generated from retrieved context... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How are responses generated from retrieved context?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.030279159545898438
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_015",
+      "question": "What is the purpose of the sufficiency check in the RAG pipeline?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "The sufficiency check validates whether retrieved context is adequate to answer the query, preventing generation from insufficient information.",
+      "generated_answer": "Mock answer to: What is the purpose of the sufficiency check in th... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the purpose of the sufficiency check in the RAG pipeline?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.023365020751953125
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_016",
+      "question": "What containerization solution is recommended?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "Docker and Docker Compose are used for containerization and multi-container orchestration.",
+      "generated_answer": "Mock answer to: What containerization solution is recommended?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What containerization solution is recommended?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02002716064453125
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "factual_017",
+      "question": "How is the frontend implemented?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The frontend is built using Streamlit for interactive web UI.",
+      "generated_answer": "Mock answer to: How is the frontend implemented?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How is the frontend implemented?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.018358230590820312
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "factual_018",
+      "question": "What is the chunking strategy for PDF documents?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Documents are split using recursive character-based chunking with overlap to preserve context between chunks.",
+      "generated_answer": "Mock answer to: What is the chunking strategy for PDF documents?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the chunking strategy for PDF documents?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020265579223632812
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_019",
+      "question": "What is the default chunk size for document splitting?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The default chunk size is 1000 characters with 100 character overlap between chunks.",
+      "generated_answer": "Mock answer to: What is the default chunk size for document splitt... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the default chunk size for document splitting?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02002716064453125
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_020",
+      "question": "How are source citations included in responses?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Source citations include document filename, page number, and a preview of relevant text from retrieved chunks.",
+      "generated_answer": "Mock answer to: How are source citations included in responses?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How are source citations included in responses?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019311904907226562
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_021",
+      "question": "What linting and formatting tools are configured?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Ruff, Black, isort, and mypy are configured for code quality, formatting, import sorting, and type checking.",
+      "generated_answer": "Mock answer to: What linting and formatting tools are configured?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What linting and formatting tools are configured?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019550323486328125
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_022",
+      "question": "What is the API version prefix used for endpoints?",
+      "category": "factual",
+      "difficulty": "easy",
+      "expected_answer": "The API version prefix is /api/v1 for all endpoints.",
+      "generated_answer": "Mock answer to: What is the API version prefix used for endpoints?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the API version prefix used for endpoints?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019311904907226562
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_023",
+      "question": "How does the system handle concurrent requests?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "The system uses async/await patterns with FastAPI and Uvicorn for non-blocking I/O and concurrent request handling.",
+      "generated_answer": "Mock answer to: How does the system handle concurrent requests?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system handle concurrent requests?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.04696846008300781
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_024",
+      "question": "What is the default temperature setting for LLM generation?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The default temperature is 0.7 for balanced creativity and consistency in responses.",
+      "generated_answer": "Mock answer to: What is the default temperature setting for LLM ge... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the default temperature setting for LLM generation?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021696090698242188
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "factual_025",
+      "question": "How are documents stored and indexed in the system?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "Documents are stored in SQLite with associated metadata, while their embeddings are indexed in ChromaDB for fast retrieval.",
+      "generated_answer": "Mock answer to: How are documents stored and indexed in the system... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How are documents stored and indexed in the system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.022172927856445312
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_026",
+      "question": "What is the purpose of the rate limiter in the system?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "The rate limiter prevents abuse by restricting the number of API requests per user within a specified time window.",
+      "generated_answer": "Mock answer to: What is the purpose of the rate limiter in the sys... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the purpose of the rate limiter in the system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019550323486328125
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_027",
+      "question": "What is the purpose of prompt injection defense?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "Prompt injection defense sanitizes user inputs to prevent adversarial instructions from being passed to the LLM.",
+      "generated_answer": "Mock answer to: What is the purpose of prompt injection defense?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the purpose of prompt injection defense?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.023603439331054688
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_028",
+      "question": "How are retrieval metrics calculated for evaluation?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "Retrieval metrics include Recall@K, Precision@K, Mean Reciprocal Rank (MRR), and normalized Discounted Cumulative Gain (nDCG@K).",
+      "generated_answer": "Mock answer to: How are retrieval metrics calculated for evaluatio... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How are retrieval metrics calculated for evaluation?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019788742065429688
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "factual_029",
+      "question": "What is the hallucination detection mechanism?",
+      "category": "factual",
+      "difficulty": "hard",
+      "expected_answer": "Hallucination detection compares generated answers against retrieved context to identify unsupported claims.",
+      "generated_answer": "Mock answer to: What is the hallucination detection mechanism?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the hallucination detection mechanism?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019073486328125
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "factual_030",
+      "question": "How are CORS origins configured for security?",
+      "category": "factual",
+      "difficulty": "medium",
+      "expected_answer": "CORS origins are configured via environment variables in the settings, restricting cross-origin requests to specified domains.",
+      "generated_answer": "Mock answer to: How are CORS origins configured for security?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 1,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How are CORS origins configured for security?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019073486328125
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "multi_page_001",
+      "question": "Explain the complete document ingestion pipeline from PDF upload to vector indexing.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "The pipeline involves: PDF extraction using PyMuPDF, text splitting into chunks, embedding generation with sentence-transformers, and final storage in ChromaDB for retrieval.",
+      "generated_answer": "Mock answer to: Explain the complete document ingestion pipeline f... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 9,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Explain the complete document ingestion pipeline from PDF upload to vector indexing.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.022172927856445312
+      },
+      "overall_score": 0.34
+    },
+    {
+      "question_id": "multi_page_002",
+      "question": "Describe the RAG architecture and how each component interacts.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "The RAG architecture comprises: retrieval service (embedding + vector search), context assembly, sufficiency checking, LLM generation, and source extraction, working together to produce grounded answers.",
+      "generated_answer": "Mock answer to: Describe the RAG architecture and how each compone... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.7142857142857143,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Describe the RAG architecture and how each component interacts.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020503997802734375
+      },
+      "overall_score": 0.3571428571428572
+    },
+    {
+      "question_id": "multi_page_003",
+      "question": "What are all the security measures implemented in the system?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Security measures include CORS restrictions, API key authentication, rate limiting, prompt injection defense, input validation, error sanitization, and secure logging.",
+      "generated_answer": "Mock answer to: What are all the security measures implemented in ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are all the security measures implemented in the system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.023365020751953125
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "multi_page_004",
+      "question": "How does the system handle different types of LLM providers?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "The system abstracts LLM providers through a base class interface supporting Ollama (local), Groq (cloud), and OpenAI (optional) with configurable provider selection.",
+      "generated_answer": "Mock answer to: How does the system handle different types of LLM ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.875,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system handle different types of LLM providers?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020742416381835938
+      },
+      "overall_score": 0.38125000000000003
+    },
+    {
+      "question_id": "multi_page_005",
+      "question": "Explain the data flow from user query to response generation.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Data flow: user query \u00e2\u2020\u2019 embedding generation \u00e2\u2020\u2019 vector search \u00e2\u2020\u2019 context assembly \u00e2\u2020\u2019 sufficiency validation \u00e2\u2020\u2019 LLM prompt construction \u00e2\u2020\u2019 response generation \u00e2\u2020\u2019 source extraction and formatting.",
+      "generated_answer": "Mock answer to: Explain the data flow from user query to response ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.875,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Explain the data flow from user query to response generation.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.022411346435546875
+      },
+      "overall_score": 0.38125000000000003
+    },
+    {
+      "question_id": "multi_page_006",
+      "question": "What are the deployment considerations and prerequisites?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Deployment requires Python 3.11+, Docker/Docker Compose, configured environment variables, external LLM service (Ollama or Groq), and proper network security setup.",
+      "generated_answer": "Mock answer to: What are the deployment considerations and prerequ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the deployment considerations and prerequisites?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020503997802734375
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "multi_page_007",
+      "question": "How does the system ensure response quality and faithfulness?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Quality assurance includes: context sufficiency checking, source attribution with citations, hallucination detection, retrieval ranking, and comprehensive logging for debugging.",
+      "generated_answer": "Mock answer to: How does the system ensure response quality and fa... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8571428571428571,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system ensure response quality and faithfulness?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021696090698242188
+      },
+      "overall_score": 0.3785714285714286
+    },
+    {
+      "question_id": "multi_page_008",
+      "question": "Describe the complete testing strategy for the application.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Testing includes unit tests for individual components, integration tests for full workflows, RAG evaluation with quality metrics, and performance benchmarking.",
+      "generated_answer": "Mock answer to: Describe the complete testing strategy for the app... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 5,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Describe the complete testing strategy for the application.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019788742065429688
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "multi_page_009",
+      "question": "What are the configuration options and how do they affect system behavior?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Configuration covers: LLM provider/model selection, embedding model choice, chunk size/overlap, retrieval top-k, max context tokens, rate limits, CORS settings, and logging levels.",
+      "generated_answer": "Mock answer to: What are the configuration options and how do they... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5555555555555556,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the configuration options and how do they affect system behavior?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.022172927856445312
+      },
+      "overall_score": 0.33333333333333337
+    },
+    {
+      "question_id": "multi_page_010",
+      "question": "How is the system monitored and debugged in production?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Monitoring uses structured logging, separate error logs, performance metrics, health check endpoints, and detailed pipeline traces for debugging RAG failures.",
+      "generated_answer": "Mock answer to: How is the system monitored and debugged in produc... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How is the system monitored and debugged in production?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.018835067749023438
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "multi_page_011",
+      "question": "Explain the embedding and vector search process with all technical details.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Process: text normalization \u00e2\u2020\u2019 sentence-transformers encoding \u00e2\u2020\u2019 384-dimensional vectors \u00e2\u2020\u2019 ChromaDB indexing \u00e2\u2020\u2019 cosine similarity search \u00e2\u2020\u2019 ranking by relevance score.",
+      "generated_answer": "Mock answer to: Explain the embedding and vector search process wi... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.625,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Explain the embedding and vector search process with all technical details.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019550323486328125
+      },
+      "overall_score": 0.34375000000000006
+    },
+    {
+      "question_id": "multi_page_012",
+      "question": "What is the complete error handling strategy?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Error handling includes custom exceptions, validation at API layer, graceful fallbacks for LLM services, transaction rollback for database operations, and detailed error logging.",
+      "generated_answer": "Mock answer to: What is the complete error handling strategy?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the complete error handling strategy?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.018358230590820312
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "multi_page_013",
+      "question": "How does the database schema support document and chunk storage?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "The schema includes documents table with metadata, chunks table linking to documents with content/page info, and indexes for efficient querying.",
+      "generated_answer": "Mock answer to: How does the database schema support document and ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the database schema support document and chunk storage?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.033855438232421875
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "multi_page_014",
+      "question": "Describe the API structure and available endpoints.",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "API includes health checks (/api/v1/health), document upload/list/delete (/api/v1/documents), chat endpoint (/api/v1/chat), and analytics (/api/v1/analytics).",
+      "generated_answer": "Mock answer to: Describe the API structure and available endpoints... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Describe the API structure and available endpoints.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.032901763916015625
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "multi_page_015",
+      "question": "What is the performance optimization strategy?",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "Optimizations include embedding caching, batch processing, vector index optimization, connection pooling for databases, and async/await for I/O operations.",
+      "generated_answer": "Mock answer to: What is the performance optimization strategy?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the performance optimization strategy?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.023365020751953125
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "multi_page_016",
+      "question": "How does version control and branching strategy work?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "The project uses Git with main branch protection, feature branches for development, conventional commits, and pull request reviews before merging.",
+      "generated_answer": "Mock answer to: How does version control and branching strategy wo... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8571428571428571,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does version control and branching strategy work?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.03170967102050781
+      },
+      "overall_score": 0.3785714285714286
+    },
+    {
+      "question_id": "multi_page_017",
+      "question": "What is the relationship between chunks, embeddings, and documents?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Documents are split into chunks with overlap. Each chunk gets embedded into a vector. Chunk metadata links back to source document and page number.",
+      "generated_answer": "Mock answer to: What is the relationship between chunks, embedding... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the relationship between chunks, embeddings, and documents?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019073486328125
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "multi_page_018",
+      "question": "Explain the role of each layer in the clean architecture.",
+      "category": "multi_page",
+      "difficulty": "hard",
+      "expected_answer": "API layer handles HTTP, core layer manages config/logging, infrastructure abstracts services, services contain business logic, schemas define data models.",
+      "generated_answer": "Mock answer to: Explain the role of each layer in the clean archit... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 5,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Explain the role of each layer in the clean architecture.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019311904907226562
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "multi_page_019",
+      "question": "How does the system maintain state across requests?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Session state is managed through database transactions, vector store persistence, and stateless service design for horizontal scaling.",
+      "generated_answer": "Mock answer to: How does the system maintain state across requests... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8571428571428571,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system maintain state across requests?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.018596649169921875
+      },
+      "overall_score": 0.3785714285714286
+    },
+    {
+      "question_id": "multi_page_020",
+      "question": "What is the migration strategy for database schema changes?",
+      "category": "multi_page",
+      "difficulty": "medium",
+      "expected_answer": "Alembic is used for database migrations with version control, supporting both development and production deployments safely.",
+      "generated_answer": "Mock answer to: What is the migration strategy for database schema... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the migration strategy for database schema changes?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.017642974853515625
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "cross_document_001",
+      "question": "How does the system compare information across multiple documents to answer queries?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "Cross-document queries retrieve chunks from multiple source documents, assemble them in context order, and let the LLM synthesize answers from all relevant information.",
+      "generated_answer": "Mock answer to: How does the system compare information across mul... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.7,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system compare information across multiple documents to answer queries?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020503997802734375
+      },
+      "overall_score": 0.35500000000000004
+    },
+    {
+      "question_id": "cross_document_002",
+      "question": "What are the differences in recommendations between document A and document B?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES MULTIPLE DOCUMENTS TO ANSWER - This tests whether the system can retrieve and compare information across document boundaries.",
+      "generated_answer": "Mock answer to: What are the differences in recommendations betwee... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the differences in recommendations between document A and document B?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02002716064453125
+      },
+      "overall_score": 0.32500000000000007
+    },
+    {
+      "question_id": "cross_document_003",
+      "question": "How do the concepts introduced in the foundation document relate to the advanced applications described later?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES MULTI-DOCUMENT UNDERSTANDING - Tests ability to connect related concepts across different documents in a logical sequence.",
+      "generated_answer": "Mock answer to: How do the concepts introduced in the foundation d... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.45454545454545453,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How do the concepts introduced in the foundation document relate to the advanced applications described later?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021457672119140625
+      },
+      "overall_score": 0.31818181818181823
+    },
+    {
+      "question_id": "cross_document_004",
+      "question": "Integrate information from all security documents to provide a complete security overview.",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES DOCUMENT INTEGRATION - Combines authentication, authorization, data protection, and audit logging information from multiple sources.",
+      "generated_answer": "Mock answer to: Integrate information from all security documents ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 5,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Integrate information from all security documents to provide a complete security overview.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.03409385681152344
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "cross_document_005",
+      "question": "How do the performance guidelines in one document affect the configuration recommendations in another?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES CROSS-REFERENCE - Performance guidelines should inform configuration choices; this tests systems ability to connect related information.",
+      "generated_answer": "Mock answer to: How do the performance guidelines in one document ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How do the performance guidelines in one document affect the configuration recommendations in another?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.029802322387695312
+      },
+      "overall_score": 0.34
+    },
+    {
+      "question_id": "cross_document_006",
+      "question": "What is the complete deployment architecture combining infrastructure, security, and monitoring?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES INTEGRATION - Combines Docker deployment, security hardening, and monitoring setup from separate documentation sources.",
+      "generated_answer": "Mock answer to: What is the complete deployment architecture combi... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the complete deployment architecture combining infrastructure, security, and monitoring?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.022172927856445312
+      },
+      "overall_score": 0.32500000000000007
+    },
+    {
+      "question_id": "cross_document_007",
+      "question": "How do the API design decisions relate to the underlying database schema?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_answer": "REQUIRES UNDERSTANDING BOTH - API endpoints reflect database structure; this tests system's ability to connect design layers.",
+      "generated_answer": "Mock answer to: How do the API design decisions relate to the unde... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How do the API design decisions relate to the underlying database schema?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.03457069396972656
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "cross_document_008",
+      "question": "Explain how embedding model selection affects retrieval performance and quality.",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES LINKING COMPONENTS - Model selection affects embedding quality which impacts retrieval accuracy; tests end-to-end understanding.",
+      "generated_answer": "Mock answer to: Explain how embedding model selection affects retr... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Explain how embedding model selection affects retrieval performance and quality.",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02956390380859375
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "cross_document_009",
+      "question": "What are the tradeoffs between using Ollama versus Groq for LLM generation?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES COMPARISON ACROSS DOCUMENTS - Should discuss latency, cost, privacy, and quality differences across provider documentation.",
+      "generated_answer": "Mock answer to: What are the tradeoffs between using Ollama versus... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5555555555555556,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the tradeoffs between using Ollama versus Groq for LLM generation?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.03218650817871094
+      },
+      "overall_score": 0.33333333333333337
+    },
+    {
+      "question_id": "cross_document_010",
+      "question": "How do input validation, rate limiting, and prompt defense work together for security?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES INTEGRATION - These are layered security measures; test shows understanding of defense-in-depth approach.",
+      "generated_answer": "Mock answer to: How do input validation, rate limiting, and prompt... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5454545454545454,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How do input validation, rate limiting, and prompt defense work together for security?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.025987625122070312
+      },
+      "overall_score": 0.33181818181818185
+    },
+    {
+      "question_id": "cross_document_011",
+      "question": "What is the complete workflow for handling a document from upload through answering questions?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES FULL PIPELINE - Upload validation \u00e2\u2020\u2019 PDF extraction \u00e2\u2020\u2019 chunking \u00e2\u2020\u2019 embedding \u00e2\u2020\u2019 indexing \u00e2\u2020\u2019 retrieval on query \u00e2\u2020\u2019 context assembly \u00e2\u2020\u2019 LLM generation.",
+      "generated_answer": "Mock answer to: What is the complete workflow for handling a docum... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the complete workflow for handling a document from upload through answering questions?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02288818359375
+      },
+      "overall_score": 0.32500000000000007
+    },
+    {
+      "question_id": "cross_document_012",
+      "question": "How do the testing strategy and monitoring approach complement each other?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_answer": "REQUIRES LINKING - Tests verify correctness, monitoring detects production issues; together they ensure quality.",
+      "generated_answer": "Mock answer to: How do the testing strategy and monitoring approac... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5555555555555556,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How do the testing strategy and monitoring approach complement each other?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02384185791015625
+      },
+      "overall_score": 0.33333333333333337
+    },
+    {
+      "question_id": "cross_document_013",
+      "question": "What information from multiple documents would you need to troubleshoot a retrieval failure?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES INTEGRATION - Need: embedding logs, vector store stats, database state, error logs, and system configuration across documents.",
+      "generated_answer": "Mock answer to: What information from multiple documents would you... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5454545454545454,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What information from multiple documents would you need to troubleshoot a retrieval failure?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021219253540039062
+      },
+      "overall_score": 0.33181818181818185
+    },
+    {
+      "question_id": "cross_document_014",
+      "question": "How do code structure decisions support the testing and deployment strategies?",
+      "category": "cross_document",
+      "difficulty": "hard",
+      "expected_answer": "REQUIRES LINKING DESIGN - Layered architecture enables isolated unit tests, service layer supports dependency injection for mocking.",
+      "generated_answer": "Mock answer to: How do code structure decisions support the testin... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How do code structure decisions support the testing and deployment strategies?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021457672119140625
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "cross_document_015",
+      "question": "What environmental configurations are required across development, testing, and production?",
+      "category": "cross_document",
+      "difficulty": "medium",
+      "expected_answer": "REQUIRES MULTI-ENVIRONMENT UNDERSTANDING - Different settings for logging, debugging, security, and service endpoints.",
+      "generated_answer": "Mock answer to: What environmental configurations are required acr... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 5,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What environmental configurations are required across development, testing, and production?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019788742065429688
+      },
+      "overall_score": 0.32500000000000007
+    },
+    {
+      "question_id": "unanswerable_001",
+      "question": "What is the exact market price of the Chat With Documents system?",
+      "category": "unanswerable",
+      "difficulty": "easy",
+      "expected_answer": "UNANSWERABLE - The documents do not contain pricing information.",
+      "generated_answer": "Mock answer to: What is the exact market price of the Chat With Do... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.7142857142857143,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the exact market price of the Chat With Documents system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.015974044799804688
+      },
+      "overall_score": 0.23714285714285716
+    },
+    {
+      "question_id": "unanswerable_002",
+      "question": "Who founded the company that created this RAG system?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Company founder information is not in the provided documents.",
+      "generated_answer": "Mock answer to: Who founded the company that created this RAG syst... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.875,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Who founded the company that created this RAG system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.012874603271484375
+      },
+      "overall_score": 0.26125000000000004
+    },
+    {
+      "question_id": "unanswerable_003",
+      "question": "What are the specific benchmark results comparing this system to competing RAG solutions?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Competitive benchmark data is not provided in the documentation.",
+      "generated_answer": "Mock answer to: What are the specific benchmark results comparing ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.7,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the specific benchmark results comparing this system to competing RAG solutions?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.017881393432617188
+      },
+      "overall_score": 0.23500000000000004
+    },
+    {
+      "question_id": "unanswerable_004",
+      "question": "How many users are currently using this system in production?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - User statistics are not documented.",
+      "generated_answer": "Mock answer to: How many users are currently using this system in ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.875,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How many users are currently using this system in production?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.012159347534179688
+      },
+      "overall_score": 0.26125000000000004
+    },
+    {
+      "question_id": "unanswerable_005",
+      "question": "What neural network architectures are used internally by the embedding model?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Deep architectural details of sentence-transformers are not in scope of system documentation.",
+      "generated_answer": "Mock answer to: What neural network architectures are used interna... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.625,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What neural network architectures are used internally by the embedding model?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.012874603271484375
+      },
+      "overall_score": 0.22375
+    },
+    {
+      "question_id": "unanswerable_006",
+      "question": "What is the quantum computing roadmap for this project?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Quantum computing is not mentioned in project documentation.",
+      "generated_answer": "Mock answer to: What is the quantum computing roadmap for this pro... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the quantum computing roadmap for this project?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.012636184692382812
+      },
+      "overall_score": 0.255
+    },
+    {
+      "question_id": "unanswerable_007",
+      "question": "How does the system support real-time video analysis?",
+      "category": "unanswerable",
+      "difficulty": "easy",
+      "expected_answer": "UNANSWERABLE - The system only handles PDF documents, not video content.",
+      "generated_answer": "Mock answer to: How does the system support real-time video analys... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.8571428571428571,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system support real-time video analysis?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.012636184692382812
+      },
+      "overall_score": 0.25857142857142856
+    },
+    {
+      "question_id": "unanswerable_008",
+      "question": "What are the specific latency requirements mentioned for the API?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Specific latency SLAs are not documented.",
+      "generated_answer": "Mock answer to: What are the specific latency requirements mention... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the specific latency requirements mentioned for the API?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.014066696166992188
+      },
+      "overall_score": 0.23000000000000004
+    },
+    {
+      "question_id": "unanswerable_009",
+      "question": "What are the machine learning model licensing fees?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Licensing cost information is not provided.",
+      "generated_answer": "Mock answer to: What are the machine learning model licensing fees... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the machine learning model licensing fees?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.011682510375976562
+      },
+      "overall_score": 0.255
+    },
+    {
+      "question_id": "unanswerable_010",
+      "question": "How does this system integrate with SAP enterprise systems?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - SAP integration is not mentioned in the documentation.",
+      "generated_answer": "Mock answer to: How does this system integrate with SAP enterprise... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does this system integrate with SAP enterprise systems?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.011920928955078125
+      },
+      "overall_score": 0.2425
+    },
+    {
+      "question_id": "unanswerable_011",
+      "question": "What is the exact latency of retrieval queries in milliseconds?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Specific latency measurements are not provided in documentation.",
+      "generated_answer": "Mock answer to: What is the exact latency of retrieval queries in ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the exact latency of retrieval queries in milliseconds?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.0133514404296875
+      },
+      "overall_score": 0.255
+    },
+    {
+      "question_id": "unanswerable_012",
+      "question": "What is the historical version changelog for the project?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Detailed version history is not in the provided documentation.",
+      "generated_answer": "Mock answer to: What is the historical version changelog for the p... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is the historical version changelog for the project?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.011444091796875
+      },
+      "overall_score": 0.25
+    },
+    {
+      "question_id": "unanswerable_013",
+      "question": "What are the specific HIPAA compliance certifications?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - HIPAA compliance details are not documented.",
+      "generated_answer": "Mock answer to: What are the specific HIPAA compliance certificati... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the specific HIPAA compliance certifications?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.010967254638671875
+      },
+      "overall_score": 0.25
+    },
+    {
+      "question_id": "unanswerable_014",
+      "question": "How does the system handle multi-language documents beyond English?",
+      "category": "unanswerable",
+      "difficulty": "hard",
+      "expected_answer": "UNANSWERABLE - Multi-language support requirements are not specified in documentation.",
+      "generated_answer": "Mock answer to: How does the system handle multi-language document... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.625,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How does the system handle multi-language documents beyond English?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.0133514404296875
+      },
+      "overall_score": 0.22375
+    },
+    {
+      "question_id": "unanswerable_015",
+      "question": "What are the exact hardware requirements for optimal performance?",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "expected_answer": "UNANSWERABLE - Specific hardware specifications are not documented.",
+      "generated_answer": "Mock answer to: What are the exact hardware requirements for optim... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 0,
+        "top_similarity": 0.0
+      },
+      "quality_metrics": {
+        "is_faithful": false,
+        "faithfulness_score": 0.2,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What are the exact hardware requirements for optimal performance?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.011920928955078125
+      },
+      "overall_score": 0.23000000000000004
+    },
+    {
+      "question_id": "ambiguous_001",
+      "question": "Is the system suitable for enterprise use?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Could mean: production-ready? Scalable? Secure? Security features are present but documentation doesn't explicitly recommend for enterprise.",
+      "generated_answer": "Mock answer to: Is the system suitable for enterprise use?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 5,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Is the system suitable for enterprise use?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021696090698242188
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "ambiguous_002",
+      "question": "What does 'privacy-first' mean for this system?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Could mean: local LLM inference? No cloud uploads? Encryption? Data retention? All are related but different aspects.",
+      "generated_answer": "Mock answer to: What does 'privacy-first' mean for this system?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What does 'privacy-first' mean for this system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.026464462280273438
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "ambiguous_003",
+      "question": "How 'fast' is the system for real-time applications?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Depends on: LLM provider (Ollama vs Groq), number of documents, query complexity. No specific latency targets documented.",
+      "generated_answer": "Mock answer to: How 'fast' is the system for real-time application... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How 'fast' is the system for real-time applications?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020503997802734375
+      },
+      "overall_score": 0.37000000000000005
+    },
+    {
+      "question_id": "ambiguous_004",
+      "question": "What makes the system 'production-ready'?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Ambiguous definition. Has: error handling, logging, testing, security. Lacks: specific uptime targets, performance benchmarks, compliance certs.",
+      "generated_answer": "Mock answer to: What makes the system 'production-ready'?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What makes the system 'production-ready'?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.017881393432617188
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "ambiguous_005",
+      "question": "Is the retrieval 'accurate' for all domains?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Depends on: document quality, domain-specific embeddings, query specificity. Generic embeddings work well for common domains.",
+      "generated_answer": "Mock answer to: Is the retrieval 'accurate' for all domains?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Is the retrieval 'accurate' for all domains?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02193450927734375
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "ambiguous_006",
+      "question": "What is 'optimal' configuration for the system?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Depends on: use case (accuracy vs speed), hardware (local vs cloud), data size. No one-size-fits-all configuration.",
+      "generated_answer": "Mock answer to: What is 'optimal' configuration for the system?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What is 'optimal' configuration for the system?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.018596649169921875
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "ambiguous_007",
+      "question": "How 'secure' is the system against all threats?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Security is layered but not comprehensive. Has rate limiting, prompt defense, CORS. Doesn't address: supply chain attacks, zero-days.",
+      "generated_answer": "Mock answer to: How 'secure' is the system against all threats?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 5,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "How 'secure' is the system against all threats?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020265579223632812
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "ambiguous_008",
+      "question": "What qualifies as 'sufficient' context for answering?",
+      "category": "ambiguous",
+      "difficulty": "hard",
+      "expected_answer": "Ambiguous - could mean: relevant info present? Enough for high confidence? No document ground truth? Multiple interpretations possible.",
+      "generated_answer": "Mock answer to: What qualifies as 'sufficient' context for answeri... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 2,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8333333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "What qualifies as 'sufficient' context for answering?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02002716064453125
+      },
+      "overall_score": 0.37500000000000006
+    },
+    {
+      "question_id": "ambiguous_009",
+      "question": "When should you upgrade from SQLite to PostgreSQL?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Criteria are not specified. Could depend on: data size, concurrent users, query complexity. Documentation doesn't define thresholds.",
+      "generated_answer": "Mock answer to: When should you upgrade from SQLite to PostgreSQL?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.8571428571428571,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "When should you upgrade from SQLite to PostgreSQL?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019550323486328125
+      },
+      "overall_score": 0.3785714285714286
+    },
+    {
+      "question_id": "ambiguous_010",
+      "question": "Is the system 'easy' to deploy?",
+      "category": "ambiguous",
+      "difficulty": "medium",
+      "expected_answer": "Relative to what? Easier with Docker than manual setup. Harder than SaaS. Depends on infrastructure expertise.",
+      "generated_answer": "Mock answer to: Is the system 'easy' to deploy?... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Is the system 'easy' to deploy?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02002716064453125
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "adversarial_001",
+      "question": "The system definitely halluccinates all the time. What safeguards are in place?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Hallucinations are reduced (not eliminated) by: context grounding, sufficiency checking, source attribution, but no absolute prevention.",
+      "generated_answer": "Mock answer to: The system definitely halluccinates all the time. ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.625,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "The system definitely halluccinates all the time. What safeguards are in place?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.03457069396972656
+      },
+      "overall_score": 0.34375000000000006
+    },
+    {
+      "question_id": "adversarial_002",
+      "question": "If I use the default settings, the system will definitely be insecure. Why?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Default settings have basic security (CORS, rate limiting, input validation). Requires additional hardening for production (API keys, SSL, network isolation).",
+      "generated_answer": "Mock answer to: If I use the default settings, the system will def... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 7,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.7272727272727273,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "If I use the default settings, the system will definitely be insecure. Why?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.028848648071289062
+      },
+      "overall_score": 0.3590909090909091
+    },
+    {
+      "question_id": "adversarial_003",
+      "question": "Embeddings will fail with this framework. Which embeddings actually work?",
+      "category": "adversarial",
+      "difficulty": "medium",
+      "expected_answer": "Embeddings work with sentence-transformers. Specific models: all-MiniLM-L6-v2 (production), all-mpnet-base-v2 (quality). Works fine with proper configuration.",
+      "generated_answer": "Mock answer to: Embeddings will fail with this framework. Which em... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.75,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "Embeddings will fail with this framework. Which embeddings actually work?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.02193450927734375
+      },
+      "overall_score": 0.36250000000000004
+    },
+    {
+      "question_id": "adversarial_004",
+      "question": "The RAG pipeline is too slow for any real application. How can it be optimized?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Performance depends on components. Optimization strategies: batch processing, caching, vector index tuning, async operations, query optimization.",
+      "generated_answer": "Mock answer to: The RAG pipeline is too slow for any real applicat... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 6,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5833333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "The RAG pipeline is too slow for any real application. How can it be optimized?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.022649765014648438
+      },
+      "overall_score": 0.3375000000000001
+    },
+    {
+      "question_id": "adversarial_005",
+      "question": "The system cannot handle multi-document queries. What's the solution?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "The system supports multi-document queries. Retrieval service searches across all documents, LLM synthesizes cross-document answers.",
+      "generated_answer": "Mock answer to: The system cannot handle multi-document queries. W... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.7142857142857143,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "The system cannot handle multi-document queries. What's the solution?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019550323486328125
+      },
+      "overall_score": 0.3571428571428572
+    },
+    {
+      "question_id": "adversarial_006",
+      "question": "API keys are useless in this system. How is access actually controlled?",
+      "category": "adversarial",
+      "difficulty": "medium",
+      "expected_answer": "API keys aren't mentioned in provided docs. Access control uses: CORS, rate limiting, input validation, authentication layer (if configured).",
+      "generated_answer": "Mock answer to: API keys are useless in this system. How is access... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6666666666666666,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "API keys are useless in this system. How is access actually controlled?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020503997802734375
+      },
+      "overall_score": 0.35000000000000003
+    },
+    {
+      "question_id": "adversarial_007",
+      "question": "You can't scale this system beyond a single machine. True or false? Why?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "False. System is designed for horizontal scaling: stateless services, database separation, async I/O. Requires PostgreSQL and distributed deployment.",
+      "generated_answer": "Mock answer to: You can't scale this system beyond a single machin... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 4,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6363636363636364,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "You can't scale this system beyond a single machine. True or false? Why?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.025510787963867188
+      },
+      "overall_score": 0.3454545454545455
+    },
+    {
+      "question_id": "adversarial_008",
+      "question": "The logging system will definitely leak sensitive information. What protections exist?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "Logging doesn't log sensitive data by design. Error messages are sanitized, secrets not logged, structured logging for production.",
+      "generated_answer": "Mock answer to: The logging system will definitely leak sensitive ... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.6,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "The logging system will definitely leak sensitive information. What protections exist?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.021696090698242188
+      },
+      "overall_score": 0.34
+    },
+    {
+      "question_id": "adversarial_009",
+      "question": "The vector store will become corrupted if you don't regularly rebuild it. False?",
+      "category": "adversarial",
+      "difficulty": "medium",
+      "expected_answer": "Not necessarily true. ChromaDB handles consistency. Regular maintenance (periodic reindexing for optimization) is good practice, not requirement.",
+      "generated_answer": "Mock answer to: The vector store will become corrupted if you don'... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5833333333333334,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "The vector store will become corrupted if you don't regularly rebuild it. False?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.020265579223632812
+      },
+      "overall_score": 0.3375000000000001
+    },
+    {
+      "question_id": "adversarial_010",
+      "question": "The database schema cannot handle concurrent writes. What's the actual capability?",
+      "category": "adversarial",
+      "difficulty": "hard",
+      "expected_answer": "SQLite handles concurrent reads but has limited write concurrency. PostgreSQL recommended for high-concurrency scenarios.",
+      "generated_answer": "Mock answer to: The database schema cannot handle concurrent write... This would be the generated response from the RAG pipeline.",
+      "sources": [
+        {
+          "filename": "sample.pdf",
+          "page_number": 1,
+          "similarity_score": 0.85,
+          "text_preview": "Sample text content..."
+        }
+      ],
+      "is_unanswerable": false,
+      "error": null,
+      "retrieval_metrics": {
+        "recall_at_k": 0.0,
+        "precision_at_k": 0.0,
+        "mrr": 0.0,
+        "ndcg_at_k": 0.0,
+        "retrieved_count": 1,
+        "relevant_count": 3,
+        "top_similarity": 0.85
+      },
+      "quality_metrics": {
+        "is_faithful": true,
+        "faithfulness_score": 0.8,
+        "relevance_score": 0.5555555555555556,
+        "has_citations": false,
+        "citation_count": 0,
+        "is_hallucinated": false,
+        "hallucination_score": 0.1
+      },
+      "trace": {
+        "query": "The database schema cannot handle concurrent writes. What's the actual capability?",
+        "embedding_dimension": null,
+        "embedding_error": null,
+        "retrieval_count": 0,
+        "retrieval_error": null,
+        "retrieved_chunks_preview": [],
+        "context_length": 0,
+        "sufficiency_check_result": null,
+        "sufficiency_error": null,
+        "generation_error": null,
+        "llm_model": "unknown",
+        "execution_time_ms": 0.019788742065429688
+      },
+      "overall_score": 0.33333333333333337
+    }
+  ]
+}
