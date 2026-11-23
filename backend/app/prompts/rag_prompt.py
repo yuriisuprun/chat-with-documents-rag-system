@@ -20,7 +20,7 @@ def build_rag_prompt(question: str, context: str) -> str:
     """
     prompt = f"""You are a helpful assistant that answers questions based on provided context.
 
-Answer the following question based ONLY on the provided context. If the answer cannot be found in the context, explicitly state that you cannot answer the question.
+Please answer the following question. Use the provided context if relevant, but you may also draw on general knowledge if the specific answer isn't in the context. Always indicate the source when quoting from the context.
 
 <CONTEXT>
 {context}
@@ -31,10 +31,10 @@ Answer the following question based ONLY on the provided context. If the answer 
 </QUESTION>
 
 <INSTRUCTIONS>
-- Answer only using information from the context
+- If information is in the context, cite it with page numbers
+- If you cannot find specific information, clearly state what you don't know from the context
+- Provide helpful information based on what you can find or infer
 - Be concise and direct
-- If uncertain, indicate your confidence level
-- Never make up information not in the context
 </INSTRUCTIONS>
 
 Answer:"""

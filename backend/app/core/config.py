@@ -35,8 +35,8 @@ class Settings(BaseSettings):
     # ========================================================================
     # File Upload Settings
     # ========================================================================
-    max_upload_size: int = 10 * 1024 * 1024  # 10 MB
-    max_pdf_pages: int = 100
+    max_upload_size: int = 15 * 1024 * 1024  # 15 MB
+    max_pdf_pages: int = 500
     upload_dir: str = "./data/uploads"
 
     # ========================================================================

@@ -154,7 +154,7 @@ async def chat(
             result = rag_service.answer_question(
                 question=query,
                 document_ids=request.document_ids,
-                top_k=4,  # Use configured top_k from settings
+                top_k=8,  # Increased from 4 to get better results
             )
         except LLMUnavailableException as e:
             logger.warning(f"LLM unavailable: {e}")
